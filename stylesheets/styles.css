@@ -733,15 +733,7 @@ dt {
   background: -o-linear-gradient(#93bd20, #659e10);
   background: -ms-linear-gradient(#93bd20, #659e10);
   background: linear-gradient(#93bd20, #659e10);
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  -o-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -khtml-border-radius: 2px;
   border-radius: 2px;
-  -moz-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
-  -webkit-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
-  -o-box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
   box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
   background-color: #93bd20;
   padding: 10px 12px;
@@ -798,26 +790,27 @@ section #title h1 {
   text-align: center;
   line-height: 36px;
 }
-section #title p {
-  color: #d7cfbe;
-  font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  font-size: 18px;
-  text-align: center;
+
+
+.column_block{
+    background: dimgray;
+    max-width: 300px;
+    border-radius: 5px;
+    border: 2px solid #93bd20;
 }
-section #title .credits {
-  font-size: 11px;
-  font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  color: #696969;
-  margin-top: -10px;
+
+.column_block img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 33px;
 }
-section #title .credits.left {
-  float: left;
-}
-section #title .credits.right {
-  float: right;
-}
+
+
+
+
+
+
 
 @media print, screen and (max-width: 720px) {
   #title .credits {
