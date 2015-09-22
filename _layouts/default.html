@@ -23,7 +23,8 @@
     <header>
 		<div id="header">
 			{% include nav.html nav=site.data.menu %}
-		</div>	
+		</div>
+        <h1> {% if page.title %} {{ page.title }} | {% endif %} </h1>
 	</header>
 
 	<section id="main_content">
