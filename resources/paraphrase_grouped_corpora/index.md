@@ -1,5 +1,7 @@
 ---
 layout: default
+title: Paraphrase Grouped Corpora
+
 ---
 
 These corpora have been prepared by taking existing real-word based corpora: The Microsoft Research Paraphrase Corpus, and Opinosis, and partitioning them into  groups of sentences which all share the same meaning.
