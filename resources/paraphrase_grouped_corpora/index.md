@@ -45,16 +45,14 @@ This derived corpus is redistributed under the [MSR-SSLA](http://research.micros
 Use of the derived corpus here should cite the paper detailing the original corpus:
 
 ```
-   @inproceedings{dolan2004unsupervised,
-  title={Unsupervised construction of large paraphrase corpora: Exploiting massively parallel news sources},
-  author={Dolan, Bill and Quirk, Chris and Brockett, Chris},
-  booktitle={Proceedings of the 20th international conference on Computational Linguistics},
-  pages={350},
-  year={2004},
-  organization={Association for Computational Linguistics}
-}
- 
-
+    @inproceedings{dolan2004unsupervised,
+        title={Unsupervised construction of large paraphrase corpora: Exploiting massively parallel news sources},
+        author={Dolan, Bill and Quirk, Chris and Brockett, Chris},
+        booktitle={Proceedings of the 20th international conference on Computational Linguistics},
+        pages={350},
+        year={2004},
+        organization={Association for Computational Linguistics}
+    }
 
 ```
 
