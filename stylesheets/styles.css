@@ -785,11 +785,12 @@ section {
   padding: 30px 0px 50px 0px;
   margin: 20px;
 }
-section #title {
+
+#title {
   border: 0;
   outline: none;
-  margin: 70px;
-  padding: 0 0 5px 0;
+  margin-top: 75px;
+  padding: 0 0 0 0;
 }
 section #title h1 {
   font-family: 'OpenSansLight', "Helvetica Neue", Helvetica, Arial, sans-serif;
