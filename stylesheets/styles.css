@@ -364,6 +364,7 @@ dt {
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
+    display: bla
 }
 
 footer {
@@ -404,6 +405,7 @@ section {
 {
     max-width: 600px;
     display: inline-block;  
+    vertical-align: top;
 }
 
 .column_block img{

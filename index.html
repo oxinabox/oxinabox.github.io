@@ -18,21 +18,23 @@ layout: default
 
 </section>
 
-<section class="column_block_wide">
-    My key research areas include natural language processing/computational linguistics, with a focus on the capturing of sentence meaning. More boardly my interests include machine learning, data mining, pattern recognition and artifical intelligence. My overarching goal is to develop methods to allow for better computational processing of the vast amounts of data which has been prepared for manual (human) processing -- eg books, blogs, newspaper.
-    I completed a Bachelor of Engineering (Electrical and Electronic) and also a Bachelor of Computer and Mathematical Science (Pure Mathematics, Computation), at the University of Western Australia in 2014; where I have continued on into my PhD studies.
+<div class="column_block_wide">
+    <section>
+        My key research areas include natural language processing/computational linguistics, with a focus on the capturing of sentence meaning. More boardly my interests include machine learning, data mining, pattern recognition and artifical intelligence. My overarching goal is to develop methods to allow for better computational processing of the vast amounts of data which has been prepared for manual (human) processing -- eg books, blogs, newspaper.
+        I completed a Bachelor of Engineering (Electrical and Electronic) and also a Bachelor of Computer and Mathematical Science (Pure Mathematics, Computation), at the University of Western Australia in 2014; where I have continued on into my PhD studies.
 
-</section>
+    </section>
 
 
-<section id="publications" class="column_block_wide">
-	<ul>
-	{% for pub in site.data.publications %}
-		<li> {{pub.title}}, {{pub.author}} 
-			[<a href="{{site.url}}/publications/{{pub.key}}.pdf">pdf</a>,
-			<a href="{{site.url}}/publications/{{pub.key}}.bib">bib</a>]
-		
-	
-	{% endfor %}
-	</ul>
-</section>
+    <section id="publications">
+        <ul>
+        {% for pub in site.data.publications %}
+            <li> {{pub.title}}, {{pub.author}} 
+                [<a href="{{site.url}}/publications/{{pub.key}}.pdf">pdf</a>,
+                <a href="{{site.url}}/publications/{{pub.key}}.bib">bib</a>]
+            
+        
+        {% endfor %}
+        </ul>
+    </section>
+</div>
