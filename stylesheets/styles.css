@@ -397,6 +397,13 @@ section {
 
 .column_block{   
     max-width: 300px;
+    display: inline-block;
+}
+
+.column_block_wide
+{
+    max-width: 600px;
+    display: inline-block;  
 }
 
 .column_block img{
