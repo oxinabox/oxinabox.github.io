@@ -351,6 +351,17 @@ dt {
   font-family: 'OpenSansSemibold', "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   font-weight: normal;
 }
+
+/*******************************************************************************
+********************                 Sections etc                **************
+*******************************************************************************/
+
+#main_content {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 section {
   max-width: 650px;
   padding: 30px 10px 30px 10px;
