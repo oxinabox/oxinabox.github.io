@@ -315,12 +315,6 @@ pre code {
 
 
 
-footer {
-  font-size: 10pt;
-  padding: 10px;
-
-}
-
 
 /**********************************************************
 ********************** Tabels
@@ -365,12 +359,17 @@ dt {
 ********************                 Sections etc                **************
 *******************************************************************************/
 
-#main_content {
+#main_content, footer {
     max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
 }
+
+footer {
+  font-size: 10pt;
+}
+
 
 section {
   padding: 30px 10px 30px 10px;
