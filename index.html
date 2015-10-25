@@ -29,7 +29,7 @@ layout: default
     <section id="publications">
         <ul>
         {% for pub in site.data.publications %}
-            <li> {{pub.title}}, {{pub.author}} 
+        <li>{{pub.year}}: {{pub.title}}, {{pub.author}} 
                 [<a href="{{site.url}}/publications/{{pub.key}}.pdf">pdf</a>,
                 <a href="{{site.url}}/publications/{{pub.key}}.bib">bib</a>]
             
