@@ -1,5 +1,2 @@
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,txt"
-markdown: redcarpet
-
-redcarpet:
-  extensions: [smart]
+markdown: kramdown
