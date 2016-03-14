@@ -1,3 +1,12 @@
+- title: Generating Bags of Words from the Sums of their Word Embeddings
+  author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
+  venue: Conference on Intelligent Text Processing and Computational Linguistics (CICLing)
+  year: 2016
+  key: White2015BOWgen
+  supl: publications/White2015BOWgen
+
+
+
 - title: "How Well Sentence Embeddings Capture Meaning"
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
   venue: Proceedings of the 20th Australasian Document Computing Symposium
