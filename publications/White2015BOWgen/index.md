@@ -11,7 +11,7 @@ I'm very happy for anyone with any interest in this (or any of my other work) to
 Use of this data or code on this page of these should cite the paper:
 
 ```
-	{% include ../White2015BOWgen.bib %}
+	{% include_relative White2015BOWgen.bib %}
 ```
 
 ##Proof of NP-Hardness of Vector Selection Problem
