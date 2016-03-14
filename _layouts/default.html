@@ -9,8 +9,25 @@
     <link rel="stylesheet" href="/stylesheets/github-dark.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script src="/javascripts/respond.js"></script>
-	<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	
+	<script type="text/x-mathjax-config">
+	  MathJax.Hub.Config({
+		TeX: {
+		  equationNumbers: {
+			autoNumber: "AMS"
+		  }
+		},
+		tex2jax: {
+		  inlineMath: [ ['$','$'], ['\(', '\)'] ],
+		  displayMath: [ ['$$','$$'] ],
+		  processEscapes: true,
+		}
+	  });
+	</script>
+	<script type="text/javascript"
+			src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+	</script>
 	
   </head>
 
