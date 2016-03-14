@@ -26,17 +26,17 @@ The proof is a little fiddly, and complex, but does not use any higher maths bey
 ## Core Code Only
 
 For those who which to understand or implement the BOW generation algorithm.
-This is written in the (Julia programming language)[http://julialang.org/]. Nominally v0.5.
+This is written in the [Julia programming language](http://julialang.org/). Nominally v0.5.
 
- - [core code]
+ - [core code](sowe2bow.jl)
 
 ## Data and Code
 
 The below is complete package to reproduce the results.
 It includes all inputs, all part stage outputs, full code for preprocessing, processing and analysing the results and even the (Julia programming language)[http://julialang.org/].
-Note that this includes input data, and various libraries, all of which are under their own licenses (included). Our own contributions are liscensed under the MIT license.
+Note that this includes input data, and various libraries, all of which are under their own licenses (included). Our own contributions are licensed under the MIT license.
  
- - [Data and Code](full.zip)
+ - [Data and Code](https://cloudstor.aarnet.edu.au/plus/index.php/s/n7auu0HDcJoNntA)
 
 
 
