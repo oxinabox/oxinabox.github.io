@@ -31,7 +31,7 @@ Use of either of these should cite the paper:
 
 -----
 
-##Opinosis
+## Opinosis
 
 [Download](./opinosis_paraphrase_grouped.zip)
 
@@ -56,7 +56,7 @@ Use of the derived corpus here should cite the paper detailing the original corp
 ```
 
 
-##MSRP
+## MSRP
 
 [Download](./msrp_paraphrase_grouped.zip)
 
