@@ -3,6 +3,7 @@ layout: default
 title: Generating Bags of Words from the Sums of their Word Embeddings
 subtitle: Supplementary Material
 redirect_from: 
+  - /publications/White2015BOWgen
   - /publications/White2015BOWgen/
 ---
 
