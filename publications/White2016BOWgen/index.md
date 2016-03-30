@@ -2,6 +2,8 @@
 layout: default
 title: Generating Bags of Words from the Sums of their Word Embeddings
 subtitle: Supplementary Material
+redirect_from: 
+  - /publications/White2015BOWgen
 ---
 
 This page contains supplementary material, code and data used in [White et. al. 2016, Generating Bags of Words from the Sums of their Word Embeddings](../White2015BOWgen.pdf).
