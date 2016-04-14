@@ -31,7 +31,7 @@ layout: default
         {% for pub in site.data.publications %}
         <li>{{pub.year}}: {{pub.title}}, {{pub.author}}.<br/> {{pub.venue}} 
 				{% if pub.award %} <em> {{pub.award}} </em> {% endif %}
-				<span style="text-align: right">
+				<span>
                 [<a href="{{site.url}}/publications/{{pub.key}}.pdf">pdf</a>,
                 <a href="{{site.url}}/publications/{{pub.key}}.bib">bib</a>
 				{% if pub.supl %}
