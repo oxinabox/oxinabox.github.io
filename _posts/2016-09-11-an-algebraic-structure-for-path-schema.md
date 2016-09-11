@@ -53,7 +53,7 @@ The defintion whch follows provides all the the expected functionality on paths
 ## Derived Operations:
 From this we can define additional operations:
 
- - $$root:\; A \cup R \to A \cup R $$ that fines the root of the path.
+ - $$root:\; A \cup R \to A \cup R $$ that finds the root of the path.
    - $$root(x)=r$$ for $$r:=\; p^n(x)=p^{n+1}(x)$$ which we know exists for some $$n\in \mathbb(N)$$
    - As we know from above the root of an elememnt of $$A$$ is an element of $$A$$
    - and the root of an elememnt of $$R$$ is $$I_R$$
@@ -68,7 +68,7 @@ From this we can define additional operations:
       - The series of of $$part(x)$$ over the $$\cdot$$ operation is equal to $$x$$
 
 
- - $$relative\_to:\; (A \cup R)\times(A \cup R) \to R$$  relative path of one path to anotehr
+ - $$relative\_to:\; (A \cup R)\times(A \cup R) \to R$$ which finds the relative path from one path to another
    - for $$relative\_to(x,y) = z$$  we say "the path of $$x$$, relative to $$y$$ is $$z$$"
    - it is defined only if $$root(y)=root(y)$$
    - $$relative\_to(x,y)$$ is give by:
