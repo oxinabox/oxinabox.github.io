@@ -2,3 +2,5 @@ markdown_ext: "markdown,mkdown,mkdn,mkd,md,txt"
 markdown: kramdown
 gems:
   - jekyll-redirect-from
+excerpt_separator: <!--more-->
+
