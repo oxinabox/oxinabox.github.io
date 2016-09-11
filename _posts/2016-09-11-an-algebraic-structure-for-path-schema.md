@@ -2,6 +2,8 @@
 title: An Algebraic Structure For Path Schema
 layout: default
 ---
+$$\newcommand{\abs}[q1]{\lvert#1\rvert}$$
+
 This post comes from a longish discussion with Fengyang Wang
 (@TotalVerb), on the [JuliaLang Gitter](https://gitter.im/JuliaLang/julia). Its pretty cool stuff.
 
@@ -100,6 +102,8 @@ These operations are less clear, as at this level objects must be considered -- 
  - On the cardinality of $$e(x)$$
    - for $$\abs{e(x)}$$ being the number of entities given by $$e(x)$$ -- the cardinality of the set
    - \$$\abs{e(p(x))} \le \abs{e(x)}$$ 
-   - \$$\abs{|e(x)|} > 0  \Rightarrow \abs{e(p(x))} > 0$$
+   - \$$\abs{e(x)} > 0  \Rightarrow \abs{e(p(x))} > 0$$
       - or its (perhaps more interesting) contra-positive: $$\abs{e(p(x))}=0 \Rightarrow \abs{e(x)}=0$$
+
+
 
