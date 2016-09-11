@@ -95,10 +95,10 @@ These operations are less clear, as at this level objects must be considered -- 
       that is to say $$eval$$ is a function.
  - Depending on implementation, this may be 1 enitity, or many
    -  One might call Path schema with paths which always eval to one or zero entities MonoPath Schemas
-     - eg URL, POSIX / NT File System paths
+        - eg URL, POSIX / NT File System paths
 <!--   - In these case, one might intead define $$eval^\ast (A^\ast) \to D$$ where $A^\ast$ is the restriction of $A$ to paths that target objects that exists. It could well be said that this is meaningless sice $$eval^\ast$$ must be defined interm if $$eval$$, however this is close to the behavour of many programatic operations (like file-read), in that that it is a domain error, to use a path that does not target a legel object. -->
    -  one might call Path schema with paths that can eval to any nymber of entities MultiPaths Schemas
-     - eg XPATH or Glob
+        - eg XPATH or Glob
  - On the cardinality of $$e(x)$$
    - for $$\abs{e(x)}$$ being the number of entities given by $$e(x)$$ -- the cardinality of the set
    - \$$\abs{e(p(x))} \le \abs{e(x)}$$ 
