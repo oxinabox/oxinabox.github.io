@@ -2,7 +2,7 @@
 title: An Algebraic Structure For Path Schema
 layout: default
 ---
-$$\newcommand{\abs}[q1]{\lvert#1\rvert}$$
+\($\newcommand{\abs}[q1]{\lvert#1\rvert}$\)
 
 This post comes from a longish discussion with Fengyang Wang
 (@TotalVerb), on the [JuliaLang Gitter](https://gitter.im/JuliaLang/julia). Its pretty cool stuff.
