@@ -35,9 +35,10 @@ The defintion whch follows provides all the the expected functionality on paths
  - $$p$$ an operator, called the `parentdir` operation
    - \$$p:\; A\to A$$
    - \$$p:\; R\to R$$
+   - In filesystem/URL paths this is often similar to applying the Relative path `..`, but with some exceptions.
+      - For example `parentdir(.)=.` $$\neq$$ `./..` (See below).
  - $$b$$ an operator, called the `basename` operation
    - \$$b:\; A\cup R \to R$$ 
-   - In filesystem/URL paths this is often similar to applying the Relative path `..`, but with some exceptions. For example `parentdir(.)=.` $$\neq$$ `./..` (See below).
  - $$\forall(x) \in  A\cup R$$ $$p(x) \cdot b(x) = x$$
    - That is to say, `pathjoin(parentdir(x), basename(x)) == x`
  - \$$\forall r \in A \cup R \wedge p(r)=r \Leftrightarrow b(r)=I_R$$
@@ -82,15 +83,24 @@ From this we can define additional operations:
 
 ### Resolving a Path to the object 
 Finally we have an the operation that turns a absolute path ($$x\in A$$) into a entity, or a set of entities.
+These operations are less clear, as at this level objects must be considered -- the data store (the indexed set) must be accessed to resolve. And issues like synlinks, hardlinks etc start to matter (To use examples POSIX filepaths).
 
- - Call this operation $$eval$$, for a $$D$$ the target of the path
-   - \$$eval:\; A \to \subseteq \mathcal{P}(D)$$
+
+ - Call this operation $$e$$ -- to evaluate the path
+   - \$$e:\; A \to \subseteq \mathcal{P}(D)$$
+   - for a $$D$$ the set of indexed objects (filesystem, document etc)
  - For $$x_1, x_2 \in A$$,  $$x_1=x_2 \Rightarrow eval(x_1) == eval(x_2)$$
       that is to say $$eval$$ is a function.
  - Depending on implementation, this may be 1 enitity, or many
-   -  One might call Path schema with paths which always eval to one or zero entities MonoPathSchemas
+   -  One might call Path schema with paths which always eval to one or zero entities MonoPath Schemas
      - eg URL, POSIX / NT File System paths
 <!--   - In these case, one might intead define $$eval^\ast (A^\ast) \to D$$ where $A^\ast$ is the restriction of $A$ to paths that target objects that exists. It could well be said that this is meaningless sice $$eval^\ast$$ must be defined interm if $$eval$$, however this is close to the behavour of many programatic operations (like file-read), in that that it is a domain error, to use a path that does not target a legel object. -->
-   -  And Path schema with paths that can eval to any nymber of entities Multipaths
-     - XPATH or Glob
+   -  one might call Path schema with paths that can eval to any nymber of entities MultiPaths Schemas
+     - eg XPATH or Glob
+
+ - On the cardinality of $$e(x)$$
+   - for $$|e(x)|$$ being the number of entities given by $$e(x)$$ -- the cardinality of the set
+   - \$$|e(p(x))| \le e(x)$$ 
+   - \$$|e(x)| > 0  \Rightarrow |e(p(x))| > 0$$
+      - or its (perhaps more interesting) contra-positive: $$e(p(x))=0 \Rightarrow e(x)=0$$
 
