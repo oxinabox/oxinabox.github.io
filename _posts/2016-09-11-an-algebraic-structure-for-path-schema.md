@@ -1,8 +1,11 @@
 ---
-title: An Algebraic Structure For Path Schema
+title: An Algebraic Structure For Path Schema (Take 1)
 layout: default
 ---
 $$\newcommand{\abs}[1]{\lvert#1\rvert}$$
+
+*Note I have written a much improved version of this. See [the new post]({{ site.url }}/2016/09/14/an-algebraic-structure-for-path-schema-take2.html).*
+
 
 This post comes from a longish discussion with Fengyang Wang
 (@TotalVerb), on the [JuliaLang Gitter](https://gitter.im/JuliaLang/julia). Its pretty cool stuff.
@@ -72,17 +75,6 @@ From this we can define additional operations:
       - The series of of $$part(x)$$ over the $$\cdot$$ operation is equal to $$x$$
 
 
- - $$relative\_to:\; (A \cup R)\times(A \cup R) \to R$$ which finds the relative path from one path to another
-   - for $$relative\_to(x,y) = z$$  we say "the path of $$x$$, relative to $$y$$ is $$z$$"
-   - it is defined only if $$root(y)=root(y)$$
-   - $$relative\_to(x,y)$$ is give by:
-      - defining $$parts(x) = (x_0, ... x_n)$$
-      - defining $$parts(x) = (y_0, ... y_m)$$  
-      - and we know $$x_n = y_m$$ which are the common root
-      - we define $$t \in \mathbb(N)$$ as the largest value, such that $$\forall s \in \mathbb{N},\; s \le t \Rightarrow \; y_{m-s}=x_{n-s}$$
-      - $$relative\_to(x,y) = \sum_{i==t}^{i=0} x_i$$, the subseries of parts over $$\cdot$$
-   - notice that $$relative\_to(x,x) = I_R$$
- 
 
 ### Resolving a Path to the object 
 Finally we have an the operation that turns a absolute path ($$x\in A$$) into a entity, or a set of entities.
