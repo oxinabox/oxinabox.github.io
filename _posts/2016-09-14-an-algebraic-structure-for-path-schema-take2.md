@@ -49,7 +49,7 @@ Our path is defined by two sets, $$R$$, and $$A$$, and an operation $$\cdot$$.
  -  **(1)** It is required that $$\cdot$$ generates a free monoid $$\(R^\ast,\cdot\)$$ from $R$
    - We will call the identity element of this monoid $$I_R$$.
      - We will also call this the _relative path root_, and call $$A \cup\{I_R\}$$ the _roots_ of the path schema
-   - For convience we will follow the usual definition of $$R^+ = R\\\{I_R\}$$
+   - For convience we will follow the usual definition of $$R^+ = R \setminus {I_R\}$$
  - **(2)** It is also required that $$A$$ is disjoint from $$R$$
  - **(3)** It is required that $$\(R^\ast,\cdot\)$$ acts faithfully, on $$A$$ 
   - We call the closure of $$A$$ under $$R^\ast$$,  $$A^\ast$$.
@@ -132,7 +132,7 @@ We can recombine the path components: for product over $$\cdot$$ by $$x=\prod_{p
 Notice this option (like all the other really), can be implemented easily, by implementing it for the $$R^\ast$$ and then apply it to the relative component of a absolute path, until it reach the root -- and then subsituting the absolute root for $$I_R$$.
 
 
-### the _within_function
+### the _within_ function
 $$within$$, takes two paths, with one inside the other and finds the relative path from the second to the first.
 It is a weaker version of $$relative_to$$
 
@@ -177,6 +177,17 @@ Where it exists:
 
 We define $$\varphi\in R$$, as having the property that: 
 $$\forall x \in A^\ast\;$$ then $$e(x\cdot \varphi) = e(p(x))$$.
+
+#### POSIX compliance
+Note that this is probably not [POSIX compliant](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_12),  as POSIX requires that Symlink directories are substituted in to the path, before `..` (our $$\varphi$$) is resolved.
+Our $$p$$ function does not have that requirement.
+As far as I know there is no way to be POSIX complient on the behavour of `..` without actually reading the filesystem; to know what is or is not a symlink.
+
+The behavour here is the default behavour in [Bash. ksh, zsh and ash](http://unix.stackexchange.com/questions/11044), for all file path used (not just `cd` as in the link).
+
+With that said not supporting funtions involving $$varphi$$ may be a good idea for an implementation. Or defining $$\varphi$$ differently.
+This gets particular hairy for Multipaths; which have path components that are more complex than simply directories.
+
 
 ### Normalising, to remove $$\varphi$$
 Using this, and we can now define a normalising function that removes the $$\varphi$$ where possible.
@@ -252,7 +263,6 @@ This stops $$R$$ from being a monoid, but $$R_D$$ is still a free monoid.
 The earlier definitions can be rewritten again, to take this into account, though it does add considerable complexity.
 We replace all uses of $$R^\ast$$ with uses of $R_D^\ast$, paired with $R_F$.
 <!--_-->
-
 
 ## Conclusion
 
