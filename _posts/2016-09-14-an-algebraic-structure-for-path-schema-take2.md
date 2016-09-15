@@ -163,6 +163,7 @@ Depending on the type of path schema, this may be 1 enitity, or many
   - In these case, we can define $$\epsilon(\bar{A}^\ast) \to D$$. 
     - Where $\bar{A}^\ast$ is the restriction of $A$ to paths that exis. 
     - That is $$\bar{A}^\ast = \{a \; \mid\; \abs{e(a)}=1 \}$$
+
 Either way we can make some statements about the cardinality of $$e(x)$$
 
 - \$$\abs{e(p(x))} \le \abs{e(x)}$$ 
