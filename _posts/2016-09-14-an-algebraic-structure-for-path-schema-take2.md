@@ -11,12 +11,16 @@ See [my first attempt]({{ site.url }}/2016/09/11/an-algebraic-structure-for-path
 The definitions should be equivelent, and any places they are not indicates a deficency in one of the defintions. This should be a bit more elegant, than before. It is also a bit more extensive.
 Note that $$R$$ and $$A$$ are now defined differently, and $$A^\ast$$ and $$R^\ast$$ are what one should be focussing on instead, this is to use the free monoid convention.
 
+
+In general a path can be described as a a *hierachical index*, onto a *directed multigraph*. Noting that "flat" sets, trees, and directed graphs are all particular types of directed multigraphs. 
+
 To repeat the introduction:
 
 >This post comes from a longish discussion with Fengyang Wang
 >(@TotalVerb), on the [JuliaLang Gitter](https://gitter.im/JuliaLang/julia). Its pretty cool stuff.
 
-> In general a path can be described as a a heirachical index.
+
+
 > It is defined here independent of the object (filesystem, document etc) being indexed. The precise implementation of the algebric structure differs, depending on the Path types in question, eg Filesystem vs URL, vs XPATH.
 
 
@@ -180,14 +184,24 @@ We define $$\varphi\in R$$, as having the property that:
 $$\forall x \in A^\ast\;$$ then $$e(x\cdot \varphi) = e(p(x))$$.
 
 #### POSIX compliance
-Note that this is probably not [POSIX compliant](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_12),  as POSIX requires that Symlink directories are substituted in to the path, before `..` (our $$\varphi$$) is resolved.
+Note that this is not [POSIX compliant](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_12),  as POSIX requires that Symlink directories are substituted in to the path, before `..` (our $$\varphi$$) is resolved.
 Our $$p$$ function does not have that requirement.
 As far as I know there is no way to be POSIX complient on the behavour of `..` without actually reading the filesystem; to know what is or is not a symlink.
 
-The behavour here is the default behavour in [Bash. ksh, zsh and ash](http://unix.stackexchange.com/questions/11044), for all file path used (not just `cd` as in the link).
+See [this Unix Stack Exchange question](http://unix.stackexchange.com/questions/310008/) for more information.
 
-With that said not supporting funtions involving $$varphi$$ may be a good idea for an implementation. Or defining $$\varphi$$ differently.
+The behavour here is the default behavour in [Bash. ksh, zsh and ash](http://unix.stackexchange.com/questions/11044), with the `-L` flag (which is on by default for `cd` and off by default for `pwd`). Also in python `os.path`, and Node.jl's `path`.
+
+[Python3 pathlib](https://docs.python.org/3/library/pathlib.html), has the correct behavour -- in that it does not process `..` at all, except in the final resolve step. i.e. it does not offer any of the following functionality except a final resolve for absolute paths (Their $$relative_to$$ is the $$within$$ defined ealier). The [Haskell Path Package bans](https://hackage.haskell.org/package/path) `..` outright.
+
 This gets particular hairy for Multipaths; which have path components that are more complex than simply directories.
+Consider for a Glob: $$\mathtt{a/**/b/..}$$ finds all folders below `a` with a sibling that is named `b`.
+Where as $$p(\mathtt{a/**/b})=\mathtt{a/**}$$ which finds all folders below `a`.
+And so `..` is not $$\varphi$$ for Glob paths, and indeed there is no such element for them.
+
+
+So not supporting funtions involving $$varphi$$ may be a good idea for an implementation. Without it though you can not have $$norm$$ nor $$relative_to$$.
+Except by accessing the backing system.
 
 
 ### Normalising, to remove $$\varphi$$
@@ -235,7 +249,11 @@ $$relitive\_to$$, takes two paths, and finds the relative path from the second t
    - note that the first part of this is equal to $$I_R$$ if $$d(y)<s$$  <!--_-->
 
 And with this: $$norm(y \cdot relitive\_to(x,y)) = norm(x)$$. <!--_-->
+And $$e(y \cdot relitive\_to(x,y)) = e(x)$$. 
 (proving that, also looks like it would be very *fun*, and is not done here).
+
+As suggeted before, if $$\varphi$$ is not defined to meet $$e(x \cdot \varphi) = e(p(x))$$, and thus $$norm$$ is not defined, we can still define the properties of $$relative_to$$
+If we do not have 
 
 
 ## Other extensions
@@ -278,3 +296,10 @@ This is true, but it is important to note the size of the alphabet -- which for 
 We did not prove any of our assertions, here.
 And indeed I've not written out proof for many of them at all.
 I hope however this was illuminating.
+
+
+### See also:
+
+ - [PEP 428 -- The pathlib module -- object-oriented filesystem paths](https://www.python.org/dev/peps/pep-0428/)
+ - [Why pathlib.s not inherit from String](http://www.snarky.ca/why-pathlib-path-doesn-t-inherit-from-str)
+
