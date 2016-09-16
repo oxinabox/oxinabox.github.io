@@ -46,7 +46,7 @@ To have the general functionality of a path we only need to define a few items o
 
 Our path is defined by two sets, $$R$$, and $$A$$, and an operation $$\cdot$$.
 
- - We call $$R$$ the set of _relitive path components_.
+ - We call $$R$$ the set of _relative path components_.
  - $$A$$ the set of _absolute path roots_.
   - $$\cdot$$ is called the `pathjoin` operator.
     - By convention $$\cdot$$ acts on the right.
@@ -214,9 +214,9 @@ Using this, and we can now define a normalising function that removes the $$\var
 The function we will define removes all instances of $$\varphi$$ from absolute paths (elements of $$A^\ast$$),
 and all non-leading instances from relative paths (elements of $$R^\ast$$) -- though some nonleading $$\varphi$$s will potentenitally become leading.
 
-We consider this on parts the relitive componant of the path. That is $$parts(within(x,root(x)))$$ (which is just $$x$$ if $$x \in R^\ast$$)
+We consider this on parts the relative componant of the path. That is $$parts(within(x,root(x)))$$ (which is just $$x$$ if $$x \in R^\ast$$)
 In this we repeatedly replace: from the left the earliest occurances of $$\left[ x,\varphi, y\right]$$ with $$\left[ y \right]$$, where $$x \in R \setminus {\varphi}$$, and $$y\in R$$.
-If it were a relitive path, then this all we have to do, we simply rejoin the rewritten paths, and it is done.
+If it were a relative path, then this all we have to do, we simply rejoin the rewritten paths, and it is done.
 If it is applied to a absolute path, then we then can strip all leading instances of $$\varphi$$, since $$\forall a \in A$$, $$e(a \cdot \varphi) = e(p(a)) = e(a)$$.
 
 The replacement rule method is quite easy to explain in words.
@@ -228,16 +228,16 @@ Proving that $$norm$$ does have the features we import upon it, with regard to n
 
 Note that even if for some $$x,\; y \in A \cap R^\ast$$ with  $$norm(x) = norm(y)$$, this still does _not imply_ that $$e(x) \neq e(y)$$, as other things, eg POSIX symlinks, can still give multiple paths, to the same domain object.
 
-### The relative_to function
+### The *relative_to* function
 
 Earlier we saw the $within$ function; which could find the relative path of one directory, within the other.
 But this was limitted, as we could not move up the heirachy.
 Now using $$\varphi$$ we can.
 
-$$relitive\_to$$, takes two paths, and finds the relative path from the second to the first.
+$$relative\_to$$, takes two paths, and finds the relative path from the second to the first.
 
- - \$$relitive\_to\; (A^\ast \cup R^\ast)\times(A^\ast \cup R^\ast) \to R^\ast$$
- - for $$relitive\_to(x,y) = z$$  we say "the path of $$x$$, relative to $$y$$ is $$z$$"
+ - \$$relative\_to\; (A^\ast \cup R^\ast)\times(A^\ast \cup R^\ast) \to R^\ast$$
+ - for $$relative\_to(x,y) = z$$  we say "the path of $$x$$, relative to $$y$$ is $$z$$"
  - let $$parts(x) = (x_0, ... x_{d(x)}$$
  - let $$parts(x) = (y_0, ... y_{d(y)}$$   
  - $$relative\_to(x,y)$$ is defined only if $$root(x)=root(y)$$, i.e $$x_0=y_0$$ <!--_-->
@@ -248,8 +248,8 @@ $$relitive\_to$$, takes two paths, and finds the relative path from the second t
  - then $$relative\_to(x,y) =  \prod_{i=0}^{i=d(y)-s} \varphi \; \cdot \; \prod_{i=s}^{i=d(x)} x_i\ $$
    - note that the first part of this is equal to $$I_R$$ if $$d(y)<s$$  <!--_-->
 
-And with this: $$norm(y \cdot relitive\_to(x,y)) = norm(x)$$. <!--_-->
-And $$e(y \cdot relitive\_to(x,y)) = e(x)$$. 
+And with this: $$norm(y \cdot relative\_to(x,y)) = norm(x)$$. <!--_-->
+And $$e(y \cdot relative\_to(x,y)) = e(x)$$. 
 (proving that, also looks like it would be very *fun*, and is not done here).
 
 As suggeted before, if $$\varphi$$ is not defined to meet $$e(x \cdot \varphi) = e(p(x))$$, and thus $$norm$$ is not defined, we can still define the properties of $$relative_to$$
