@@ -4,7 +4,7 @@ title: Modelling Sentence Generation from Sum of Word Embedding Vectors as a Mix
 subtitle: Supplementary Material
 ---
 
-This page contains supplementary material, code and data used in [White et. al. 2016, Generating Bags of Words from the Sums of their Word Embeddings](../White2016SOWE2Sent.pdf).
+This page contains supplementary material, code and data used in [White et. al. 2016, Modelling Sentence Generation from Sum of Word Embedding Vectors as a Mixed Integer Programming Problem](../White2016SOWE2Sent.pdf).
 
 I'm very happy for anyone with any interest in this (or any of my other work) to [get in touch with me]({{site.url}}/contact).
 
