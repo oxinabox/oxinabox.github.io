@@ -1,6 +1,6 @@
 - title: Modelling Sentence Generation from Sum of Word Embedding Vectors as a Mixed Integer Programming Problem
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
-  venue: IEEE International Conference on Data Mining: High Dimensional Data Mining Workshop (ICDM: HDM)
+  venue: 'IEEE International Conference on Data Mining: High Dimensional Data Mining Workshop (ICDM: HDM)'
   year: 2016
   key: White2016SOWE2Sent
   supl: publications/White2016SOWE2Sent
