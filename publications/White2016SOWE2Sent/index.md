@@ -26,7 +26,8 @@ It is made available under the [CRAPL](http://matt.might.net/articles/crapl/);
 use of the code for academic pursuits should of course cite the paper.
 It also includes all the raw results, which the paper summarises.
 It is implemented in the [Julia programming language](http://julialang.org/).
- - [Raw Results and Code](./code_and_raw_results.zip)
+
+- [Raw Results and Code](./code_and_raw_results.zip)
 
 
 
