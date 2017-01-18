@@ -1,5 +1,13 @@
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,txt"
 markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+exclude:
+  - "*.ipynb"
+
+
 gems:
   - jekyll-redirect-from
 excerpt_separator: <!--more-->

@@ -183,8 +183,9 @@ Where it exists:
 We define $$\varphi\in R$$, as having the property that: 
 $$\forall x \in A^\ast\;$$ then $$e(x\cdot \varphi) = e(p(x))$$.
 
-#### POSIX compliance
-Note that this is not [POSIX compliant](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_12),  as POSIX requires that Symlink directories are substituted in to the path, before `..` (our $$\varphi$$) is resolved.
+#### Does $$\varphi$$ even exist? (POSIX compliance)
+
+Note that for POSIX filesystems using $$\varphi = \mathtt{..}$$ this is not [POSIX compliant](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_12),  as POSIX requires that Symlink directories are substituted in to the path, before `..` (our $$\varphi$$) is resolved.
 Our $$p$$ function does not have that requirement.
 As far as I know there is no way to be POSIX complient on the behavour of `..` without actually reading the filesystem; to know what is or is not a symlink.
 
@@ -192,7 +193,7 @@ See [this Unix Stack Exchange question](http://unix.stackexchange.com/questions/
 
 The behavour here is the default behavour in [Bash. ksh, zsh and ash](http://unix.stackexchange.com/questions/11044), with the `-L` flag (which is on by default for `cd` and off by default for `pwd`). Also in python `os.path`, and Node.jl's `path`.
 
-[Python3 pathlib](https://docs.python.org/3/library/pathlib.html), has the correct behavour -- in that it does not process `..` at all, except in the final resolve step. i.e. it does not offer any of the following functionality except a final resolve for absolute paths (Their $$relative_to$$ is the $$within$$ defined ealier). The [Haskell Path Package bans](https://hackage.haskell.org/package/path) `..` outright.
+[Python3 pathlib](https://docs.python.org/3/library/pathlib.html), has the correct behavour -- in that it does not process `..` at all, except in the final resolve step. i.e. it does not offer any of the following functionality except a final resolve for absolute paths (Their $$relative\_to$$ is the $$within$$ defined ealier). The [Haskell Path Package bans](https://hackage.haskell.org/package/path) `..` outright.
 
 This gets particular hairy for Multipaths; which have path components that are more complex than simply directories.
 Consider for a Glob: $$\mathtt{a/**/b/..}$$ finds all folders below `a` with a sibling that is named `b`.
