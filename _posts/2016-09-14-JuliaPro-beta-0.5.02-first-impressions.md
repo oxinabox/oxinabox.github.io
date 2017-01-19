@@ -5,7 +5,10 @@ tags:
    - julia
 ---
 
-[JuliaPro](http://juliacomputing.com/products/juliapro.html) is JuliaComputing's prepackaged bundle of julia, with Juno/Atom IDE, and a bunch of packages. JuliaComputing is the company formed by several of the julia core dev's to provide paid support contracts etc, while earning money to let them continue developing the language. Paid support contracts are things that industry users want from a product -- this funds many linux distros.
+[JuliaPro](http://juliacomputing.com/products/juliapro.html) is JuliaComputing's prepackaged bundle of julia, with Juno/Atom IDE, and a bunch of packages. 
+In short it is a very convenient way to install julia on Mac and Windows.
+<!--more-->
+JuliaComputing is the company formed by several of the julia core dev's to provide paid support contracts etc, while earning money to let them continue developing the language. Paid support contracts are things that industry users want from a product -- this funds many linux distros.
 
 JuliaPro thus comes with a [free version, and a Enterpise version](https://shop.juliacomputing.com/Products/?page_id=7435) -- at $1499 annually. Beyond the support contract, the only features the free version has is Excel Integration.
 To me Dataframes have replaced Excel a long time ago. But Excel is incredibly heavily used in industry -- even more so than in research science. This is a bad thing.
