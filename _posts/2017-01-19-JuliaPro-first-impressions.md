@@ -5,8 +5,7 @@ tags:
    - julia
 ---
 
-[JuliaPro](http://juliacomputing.com/products/juliapro.html) is JuliaComputing's prepackaged bundle of julia, with Juno/Atom IDE, and a bunch of packages. 
-In short it is a very convenient way to install julia on Mac and Windows.
+[JuliaPro](http://juliacomputing.com/products/juliapro.html) is JuliaComputing's prepackaged bundle of julia, with Juno/Atom IDE, and a bunch of packages. The short of it is: there is no reason not to install julia this way on a Mac/Windows desktop -- it is more convenient and faster to setup, but it is nothing revolutionary.
 <!--more-->
 JuliaComputing is the company formed by several of the julia core dev's to provide paid support contracts etc, while earning money to let them continue developing the language. Paid support contracts are things that industry users want from a product -- this funds many linux distros.
 
