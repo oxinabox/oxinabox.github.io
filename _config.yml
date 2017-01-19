@@ -10,5 +10,7 @@ exclude:
 
 gems:
   - jekyll-redirect-from
+  - jekyll-feed
+    
 excerpt_separator: <!--more-->
 
