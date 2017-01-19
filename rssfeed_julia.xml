@@ -1,0 +1,26 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Technical Blog -- julia</title>
+    <description>Julia posts from A Technical Blog, by Lyndon White</description>
+    <link>{{ site.url }}</link>
+    {% for post in site.posts %}
+		{% unless post.draft %}
+			{% for tag in post.tags %}	
+				{% if tag == 'julia' %}
+				  <item>
+					  <title>{{ post.title | xml_escape }}</title>
+					  <description>{{ post.content | xml_escape }}</description>
+					  <pubDate>{{ post.date | date_to_xmlschema }}</pubDate>
+					  <link>{{ post.url | prepend: site.url }}</link>
+					  <guid isPermaLink="true">{{ post.url | prepend: site.url }}</guid>
+				  </item>
+				{% endif %}
+			{% endfor %}
+		 {% endunless %}
+    {% endfor %}
+  </channel>
+</rss>
