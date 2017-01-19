@@ -10,7 +10,7 @@ layout: null
     {% for post in site.posts %}
 		{% unless post.draft %}
 			{% for tag in post.tags %}	
-				{ if tag == "julia"}
+				{ if tag == 'julia'}
 				  <item>
 					  <title>{{ post.title | xml_escape }}</title>
 					  <description>{{ post.content | xml_escape }}</description>
