@@ -14,15 +14,15 @@ To me Dataframes have replaced Excel a long time ago. But Excel is incredibly he
 
 Apparently, GPL-free version, and [Intel MKL](https://software.intel.com/en-us/intel-mkl) (BLAS) are coming soon to JuliaPro Enterpise. These are things that are fairly easy to setup when building julia from source. Intel MKL is actually available free -- which is news to me. So I have downloaded the non-paid version, on to a windows computer that has never had julia before.
 
-Installing seemed clean, easy and quick. Faster than building from source that is for sure. Installed looked basic, but functional. Nothing insane in the user agreement. To install for all users, I had to close and restart the installer, rather than being prompted to escalate privilege. Which is marginally annoying, but not big deal. Took less than 5 minutes to install.
+Installing seemed clean, easy and quick. Faster than building from source that is for sure. Installed looked basic, but functional. Nothing insane in the user agreement. To install for all users, I had to close and restart the installer, rather than being prompted to escalate privilege. Which is marginally annoying, but not a big deal. Took less than 5 minutes to install.
 
 I went to start Juno. Typed Juno into that start bar.
 Up came "Juno for JuliaPro". When it started, it ran a process to initialize -- which took about as long as the installer in the first place. It was handfree, and once it started Juno was working fine.
 I restarting it, and it seemed like the completion wasn't working, but it kicked in after a minute or so, so all is good.
 
-Tested console, work. Completion works.
+Tested console, it works, and code 'completion works.
 Juno seems to be all working ok (Its also a lot better than when I last looked at it when it first came out).
-I tested plotting: with Gadfly -- which is included in JuliaPro, where as [Plot.jl](https://github.com/JuliaPlots/Plots.jl) is not.
+I tested plotting: with Gadfly -- which is included in JuliaPro, whereas [Plots.jl](https://github.com/JuliaPlots/Plots.jl) is not.
 
 It also includes [JuMP](http://jump.readthedocs.io/).
 However, no solvers as include. Which is kind of useless, since JuMP needs at least one solver.
