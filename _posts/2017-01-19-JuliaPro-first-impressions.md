@@ -7,9 +7,9 @@ tags:
 
 [JuliaPro](http://juliacomputing.com/products/juliapro.html) is JuliaComputing's prepackaged bundle of julia, with Juno/Atom IDE, and a bunch of packages. The short of it is: there is no reason not to install julia this way on a Mac/Windows desktop -- it is more convenient and faster to setup, but it is nothing revolutionary.
 <!--more-->
-JuliaComputing is the company formed by several of the julia core dev's to provide paid support contracts etc, while earning money to let them continue developing the language. Paid support contracts are things that industry users want from a product -- this funds many linux distros.
+JuliaComputing is the company formed by several of the julia core devs to provide paid support contracts etc, while earning money to let them continue developing the language. Paid support contracts are things that industry users want from a product -- this also funds many linux distros.
 
-JuliaPro thus comes with a [free version, and a Enterpise version](https://shop.juliacomputing.com/Products/?page_id=7435) -- at $1499 annually. Beyond the support contract, the only features the free version has is Excel Integration.
+JuliaPro thus comes with a [free version, and a Enterpise version](https://shop.juliacomputing.com/Products/?page_id=7435) -- at $1499 annually. Beyond the support contract, the only features the free version is missing is the Excel Integration.
 To me Dataframes have replaced Excel a long time ago. But Excel is incredibly heavily used in industry -- even more so than in research science. This is a bad thing.
 
 Apparently, GPL-free version, and [Intel MKL](https://software.intel.com/en-us/intel-mkl) (BLAS) are coming soon to JuliaPro Enterpise. These are things that are fairly easy to setup when building julia from source. Intel MKL is actually available free -- which is news to me. So I have downloaded the non-paid version, on to a windows computer that has never had julia before.
@@ -17,7 +17,7 @@ Apparently, GPL-free version, and [Intel MKL](https://software.intel.com/en-us/i
 Installing seemed clean, easy and quick. Faster than building from source that is for sure. Installed looked basic, but functional. Nothing insane in the user agreement. To install for all users, I had to close and restart the installer, rather than being prompted to escalate privilege. Which is marginally annoying, but not a big deal. Took less than 5 minutes to install.
 
 I went to start Juno. Typed Juno into that start bar.
-Up came "Juno for JuliaPro". When it started, it ran a process to initialize -- which took about as long as the installer in the first place. It was handfree, and once it started Juno was working fine.
+Up came "Juno for JuliaPro". When it started, it ran a process to initialize -- which took about as long as the installer in the first place. It was hands free, and once it started Juno was working fine.
 I restarting it, and it seemed like the completion wasn't working, but it kicked in after a minute or so, so all is good.
 
 Tested console, it works, and code 'completion works.
