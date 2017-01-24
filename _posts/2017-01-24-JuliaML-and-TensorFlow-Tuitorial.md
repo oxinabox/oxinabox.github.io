@@ -30,7 +30,7 @@ Also right now (24/01/2017), we are using the **dev** branch of MLDataUtils.jl,
 so you will need to do the `git checkout` stuff to make that work,
 but hopefully very soon that will be merged into master, so just the normal `Pkg.add` will surfice.
 You also need to install [TensorFlow](https://www.tensorflow.org/get_started/os_setup), as it is not automatically installed by the TensorFlow.jl package.
-We will go through each package we use in turn.
+We will go through each package we use in turn. <!--more-->
 
 **In [1]:**
 
