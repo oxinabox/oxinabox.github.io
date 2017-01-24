@@ -65,7 +65,7 @@ const n_classes = 10; # MNIST total classes (0-9 digits)
 {% endhighlight %}
 
 {% highlight plaintext %}
-
+None
 {% endhighlight %}
 
 We are going to use the MNIST distribution, from the [MLDatasets.jl](https://github.com/JuliaML/MLDatasets.jl/).
@@ -176,14 +176,14 @@ end;
 {% endhighlight %}
 
 {% highlight plaintext %}
-<span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 96 unused data points
-</span><span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 96 unused data points
-</span>
+INFO: The specified values for size and/or count will result in 96 unused data points
+INFO: The specified values for size and/or count will result in 96 unused data points
+
 {% endhighlight %}
 
 {% highlight plaintext %}
-<span class="ansi-white-intense-fg ansi-bold">Test Summary: | </span><span class="ansi-green-intense-fg ansi-bold">Pass  </span><span class="ansi-blue-intense-fg ansi-bold">Total</span>
-  data_prep   | <span class="ansi-green-intense-fg ansi-bold">   3  </span><span class="ansi-blue-intense-fg ansi-bold">    3</span>
+Test Summary: | Pass  Total
+  data_prep   |    3      3
 
 {% endhighlight %}
 
@@ -369,12 +369,12 @@ end
 {% endhighlight %}
 
 {% highlight plaintext %}
-<span class="ansi-blue-intense-fg ansi-bold">INFO: step 256, loss = 62.762604,  accuracy 0.1171875
-</span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 25856, loss = 29.060556,  accuracy 0.671875
-</span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 51456, loss = 15.045149,  accuracy 0.76953125
-</span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 77056, loss = 13.506208,  accuracy 0.859375
-</span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 102656, loss = 10.518069,  accuracy 0.8671875
-</span>
+INFO: step 256, loss = 62.762604,  accuracy 0.1171875
+INFO: step 25856, loss = 29.060556,  accuracy 0.671875
+INFO: step 51456, loss = 15.045149,  accuracy 0.76953125
+INFO: step 77056, loss = 13.506208,  accuracy 0.859375
+INFO: step 102656, loss = 10.518069,  accuracy 0.8671875
+
 {% endhighlight %}
 
 Finally we check how we are going on the test data.
@@ -407,9 +407,9 @@ end
 {% endhighlight %}
 
 {% highlight plaintext %}
-<span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 16 unused data points
-</span><span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 16 unused data points
-</span>
+INFO: The specified values for size and/or count will result in 16 unused data points
+INFO: The specified values for size and/or count will result in 16 unused data points
+
 {% endhighlight %}
 
 {% highlight plaintext %}
@@ -419,7 +419,7 @@ mean(batch_accuracies) = 0.90334535f0
 {% endhighlight %}
 
 {% highlight plaintext %}
-
+None
 {% endhighlight %}
 
 90\% accuracy, not bad for an unoptimised network -- particularly one as unsuited to the tast as LSTM.

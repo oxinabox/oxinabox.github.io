@@ -22,6 +22,6 @@ tags:
 
 {% block output %}
 {{ '{% highlight plaintext %}' }}
-{{ output.text | ansi2html }}
+{{ output.text | strip_ansi}}
 {{ '{% endhighlight %}' }}
 {% endblock output %}
