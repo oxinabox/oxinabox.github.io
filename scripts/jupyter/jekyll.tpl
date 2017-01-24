@@ -19,3 +19,9 @@ tags:
 {{ cell.source }}
 {{ '{% endhighlight %}' }}
 {% endblock input %}
+
+{% block output %}
+<code>
+{{ output.text | ansi2html }}
+</code>
+{% endblock output %}
