@@ -21,7 +21,7 @@ tags:
 {% endblock input %}
 
 {% block output %}
-<code>
+{{ '{% highlight plaintext %}' }}
 {{ output.text | ansi2html }}
-</code>
+{{ '{% endhighlight %}' }}
 {% endblock output %}

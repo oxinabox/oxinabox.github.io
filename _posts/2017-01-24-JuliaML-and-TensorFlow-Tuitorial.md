@@ -64,9 +64,9 @@ const n_hidden = 128 # hidden layer num of features
 const n_classes = 10; # MNIST total classes (0-9 digits)
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 
-</code>
+{% endhighlight %}
 
 We are going to use the MNIST distribution, from the [MLDatasets.jl](https://github.com/JuliaML/MLDatasets.jl/).
 It is a handy way to get hold of the data.
@@ -90,7 +90,7 @@ imshow(traindata_raw[:,:,8])
 
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 size(traindata_raw) = (28,28,60000)
 size(trainlabels_raw) = (60000,)
 trainlabels_raw[8] = 3
@@ -122,7 +122,7 @@ trainlabels_raw[8] = 3
                             
                             
                             
-</code>
+{% endhighlight %}
 
 We use  [MLLabelUtils.jl](https://github.com/JuliaML/MLLabelUtils.jl/) to encode the labels and [MLDataUtils.jl](https://github.com/JuliaML/MLDataUtils.jl) to segment the labels and the data into minibatchs. That is how those two packages fit together.
 If it applies to only labelled data, eg Encodings then it is done with MLLabelUtils.
@@ -175,17 +175,17 @@ const traindata = BatchView(traindata_raw, batch_size);
 end;
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 <span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 96 unused data points
 </span><span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 96 unused data points
 </span>
-</code>
+{% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 <span class="ansi-white-intense-fg ansi-bold">Test Summary: | </span><span class="ansi-green-intense-fg ansi-bold">Pass  </span><span class="ansi-blue-intense-fg ansi-bold">Total</span>
   data_prep   | <span class="ansi-green-intense-fg ansi-bold">   3  </span><span class="ansi-blue-intense-fg ansi-bold">    3</span>
 
-</code>
+{% endhighlight %}
 
 Now to define the network graph, this is done using [TensorFlow.jl](https://github.com/malmaud/TensorFlow.jl).
 [TensorFlow](https://www.tensorflow.org/) is basically a linear algebra tool-kit, featuring automatic differentiation, and optimisation methods.
@@ -260,10 +260,10 @@ x = split(1, n_steps, x) # Split to get a list of 'n_steps' tensors of shape (ba
 @show get_shape.(x);
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 get_shape.(x) = TensorFlow.ShapeInference.TensorShape[TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28],TensorShape[256, 28]]
 
-</code>
+{% endhighlight %}
 
 Now we connect it `LSTMcell` and we put that cell into an `rnn`.
 The `LSTMcell` makes up all the LSTM machinery, with forget gates etc,
@@ -298,11 +298,11 @@ Y_pred = nn.softmax(Hs[end]*W + B)
 @show get_shape(Y_pred);
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 get_shape(Y_obs) = TensorShape[256, 10]
 get_shape(Y_pred) = TensorShape[256, 10]
 
-</code>
+{% endhighlight %}
 
 Finally we define the last few nodes of out network.
 These are the `cost`, for purposes of using to define  the `optimizer`; and the `accuracy`.
@@ -335,12 +335,12 @@ accuracy = reduce_mean(cast(correct_prediction, Float32));
 
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 get_shape(Y_obs .* log(Y_pred)) = TensorShape[256, 10]
 get_shape(cost) = TensorShape[]
 get_shape(correct_prediction) = TensorShape[unknown]
 
-</code>
+{% endhighlight %}
 
 Finally we can run our training.
 So we go through a zip of traindata and trainlabels we prepared earlier,
@@ -368,14 +368,14 @@ for jj in 1:training_iters
 end
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 <span class="ansi-blue-intense-fg ansi-bold">INFO: step 256, loss = 62.762604,  accuracy 0.1171875
 </span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 25856, loss = 29.060556,  accuracy 0.671875
 </span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 51456, loss = 15.045149,  accuracy 0.76953125
 </span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 77056, loss = 13.506208,  accuracy 0.859375
 </span><span class="ansi-blue-intense-fg ansi-bold">INFO: step 102656, loss = 10.518069,  accuracy 0.8671875
 </span>
-</code>
+{% endhighlight %}
 
 Finally we check how we are going on the test data.
 However, as all our nodes have been defined in terms of batch_size,
@@ -406,21 +406,21 @@ end
 @show mean(batch_accuracies) #Mean of means of consistantly sized batchs is the overall mean
 {% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 <span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 16 unused data points
 </span><span class="ansi-blue-intense-fg ansi-bold">INFO: The specified values for size and/or count will result in 16 unused data points
 </span>
-</code>
+{% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 Progress: 100%|█████████████████████████████████████████| Time: 0:00:06
 mean(batch_accuracies) = 0.90334535f0
 
-</code>
+{% endhighlight %}
 
-<code>
+{% highlight plaintext %}
 
-</code>
+{% endhighlight %}
 
 90\% accuracy, not bad for an unoptimised network -- particularly one as unsuited to the tast as LSTM.
 I hope this introduction the JuliaML and TensorFlow has been enlightening.
