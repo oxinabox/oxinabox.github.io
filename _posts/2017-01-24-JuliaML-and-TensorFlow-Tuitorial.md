@@ -18,7 +18,7 @@ The task is made into a time series task, by the images arriving one row at at a
 and the network is asked to output which class at the end after seeing the 28th row. 
 So the LSTM network must remember the last 27 prior rows.
 This is a toy problem to demonstrate that it can.
-
+<!--more-->
 
 To do this we are going to use a bunch of packages from the [JuliaML Org](https://github.com/JuliaML), as well as a few others.
 A lot of the packages in JuliaML are evolving fast, so somethings here may be wrong.
@@ -30,7 +30,7 @@ Also right now (24/01/2017), we are using the **dev** branch of MLDataUtils.jl,
 so you will need to do the `git checkout` stuff to make that work,
 but hopefully very soon that will be merged into master, so just the normal `Pkg.add` will surfice.
 You also need to install [TensorFlow](https://www.tensorflow.org/get_started/os_setup), as it is not automatically installed by the TensorFlow.jl package.
-We will go through each package we use in turn. <!--more-->
+We will go through each package we use in turn.
 
 **In [1]:**
 
@@ -141,49 +141,46 @@ It would thus devise a `NativeLabel` Mapping, based on the order the labels occu
 That mapping would not be saved anywhere, so when it comes time to encode the test data, we don't know which index corresponds to which label symbol. 
 So we declare the input_label. (Alternatives would be to infor it using `labelenc(labels_raw)` and then record the inferred encoding for later. Or to add 1 to all the raw labels so it is in the range 1:10, which causes the labels to be inferred as `LabelEnc.Indices{Int64,10}()`)
 
-To break the data down into minibatchs, we use a `BatchView` from MLDataUtils.
-BatchView is an iterator and efficiently returns it back 1 minibatch at a time.
-There are a few requirement on the input iterator,
-but a julia Array meets all of them.
-It also nicely lets you specify which dimention the observations are on,
-but in ourcase it is the last, which is the default.
-We will use the data in batchs later, once we have defined the network graph.
+To break the data down into minibatchs, we use `eachbatch`  from MLDataUtils.
+`eachbatch` is a function that takes in an iterator(/s),  and efficently returns it back 1 minibatch at a time.
+There are a few requirement on the input iterator, but a julia Array meets all of them.
+It also nicely lets you specify which dimention the observations are on, so it can split along this.
+When you provide it with a tuple of input iterators, then it basically zips output batches.
+So we use this to define a function the prepare out data for training and test.
 
 **In [4]:**
 
 {% highlight julia %}
-"""Makes 1 hot encoded labels."""
-encode(labels_raw) = convertlabel(LabelEnc.OneOfK, labels_raw, LabelEnc.NativeLabels(collect(0:9)))
+"""Makes 1 hot, row encoded labels."""
+encode(labels_raw) = convertlabel(LabelEnc.OneOfK, labels_raw, LabelEnc.NativeLabels(collect(0:9)),  LearnBase.ObsDim.First())
 
+"""Prepares the data by encoding the labels and batching"""
+prepared_batchs(data_raw, labels_raw) = eachbatch((data_raw, encode(labels_raw)), #Will zip these
+                               batch_size,             
+                               (MLDataUtils.ObsDim.Last(), MLDataUtils.ObsDim.First())) #Slicing dimentions for each 
 
-const trainlabels = BatchView(encode(trainlabels_raw), batch_size)
-const traindata = BatchView(traindata_raw, batch_size);
+@testset "data prep" begin
 
-@testset "data_prep" begin
-    @test encode([4,1,2,3,0]) ==   [ 0  0  0  0  1
-                                     0  1  0  0  0
-                                     0  0  1  0  0
-                                     0  0  0  1  0
-                                     1  0  0  0  0
-                                     0  0  0  0  0
-                                     0  0  0  0  0
-                                     0  0  0  0  0
-                                     0  0  0  0  0
-                                     0  0  0  0  0 ]
-    @test size(first(traindata)) ==  (n_steps, n_input, batch_size)
-    @test size(first(trainlabels)) ==  (n_classes, batch_size)
+    @test encode([4,1,2,3,0]) == [0 0 0 0 1 0 0 0 0 0
+                                  0 1 0 0 0 0 0 0 0 0
+                                  0 0 1 0 0 0 0 0 0 0
+                                  0 0 0 1 0 0 0 0 0 0
+                                  1 0 0 0 0 0 0 0 0 0]
+    
+    data_b1, labels_b1 = first(prepared_batchs(traindata_raw, trainlabels_raw))
+    @test size(data_b1) == (n_steps, n_input, batch_size)
+    @test size(labels_b1) == (batch_size, n_classes)
 end;
 {% endhighlight %}
 
 {% highlight plaintext %}
-INFO: The specified values for size and/or count will result in 96 unused data points
 INFO: The specified values for size and/or count will result in 96 unused data points
 
 {% endhighlight %}
 
 {% highlight plaintext %}
 Test Summary: | Pass  Total
-  data_prep   |    3      3
+  data prep   |    3      3
 
 {% endhighlight %}
 
@@ -219,7 +216,7 @@ We use the Normal distribution as an initialiser. This comes from [Distributions
 It is set higher variance than I would normally use, but it seems to work well enough.
 
 
-**In [6]:**
+**In [5]:**
 
 {% highlight julia %}
 sess = Session(Graph())
@@ -230,6 +227,13 @@ variable_scope("model", initializer=Normal(0, 0.5)) do
     global W = get_variable("weights", [n_hidden, n_classes], Float32)
     global B = get_variable("bias", [n_classes], Float32)
 end;
+{% endhighlight %}
+
+{% highlight plaintext %}
+W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use FMA instructions, but these are available on your machine and could speed up CPU computations.
+
 {% endhighlight %}
 
 We now want to hook the input `X` into an RNN, made using `LSTMCell`s.
@@ -247,7 +251,7 @@ Then `spit` to cut along every the first index making a list of tensors `[(items
 This feels a bit hacky as a way to do it, but it works.
 I note here that `transpose` feels a little unidiomatic in particuar, since it ise 0-indexed, and need the cast to Int32 (you'll get an errror without that), and since the matching julia function is called `permutedims` -- I would not be surprised if this changed in future versions of TensorFlow.jl.
 
-**In [7]:**
+**In [6]:**
 
 {% highlight julia %}
 # Prepare data shape to match `rnn` function requirements
@@ -288,7 +292,7 @@ This will probably come in time.
 
 So if all things are correctly setup the shape of the output: `Y_pred` should match the shape of the input `Y_obs`.
 
-**In [8]:**
+**In [7]:**
 
 {% highlight julia %}
 Hs, states = nn.rnn(nn.rnn_cell.LSTMCell(n_hidden), x; dtype=Float32);
@@ -300,8 +304,7 @@ Y_pred = nn.softmax(Hs[end]*W + B)
 
 {% highlight plaintext %}
 get_shape(Y_obs) = TensorShape[256, 10]
-get_shape(Y_pred) = TensorShape[256, 10]
-
+get_shape(Y_pred) = 
 {% endhighlight %}
 
 Finally we define the last few nodes of out network.
@@ -320,7 +323,7 @@ It does not need to be evaluated to get the `optimizer` node (but `cost`, does).
 We will run the network in the next step
 
 
-**In [9]:**
+**In [8]:**
 
 {% highlight julia %}
 cost = reduce_mean(-reduce_sum(Y_obs.*log(Y_pred), reduction_indices=[1])) #cross entropy
@@ -348,16 +351,14 @@ run the optimizer on each.
 and periodically check the accuracy of that last batch to give status updates.
 It is all very nice.
 
-**In [10]:**
+**In [9]:**
 
 {% highlight julia %}
 run(sess, initialize_all_variables())
 
 kk=0
 for jj in 1:training_iters
-    for (xs_a, ys_a) in zip(traindata, trainlabels)
-        xs = collect(xs_a)
-        ys = collect(ys_a)'
+    for (xs, ys) in prepared_batchs(traindata_raw, trainlabels_raw)
         run(sess, optimizer,  Dict(X=>xs, Y_obs=>ys))
         kk+=1
         if kk % display_step == 1
@@ -369,11 +370,10 @@ end
 {% endhighlight %}
 
 {% highlight plaintext %}
-INFO: step 256, loss = 62.762604,  accuracy 0.1171875
-INFO: step 25856, loss = 29.060556,  accuracy 0.671875
-INFO: step 51456, loss = 15.045149,  accuracy 0.76953125
-INFO: step 77056, loss = 13.506208,  accuracy 0.859375
-INFO: step 102656, loss = 10.518069,  accuracy 0.8671875
+INFO: The specified values for size and/or count will result in 96 unused data points
+INFO: step 256, loss = 62.497936,  accuracy 0.1171875
+INFO: step 25856, loss = 29.325878,  accuracy 0.6640625
+INFO: step 51456, loss = 15.46171,  accuracy 0.7890625
 
 {% endhighlight %}
 
@@ -386,19 +386,11 @@ This is a chance to show of the awesomeness that is [ProgressMeter.jl](https://g
 This displace a unicode-art progress bar, marking progress through the iteration.
 Very neat.
 
-**In [11]:**
+**In [10]:**
 
 {% highlight julia %}
-testdata_raw, testabels_raw = MNIST.testdata()
-testlabels = BatchView(encode(testabels_raw), batch_size)
-testdata = BatchView(testdata_raw, batch_size);
-
-
 batch_accuracies = []
-@showprogress for (ii, (xs_a, ys_a)) in enumerate(zip(testdata, testlabels))
-    xs = collect(xs_a)
-    ys = collect(ys_a)'
-
+@showprogress for (ii, (xs, ys)) in enumerate(prepared_batchs(MNIST.testdata()...))
     batch_accuracy = run(sess, accuracy, Dict(X=>xs, Y_obs=>ys))
     #info("step $(ii),   accuracy $(batch_accuracy )")
     push!(batch_accuracies, batch_accuracy)
@@ -408,13 +400,12 @@ end
 
 {% highlight plaintext %}
 INFO: The specified values for size and/or count will result in 16 unused data points
-INFO: The specified values for size and/or count will result in 16 unused data points
 
 {% endhighlight %}
 
 {% highlight plaintext %}
-Progress: 100%|█████████████████████████████████████████| Time: 0:00:06
-mean(batch_accuracies) = 0.90334535f0
+Progress: 100%|█████████████████████████████████████████| Time: 0:00:05
+mean(batch_accuracies) = 0.89903843f0
 
 {% endhighlight %}
 
@@ -422,7 +413,7 @@ mean(batch_accuracies) = 0.90334535f0
 None
 {% endhighlight %}
 
-90\% accuracy, not bad for an unoptimised network -- particularly one as unsuited to the tast as LSTM.
+90% accuracy, not bad for an unoptimised network -- particularly one as unsuited to the tast as LSTM.
 I hope this introduction the JuliaML and TensorFlow has been enlightening.
 There is lots of information about TensorFlow online, though to unstand the julia wrapper I had to look at the source-code more ofthen than the its docs. But that will get better with maturity, and the docs line up the the Python API quiet well a lot of the time.
 The docs for the new version of MLDataUtils are still being finished off (that is the main blocker on it being merged as I understand it).
