@@ -201,7 +201,7 @@ Where as $$p(\mathtt{a/**/b})=\mathtt{a/**}$$ which finds all folders below `a`.
 And so `..` is not $$\varphi$$ for Glob paths, and indeed there is no such element for them.
 
 
-So not supporting funtions involving $$varphi$$ may be a good idea for an implementation. Without it though you can not have $$norm$$ nor $$relative_to$$.
+So not supporting funtions involving $$\varphi$$ may be a good idea for an implementation. Without it though you can not have $$norm$$ nor $$relative_{to}$$.
 Except by accessing the backing system.
 
 
