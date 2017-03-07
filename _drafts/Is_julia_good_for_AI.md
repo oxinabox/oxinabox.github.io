@@ -25,3 +25,10 @@ ACM defines both AI and Machine Learning (ML) as subfields of [Computational Met
 For example, many would consider biologically inspired systems like Evolutionary Algorithms, and Swarm algorithms to also be related to AI (They are under Mathematics of computing →  Mathematical analysis →  Mathematical optimization).
 As well consider, Information Retieval to related also -- particularly since it in many ways includes the tech behind Digital Assistants like Siri etc (Information systems →  Information retrieval).
 Most often today, people casually saying AI actually mean Machine Learning; in particular Deep Learning with Neural Networks.
+
+
+I think it is useful to distinguish between AI and ML.
+They are not the same thing; but are related.
+AI is giving the apearence of intelligence -- doing things that we normally think only a person could do.
+Machine learning is to have a computer in some sense learn to solve a problem from data, rather than having an explict algorithm for solving that problem written by the programmer.
+In general ML is used in the implementation of AI; but it is not AI itself.
