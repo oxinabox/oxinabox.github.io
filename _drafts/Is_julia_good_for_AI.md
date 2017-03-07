@@ -30,5 +30,18 @@ Most often today, people casually saying AI actually mean Machine Learning; in p
 I think it is useful to distinguish between AI and ML.
 They are not the same thing; but are related.
 AI is giving the apearence of intelligence -- doing things that we normally think only a person could do.
-Machine learning is to have a computer in some sense learn to solve a problem from data, rather than having an explict algorithm for solving that problem written by the programmer.
+Machine learning is to have the computer in some sense learn to solve a problem from data, rather than having an explict algorithm for solving that problem written by the programmer.
 In general ML is used in the implementation of AI; but it is not AI itself.
+
+Some would say that learning is something we we would normally think only a person could do.
+Thus it could be argued that ML is infact AI.
+This is getting down into semantics; ML is definately in the broader class of AI, but not normally in the narrower case of doing things we normally think humans are the only ones who can do.
+Most of the recent deep learning excitement is over offline, supervised methods.
+These are not very human at all.
+As compaired to Active Learning, Oneshot Learning, Reinforncement learning and several other ML techniques which can be argued to be more "human".
+In general though I will discuss ML as distinct for the classical focus of AI.
+
+No taxonomy or set of definitions is perfect.
+Remember Diogenes' plucked checken "Behold, a man."
+For informative purposes though, I am going to go though various fields using the ACM taxonomy,
+and talk about how good (or otherwise) julia is for them.
