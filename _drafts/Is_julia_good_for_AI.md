@@ -20,3 +20,8 @@ I'll quote Wikipedia's article on the AI Effect:
 
 However, that is a question of the lay-persons definition of AI.
 Even the definitions of people in the field make AI a broad area.
+
+ACM defines both AI and Machine Learning (ML) as subfields of [Computational Methodology](http://dl.acm.org/ccs/ccs.cfm?id=10010147). Most, but not all, things people call AI are from within Computational Methodology.
+For example, many would consider biologically inspired systems like Evolutionary Algorithms, and Swarm algorithms to also be related to AI (They are under Mathematics of computing →  Mathematical analysis →  Mathematical optimization).
+As well consider, Information Retieval to related also -- particularly since it in many ways includes the tech behind Digital Assistants like Siri etc (Information systems →  Information retrieval).
+Most often today, people casually saying AI actually mean Machine Learning; in particular Deep Learning with Neural Networks.
