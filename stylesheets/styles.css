@@ -443,16 +443,14 @@ section {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.25);
 }
 #header nav {
-  max-width: 650px;
-  margin: 0 auto;
-  padding: 0 10px;
-  margin: 6px auto;
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
 }
 #header nav li {
   list-style: none;
-  display: inline;
   color: white;
-  line-height: 50px;
   text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 }
 #header nav li a {
@@ -463,7 +461,6 @@ section {
   box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
   background-color: #93bd20;
   padding: 10px 12px;
-  margin-top: 6px;
   line-height: 14px;
   font-size: 14px;
   display: inline-block;
