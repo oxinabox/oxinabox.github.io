@@ -68,6 +68,10 @@
   -webkit-font-smoothing: antialiased;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
+
+
+
 /* =============================================================================
    Base
    ========================================================================== */
@@ -287,7 +291,7 @@ blockquote {
 }
 
 code {
-  font-family: "Lucida Sans", Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  font-family: 'Source Code Pro', "Lucida Sans", Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
   color: #efefef;
   font-size: 13px;
   margin: 0 4px;
