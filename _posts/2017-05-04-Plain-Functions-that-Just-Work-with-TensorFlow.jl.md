@@ -10,6 +10,7 @@ One thing I am particularly keen on is [making the interface really Julian](http
 I will make another post going into those enhancements sometime in the future; and how great julia's ability to overload things is. Probably after [#209](https://github.com/malmaud/TensorFlow.jl/pull/209) is merged.
 This post is not directly about those enhancements, but rather about a emergant feature I noticed today.
 I wrote some code to run in base julia, but just by changing the types to `Tensors` it now runs inside TensorFlow, and on my GPU (potentially).
+<!--more-->
 
 
 
