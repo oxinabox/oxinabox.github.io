@@ -10,9 +10,11 @@ tags:
 ---
 {%- endblock header -%}
 
+
 {% block in_prompt %}
-**In [{{ cell.execution_count }}]:**
+**Input:**
 {% endblock in_prompt %}
+
 
 {% block input %}
 {{ '{% highlight julia %}' }}
@@ -20,8 +22,13 @@ tags:
 {{ '{% endhighlight %}' }}
 {% endblock input %}
 
-{% block output %}
+{% block output_prompt %}
+**Output:**
+{% endblock output_prompt %}
+
+
+{% block stream %}
 {{ '{% highlight plaintext %}' }}
 {{ output.text | strip_ansi}}
 {{ '{% endhighlight %}' }}
-{% endblock output %}
+{% endblock stream %}
