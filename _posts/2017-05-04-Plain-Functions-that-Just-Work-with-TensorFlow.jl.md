@@ -17,6 +17,7 @@ I wrote some code to run in base julia, but just by changing the types to `Tenso
 
 Technically this did require [one little PR](https://github.com/malmaud/TensorFlow.jl/pull/213), but it was just adding in the linking code for operator.
 
+**Input:**
 
 {% highlight julia %}
 using TensorFlow
@@ -30,6 +31,7 @@ This code lets you know which bin a given input lays within.
 It comes from my current research interest in [using machine learning around the language of colors](https://github.com/oxinabox/ColoringNames.jl/).
 
 
+**Input:**
 
 {% highlight julia %}
 "Determine which bin a continous value belongs in"
@@ -40,6 +42,8 @@ function find_bin(value, nbins, range_min=0.0, range_max=1.0)
 end
 {% endhighlight %}
 
+**Output:**
+
 
 
 
@@ -47,6 +51,7 @@ end
 
 
 
+**Input:**
 
 {% highlight julia %}
 @testset "Find_bin" begin
@@ -64,6 +69,8 @@ end
     @test [10, 11, 19, 2] == find_bin([0.5, 0.51, 0.9, 0.1], 21)
 end
 {% endhighlight %}
+
+**Output:**
 
 {% highlight plaintext %}
 Test Summary: | Pass  Total
@@ -84,6 +91,7 @@ Both on scalars, and on `Arrays`, via broadcasting.
 Turns out, it will also run perfectly fine on TensorFlow `Tensors`.
 This time it will generate an computational graph which can be evaluated.
 
+**Input:**
 
 {% highlight julia %}
 sess = Session(Graph())
@@ -93,6 +101,8 @@ bins = find_bin(obs, 100)
 
 
 {% endhighlight %}
+
+**Output:**
 
 {% highlight plaintext %}
 2017-05-04 15:34:12.893787: I tensorflow/core/common_runtime/gpu/gpu_device.cc:887] Found device 0 with properties: 
@@ -110,10 +120,13 @@ WARNING: You are using an old version version of the TensorFlow binary library. 
 
 {% endhighlight %}
 
+**Input:**
 
 {% highlight julia %}
 run(sess, bins, Dict(obs=>0.1f0))
 {% endhighlight %}
+
+**Output:**
 
 
 
@@ -122,10 +135,13 @@ run(sess, bins, Dict(obs=>0.1f0))
 
 
 
+**Input:**
 
 {% highlight julia %}
 run(sess, bins, Dict(obs=>[0.1, 0.2, 0.25, 0.261]))
 {% endhighlight %}
+
+**Output:**
 
 
 
@@ -142,6 +158,7 @@ We can quiet happily run the whole testset from before.
 Using `constant` to change the inputs into constant `Tensors`.
 then running the operations to get back the result.
 
+**Input:**
 
 {% highlight julia %}
 @testset "Find_bin_tensors" begin
@@ -162,6 +179,8 @@ then running the operations to get back the result.
     @test [10, 11, 19, 2] ==  run(sess, find_bin(constant([0.5, 0.51, 0.9, 0.1]), 21))
 end
 {% endhighlight %}
+
+**Output:**
 
 {% highlight plaintext %}
 Test Summary:    | Pass  
@@ -203,6 +222,7 @@ then I can treat it like a `Duck`, even if it is a `Goose`.
 It would not work if I had have written say:
 
 
+**Input:**
 
 {% highlight julia %}
 function find_bin_strictly_typed(value::Float64, nbins::Int, range_min::Float64=0.0, range_max::Float64=1.0)
@@ -212,6 +232,8 @@ function find_bin_strictly_typed(value::Float64, nbins::Int, range_min::Float64=
 end
 {% endhighlight %}
 
+**Output:**
+
 
 
 
@@ -219,10 +241,13 @@ end
 
 
 
+**Input:**
 
 {% highlight julia %}
 run(sess, find_bin_strictly_typed(constant(0.4999), 64)) == 32
 {% endhighlight %}
+
+**Output:**
 
 
     MethodError: no method matching find_bin_strictly_typed(::TensorFlow.Tensor{Float64}, ::Int64)
