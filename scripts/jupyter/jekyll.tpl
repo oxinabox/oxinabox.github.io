@@ -10,9 +10,6 @@ tags:
 ---
 {%- endblock header -%}
 
-{% block in_prompt %}
-**In [{{ cell.execution_count }}]:**
-{% endblock in_prompt %}
 
 {% block input %}
 {{ '{% highlight julia %}' }}
