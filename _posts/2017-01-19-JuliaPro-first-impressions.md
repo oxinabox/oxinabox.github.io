@@ -33,3 +33,9 @@ it all seems very sensible. Most of the packages are fairly small, and mature as
 
 My conclusions are that this is a very easy way to install julia on windows. I like this a lot better then install julia, then Atom, then Juno, and then going through the configuration process. This is nice, it saves a fair bit of time and messing around. It could be more polished, but it is nice enough, nothing incredibly broken. I would never *not* install julia on Windows (or Mac) using JuliaPro, this is just better than installing it piece by piece.. There is no linux build, or I would used that on my linux desktop also.
 
+---
+
+#### Update (4/5/2017)
+I see it now has Linux support as well.
+I am yet to test.
+
