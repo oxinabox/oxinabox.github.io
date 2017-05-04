@@ -17,8 +17,8 @@ tags:
 {{ '{% endhighlight %}' }}
 {% endblock input %}
 
-{% block output %}
+{% block stream %}
 {{ '{% highlight plaintext %}' }}
 {{ output.text | strip_ansi}}
 {{ '{% endhighlight %}' }}
-{% endblock output %}
+{% endblock stream %}

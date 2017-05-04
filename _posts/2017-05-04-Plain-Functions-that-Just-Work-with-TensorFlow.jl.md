@@ -17,7 +17,6 @@ I wrote some code to run in base julia, but just by changing the types to `Tenso
 
 Technically this did require [one little PR](https://github.com/malmaud/TensorFlow.jl/pull/213), but it was just adding in the linking code for operator.
 
-**In [1]:**
 
 {% highlight julia %}
 using TensorFlow
@@ -31,7 +30,6 @@ This code lets you know which bin a given input lays within.
 It comes from my current research interest in [using machine learning around the language of colors](https://github.com/oxinabox/ColoringNames.jl/).
 
 
-**In [2]:**
 
 {% highlight julia %}
 "Determine which bin a continous value belongs in"
@@ -42,11 +40,13 @@ function find_bin(value, nbins, range_min=0.0, range_max=1.0)
 end
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
 
-**In [3]:**
+
+
+    find_bin
+
+
+
 
 {% highlight julia %}
 @testset "Find_bin" begin
@@ -71,9 +71,12 @@ Test Summary: | Pass  Total
 
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
+
+
+
+    Base.Test.DefaultTestSet("Find_bin",Any[],26,false)
+
+
 
 It is perfectly nice julia code that runs perfectly happily with the types from `Base`.
 Both on scalars, and on `Arrays`, via broadcasting.
@@ -81,7 +84,6 @@ Both on scalars, and on `Arrays`, via broadcasting.
 Turns out, it will also run perfectly fine on TensorFlow `Tensors`.
 This time it will generate an computational graph which can be evaluated.
 
-**In [4]:**
 
 {% highlight julia %}
 sess = Session(Graph())
@@ -108,31 +110,38 @@ WARNING: You are using an old version version of the TensorFlow binary library. 
 
 {% endhighlight %}
 
-**In [5]:**
 
 {% highlight julia %}
 run(sess, bins, Dict(obs=>0.1f0))
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
 
-**In [6]:**
+
+
+    10
+
+
+
 
 {% highlight julia %}
 run(sess, bins, Dict(obs=>[0.1, 0.2, 0.25, 0.261]))
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
+
+
+
+    4-element Array{Int64,1}:
+     10
+     20
+     25
+     26
+
+
 
 We can quiet happily run the whole testset from before.
 Using `constant` to change the inputs into constant `Tensors`.
 then running the operations to get back the result.
 
-**In [7]:**
 
 {% highlight julia %}
 @testset "Find_bin_tensors" begin
@@ -169,9 +178,12 @@ Total
 
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
+
+
+
+    Base.Test.DefaultTestSet("Find_bin_tensors",Any[],26,false)
+
+
 
 It just works.  
 In general that is a great thing to say about any piece of technology.  
@@ -191,7 +203,6 @@ then I can treat it like a `Duck`, even if it is a `Goose`.
 It would not work if I had have written say:
 
 
-**In [8]:**
 
 {% highlight julia %}
 function find_bin_strictly_typed(value::Float64, nbins::Int, range_min::Float64=0.0, range_max::Float64=1.0)
@@ -201,19 +212,27 @@ function find_bin_strictly_typed(value::Float64, nbins::Int, range_min::Float64=
 end
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
 
-**In [9]:**
+
+
+    find_bin_strictly_typed (generic function with 3 methods)
+
+
+
 
 {% highlight julia %}
 run(sess, find_bin_strictly_typed(constant(0.4999), 64)) == 32
 {% endhighlight %}
 
-{% highlight plaintext %}
-None
-{% endhighlight %}
+
+    MethodError: no method matching find_bin_strictly_typed(::TensorFlow.Tensor{Float64}, ::Int64)
+    Closest candidates are:
+      find_bin_strictly_typed(::Float64, ::Int64, ::Float64, ::Float64) at In[8]:2
+      find_bin_strictly_typed(::Float64, ::Int64, ::Float64) at In[8]:2
+      find_bin_strictly_typed(::Float64, ::Int64) at In[8]:2
+
+    
+
 
 The moral of the story is *don't over constrain your function parameters*.  
 Leave you functions loosely typed, and you may get free functionality later.
