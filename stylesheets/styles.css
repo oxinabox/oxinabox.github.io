@@ -315,7 +315,7 @@ pre code {
   padding: 0;
 }
 
-figure .highlight, div .highlighter-rouge { /*boxes containing `code` etc*/
+figure.highlight, div.highlighter-rouge { /*boxes containing `code` etc*/
   margin: 16px 40px;
 }
 
