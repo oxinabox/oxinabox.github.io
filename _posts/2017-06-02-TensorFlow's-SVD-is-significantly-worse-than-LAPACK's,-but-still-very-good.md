@@ -193,7 +193,7 @@ end
 {% endhighlight %}
 
 Here we define the functions to perform our analytics/visualisation.
-I think a histogram showing the distribution of $err_tf/err_jl$ is informative.
+I think a histogram showing the distribution of $err_{tf}/err_{jl}$ is informative.
 an absolute value histogram would also be informative, but when the values are so low, it become hard to read.
 As well the quartile values, that is minimum, Q1, median, Q3, maximum, are informative on the absolute values of the error; since they tell us that that say three quarters of all trials showed error less than the given value.
 
