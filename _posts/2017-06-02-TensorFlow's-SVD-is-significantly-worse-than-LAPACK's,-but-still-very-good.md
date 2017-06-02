@@ -5,7 +5,7 @@ tags:
     - julia
     - jupyter-notebook
 ---
-TensorFlow's SVD is significantly less accurate than LAPACK's (i.e. ulia's and numpy/SciPy's backing library).
+TensorFlow's SVD is significantly less accurate than LAPACK's (i.e. julia's and numpy/SciPy's backing library for linear algebra).
 But still incredibly accurate, so probably don't panic.
 Unless your matrices have very large ($>10^6$) values, then the accuracy difference might be relevant for you (but probably isn't).
 However, both LAPACK and TensorFlow are not great then -- LAPACK is still much better.
