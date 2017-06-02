@@ -321,6 +321,7 @@ figure.highlight, div.highlighter-rouge { /*boxes containing `code` etc*/
 svg {
   margin: auto;
   display: block;
+  padding: 16px;
 }
 
 
