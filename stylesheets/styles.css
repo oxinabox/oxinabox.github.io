@@ -2,7 +2,6 @@
   font-family: 'OpenSansLight';
   src: url("../fonts/OpenSans-Light-webfont.eot");
   src: url("../fonts/OpenSans-Light-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/OpenSans-Light-webfont.woff") format("woff"), url("../fonts/OpenSans-Light-webfont.ttf") format("truetype"), url("../fonts/OpenSans-Light-webfont.svg#OpenSansLight") format("svg");
-  font-weight: normal;
   font-style: normal;
 }
 
@@ -407,13 +406,13 @@ section {
 
 
 .column_block{   
-    max-width: 300px;
+    max-width: 250px;
     display: inline-block;
 }
 
 .column_block_wide
 {
-    max-width: 600px;
+    max-width: 48x;
     display: inline-block;  
     vertical-align: top;
 }
