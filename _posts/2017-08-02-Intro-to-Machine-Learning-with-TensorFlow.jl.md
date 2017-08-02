@@ -9,7 +9,7 @@ In this blog post, I am going to go through as series of neural network structur
 This is intended as a demonstration of the more basic neural net functionality.
 This blog post serves as an accompanyment to the introduction to machine learning chapter of the short book I am writing (
 Currently under the working title "Neural Network Representations for Natural Language Processing")
-<!-- more -->
+<!--more-->
 
 I do have an [earlier blog covering some similar topics](http://white.ucc.asn.au/2017/01/24/JuliaML-and-TensorFlow-Tuitorial.html).
 However, I exect the code in this one to be a lot more sensible,
@@ -832,7 +832,7 @@ The margin is small enough that it can be attributed to in part to luck -- repea
 Classifying MNIST is perhaps too simpler problem for deep techneques to pay off.
 
 
-# Bottle-knecking Autoencoder
+# Bottle-necked Autoencoder
 
 An autoencoder is a neural network designed to recreate its inputs.
 There are many varieties, include RBMs, DBNs, SDAs, mSDAs, VAEs.
