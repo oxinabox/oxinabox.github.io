@@ -323,6 +323,9 @@ svg {
   padding: 16px;
 }
 
+img { /*Some images are not rendering background for some reason */
+  background-color: white;
+}
 
 
 /**********************************************************
@@ -412,7 +415,7 @@ section {
 
 .column_block_wide
 {
-    max-width: 48x;
+    max-width: 480px;
     display: inline-block;  
     vertical-align: top;
 }
