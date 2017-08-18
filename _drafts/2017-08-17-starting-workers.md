@@ -21,7 +21,7 @@ Julia will connect to each host and start a number of workers on each equal to t
 Even the most detailed machinefile doesn't give full control,
 for example you can not specify the topology, or the location of the julia exectuable.
 
-for full control, one shoud invoke `addprocs` directly,
+For full control, one shoud invoke `addprocs` directly,
 and to do so, one should use `julia -L startupfile.jl`
 
 <!-- more -->
