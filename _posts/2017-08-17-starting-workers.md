@@ -24,7 +24,7 @@ for example you can not specify the topology, or the location of the julia exect
 For full control, one shoud invoke `addprocs` directly,
 and to do so, one should use `julia -L startupfile.jl`
 
-<!-- more -->
+<!--more-->  
  
 
 Inkoking julia with `julia -L startupfile.jl ...`
