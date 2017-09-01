@@ -4,6 +4,9 @@ title: "Intro to Machine Learning with TensorFlow.jl"
 tags:
     - julia
     - jupyter-notebook
+redirect_from: 
+    - /IntroNLPBook/NNexamples
+    
 ---
 In this blog post, I am going to go through as series of neural network structures.
 This is intended as a demonstration of the more basic neural net functionality.
