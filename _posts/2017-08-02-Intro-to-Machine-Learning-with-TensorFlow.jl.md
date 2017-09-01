@@ -5,7 +5,7 @@ tags:
     - julia
     - jupyter-notebook
 redirect_from: 
-    - /NNforNLPBook/NNexamples
+    - NNforNLPBook/NNexamples
     
 ---
 In this blog post, I am going to go through as series of neural network structures.
