@@ -20,7 +20,7 @@ a single window of elements at a time.
 Point is, at no point do I ever want to load all 20Gb of wikipedia into my program,
 nor all 100Gb of Amazon product reviews.
 
-And I especially do not want to load $\inf$ bytes of every prime number.
+And I especially do not want to load $\infty$ bytes of every prime number.
 
 <!--more-->
 
