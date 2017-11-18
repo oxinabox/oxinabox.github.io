@@ -22,6 +22,8 @@ nor all 100Gb of Amazon product reviews.
 
 And I especially do not want to load $\inf$ bytes of every prime number.
 
+<!--more-->
+
 First some definitions.
 
 ####  Iterators
