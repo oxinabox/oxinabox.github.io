@@ -40,7 +40,7 @@ a `next` function that takes an iterable and state and gives back the next value
 and a `done` function that takes the same and returns a boolean sayign if there iteratator is complete.
 
 They also have Holy traits to define what eltype they return and how long they are.
-Not going to go in to this here, but I will note that specifying the `elype` is a feature  channels have that the 0.5 producer based code does not.
+Not going to go in to this here, but I will note that specifying the `eltype` is a feature  channels have that the 0.5 producer based code does not.
 and that 0.6 generators don't have either right now.
 
 Honestly if you are not familar with iterators the rest of this probably isn't going to make much sense.
