@@ -19,7 +19,7 @@ For a much simpler example of use,
 on a problem that is more easily parallelizable,
 see my recent [stackoverflow post on parallelizing sorting](https://stackoverflow.com/a/47235391/179081).
 
-(Spoilers: in the end I don't manage to extract any serious performance gains from paralyzing this prime search. Unlike parallelizing that sorting. Paralising sorting worked out great)
+(Spoilers: in the end I don't manage to extract any serious performance gains from parallelizing this prime search. Unlike parallelizing that sorting. Paralising sorting worked out great)
 
 <!--more-->
 
