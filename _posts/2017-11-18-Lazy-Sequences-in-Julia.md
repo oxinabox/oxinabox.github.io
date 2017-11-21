@@ -75,6 +75,13 @@ using ResumableFunctions
 using MacroTools
 {% endhighlight %}
 
+**Output:**
+
+{% highlight plaintext %}
+INFO: Recompiling stale cache file /home/wheel/oxinabox/.julia/lib/v0.6/ResumableFunctions.ji for module ResumableFunctions.
+
+{% endhighlight %}
+
 ## Fibonacci sequence
 
 We will start, just to explain the concepts with the fibonacci sequence.
@@ -684,19 +691,10 @@ function interleave_ch(xs...)
 end
 {% endhighlight %}
 
-**Output:**
-
-
-
-
-    interleave_ch (generic function with 1 method)
-
-
-
 **Input:**
 
 {% highlight julia %}
-collect(Iterators.take(interleave_ch(fib_ch(), 100:300:900, 'a':'z'), 20)) |> repr |>print
+collect(Iterators.take(interleave_ch(fib_ch(), 100:300:900, 'a':'z'), 20)) |> showcompact
 {% endhighlight %}
 
 **Output:**
@@ -705,8 +703,100 @@ collect(Iterators.take(interleave_ch(fib_ch(), 100:300:900, 'a':'z'), 20)) |> re
 Union{Char, Int64}[1, 100, 'a', 1, 400, 'b', 2, 700, 'c', 3, 'd', 5, 'e', 8, 'f', 13, 'g', 21, 'h', 34]
 {% endhighlight %}
 
-The resumable function version of this is broken at time of the writing this blog post.
-See [ResumableFunctions.jl/#11](https://github.com/BenLauwens/ResumableFunctions.jl/issues/11).
+**Input:**
+
+{% highlight julia %}
+@btime collect(Iterators.take(interleave_ch(fib_ch(), 100:300:900, 'a':'z'), 20));
+{% endhighlight %}
+
+**Output:**
+
+{% highlight plaintext %}
+  1.103 ms (2875 allocations: 79.52 KiB)
+
+{% endhighlight %}
+
+**Input:**
+
+{% highlight julia %}
+@resumable function interleave_rf(xs...)
+    states = Base.start.(collect(xs))
+    while true
+        alldone = true
+        for ii in eachindex(states)
+            if !Base.done(xs[ii], states[ii])
+                alldone=false
+                val, states[ii] = next(xs[ii], states[ii])
+                @yield val
+            end
+        end
+        alldone && break
+    end
+end
+{% endhighlight %}
+
+**Output:**
+
+
+
+
+    interleave_rf (generic function with 1 method)
+
+
+
+**Input:**
+
+{% highlight julia %}
+collect(Iterators.take(interleave_rf(fib_rf(), 100:300:900, 'a':'z'), 20)) |> showcompact
+{% endhighlight %}
+
+**Output:**
+
+{% highlight plaintext %}
+Any[1, 100, 'a', 1, 400, 'b', 2, 700, 'c', 3, 'd', 5, 'e', 8, 'f', 13, 'g', 21, 'h', 34]
+{% endhighlight %}
+
+**Input:**
+
+{% highlight julia %}
+@btime collect(Iterators.take(interleave_rf(fib_rf(), 100:300:900, 'a':'z'), 20));
+{% endhighlight %}
+
+**Output:**
+
+{% highlight plaintext %}
+  215.821 μs (510 allocations: 21.22 KiB)
+
+{% endhighlight %}
+
+Another big win for timing for Resumable functions there (though it doesn't catch the eltype. but to be fair the channel took it as an explict parameter).
+One thing to mention with resumable functions is that if they reach the end of the iteration they will include in it the final returned value by the function.
+Normally `nothing`.
+Eg:
+
+**Input:**
+
+{% highlight julia %}
+collect(interleave_rf(1:3, 'a':'c')) |> showcompact
+{% endhighlight %}
+
+**Output:**
+
+{% highlight plaintext %}
+Any[1, 'a', 2, 'b', 3, 'c', nothing]
+{% endhighlight %}
+
+**Input:**
+
+{% highlight julia %}
+collect(interleave_ch(1:3, 'a':'c')) |> showcompact
+{% endhighlight %}
+
+**Output:**
+
+{% highlight plaintext %}
+Union{Char, Int64}[1, 'a', 2, 'b', 3, 'c']
+{% endhighlight %}
 
 # Primes
 
@@ -765,7 +855,7 @@ end
 **Input:**
 
 {% highlight julia %}
-collect(Iterators.take(primes_ch(), 100)) |> repr |> print
+collect(Iterators.take(primes_ch(), 100)) |> showcompact
 {% endhighlight %}
 
 **Output:**
