@@ -196,7 +196,10 @@ There is a real problem with a lack of consistency.
 
 So I am going to take a leaf from XKCD #927,
 and define one.
+
+
 ![Standards](https://imgs.xkcd.com/comics/standards.png)
+
 
  - `StatsBase.fit(modeltype, features, labels)` returns a model of that type that is trained on those features and labels.
     - Since we are only interested in binary classification, labels witll be an `AbstractVector{Bool}` with one entry per column of the feature matrix
@@ -808,7 +811,11 @@ I will show another neural one, so the code can be compared.
 ## [Flux](https://github.com/FluxML/Flux.jl)
 
 Flux is the new hotness when it comes to julia neural network frameworks.
+
+
 ![MIB reference](https://pbs.twimg.com/media/C2o6te_XcAIIuWm.jpg)
+
+
 Julia has a fair few neural net frameworks.
 As well as the already mentioned TensorFlow.jl,
 we've got [MXNet.jl](https://github.com/dmlc/MXNet.jl) (which, like TensorFlow.jl is a wrapper),
