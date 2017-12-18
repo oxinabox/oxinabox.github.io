@@ -31,13 +31,13 @@ This is on the mildly gnarly side of binary classification problems.
 The classifying regions are:
 
  - Not linearly seperable
-    - you can't draw a line such that on one since is all the blue parts and on the other is all the nonblue parts.
+    - You can't draw a line such that on one since is all the blue parts and on the other is all the nonblue parts.
  - Not connected
-    - the stars for example are not entirely separated by blue background regions
+    - The stars for example are entirely separated by blue background regions
  - Not convex 
-    - with in a section of one color, you can draw a line between two points and have it exit that section, then reenter.
+    - With in a section of one color, you can draw a line between two points in the same colored region and have it exit that section, then reenter.
  - Unbalanced classes
-    - most of the image is blue)
+    - Most of the image is blue.
  
 So it seams like a good problem.
 
