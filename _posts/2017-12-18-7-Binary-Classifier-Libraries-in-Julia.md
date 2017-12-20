@@ -25,6 +25,10 @@ For TensorFlow and Flux, you could also treat this as a bit of a demo in how to 
 Since they don't do it out of the box.
 <!--more-->
 
+This post, like most of my posts, is backed by a [jupyter notebook](https://github.com/oxinabox/oxinabox.github.io/blob/master/notebook_posts/7%20Binary%20Classifier%20Libraries%20in%20Julia.ipynb).  
+Feel free, encouraged even, to download and run that, or view it on github, etc.
+Also to raise issues on that repository.
+
 ## The Task: Predict if that part of the Australian Flag is Blue
 
 This is on the mildly gnarly side of binary classification problems.
@@ -1033,6 +1037,15 @@ As a ML researcher I tend to be most interested in the low level libraries that 
 But other interfaces can hide a lot of the code I wrote above -- as a random example the [Scikit Learn MLPClassifier](http://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html).
 
 
+Of course this is only simple binary classification.
+By simple I mean there are 2 input features, being the pixel coordinates.
+Image classification would have thousand or millions of input features (depending on resolution).
+For image classification convolutional neural networks are king.
+Though don't forget there is the option of using image embeddings, i.e.  CNN features (e.g. from a pretrained network like Inception, or another ImageNet network), as the input another classifier.
+I know people do this with SVM's all the time.
+
+
 I do think a take-way is that neural networks probably shouldn't be your first choice for simple binarly classification.
 Looking at how well everything else performs, it is almost always going to be worth checking the others out.
 Their training time is so short, it is worth checking them out, as its not going to cost much time to evaluate them.
+
