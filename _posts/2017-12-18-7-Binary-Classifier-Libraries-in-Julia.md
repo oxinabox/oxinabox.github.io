@@ -37,13 +37,13 @@ The classifying regions are:
  - Not linearly seperable
     - You can't draw a line such that on one since is all the blue parts and on the other is all the nonblue parts.
  - Not connected
-    - The stars for example are entirely separated by blue background regions
+    - The stars, for example, are entirely separated by blue background regions
  - Not convex 
-    - With in a section of one color, you can draw a line between two points in the same colored region and have it exit that section, then reenter.
+    - With-in a section of one color, you can draw a line between two points in the same colored region and have it exit that section, then reenter.
  - Unbalanced classes
     - Most of the image is blue.
  
-So it seams like a good problem.
+So it seams like a good, difficult, problem.
 
 ![Australian Flag](https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Flag_of_Australia.svg/800px-Flag_of_Australia.svg.png)
 
@@ -98,7 +98,7 @@ colorview(Gray, .!(isblue.(img)))
 
 
 
-![png]({{site.url}}/posts_assets/7 Binary Classifier Libraries in Julia_files/7 Binary Classifier Libraries in Julia_6_0.png)
+![png]({{site.url}}/posts_assets/7 Binary Classifier Libraries in Julia_files/7 Binary Classifier Libraries in Julia_7_0.png)
 
 
 
@@ -196,7 +196,7 @@ plotflag(test_features, test_labels, title="Test Data")
 
 ## Interface
 As was discussed on the julia slack yesterday.
-There is a real problem with a lack of consistency.
+There is a real problem with a lack of consistency in our ML packages right now.
 
 So I am going to take a leaf from XKCD #927,
 and define one.
@@ -215,7 +215,7 @@ and define one.
 
 Something like this is actually in use in a bunch of places already, just not these packages, it seems..
 Some packages (`LibSVM`, `DecisionTrees.jl`) use the same names, from [`ScikitLearnBase`](https://github.com/cstjean/ScikitLearnBase.jl), but they go sideways (i.e. observations in rows, Python style).
-I think the real solution to a good interface does need to be thinking more like (or using) MLDataUtils.jl, which is Observation dimention agnostic, defaulting to normal julia practice (`ObsDim.Last()`).
+I think the real solution to a good interface does need to be thinking more like (or using) MLDataUtils.jl, which is observation dimention agnostic, defaulting to normal julia practice (`ObsDim.Last()`).
 
 
 Using these we can define our metrics, etc.
@@ -272,8 +272,8 @@ end
 
 ## [LIBLINEAR.jl](https://github.com/innerlee/LIBLINEAR.jl)
 
-Linear SVM.
-Possibly, the weakest classifier in modern use.
+The linear SVM.
+Possibly the weakest classifier in modern use.
 It actually works ok for a lot of higher dimentional problems.
 In high dimensions it is easier for things to be linearly seperable.
 
@@ -288,7 +288,6 @@ http://www.csie.ntu.edu.tw/~cjlin/liblinear
 Because we are interesting in getting probabilities back from `predict`
 we are restricted to using `L2R_LR` and `L1R_LR` solver types, which are logistric regression.
 This could probably be relaxed for most applications (but might break those metrics defintions above).
-
 
 **Input:**
 
@@ -336,7 +335,7 @@ LIBLINEAR.LinearModel Test accuracy: 80.88%
 
 
 We can see from the plot that it is basically a gradient, of how much blue is in an area.
-BAsically, expected.
+This is as expected.
 
 ## [LIBSVM.jl](https://github.com/mpastell/LIBSVM.jl)
 
@@ -1048,4 +1047,3 @@ I know people do this with SVM's all the time.
 I do think a take-way is that neural networks probably shouldn't be your first choice for simple binarly classification.
 Looking at how well everything else performs, it is almost always going to be worth checking the others out.
 Their training time is so short, it is worth checking them out, as its not going to cost much time to evaluate them.
-
