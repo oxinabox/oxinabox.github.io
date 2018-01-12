@@ -11,7 +11,7 @@ Continuous delivery (CD) is a practice in software development of always having 
 It means at any point in time someone can say give me the latest version, and you (the developer) can hand it over to them.
 
 What does it mean to continuously deliverable science?
-One of my friend's advisors (apparently) has the expectation that at any point in time he could call on any member of his lab to present on what they were doing, and that lab member would have a slideshow already prepared.
+One of my friend's advisers (apparently) has the expectation that at any point in time he could call on any member of his lab to present on what they were doing, and that lab member would have a slideshow already prepared.
 I think in general any decent researcher can with a bit of thought, and a white-board present a half-hour presentation on their latests developments -- though it might not be well organised or coherent.
 
 This blog post is going to touch on open research, software development, and academia in general.
@@ -55,18 +55,32 @@ This might seem counter intuitive.
 How is telling everyone your idea going to stop it being stolen?
 It stops it being stolen because you're establishing that that idea is yours.
 If everyone knows that you had an idea on a particular date,
-for example you pushed out an prototype implementation onto Github,
-then they can't claim it as their own.
+for example you pushed out an prototype implementation onto Github, then they can't claim it as their own.
+If you have a paper-preprint on Arxiv, they certainly can't.
 
 Plagiarism is a distinct notion from copyright violation.
-While one can license away ones copyright given rights, via open-source licenses and public domain dedications,
-plagiarism comes from the other side.
+While one can license away ones copyright given rights, via open-source licenses and public domain dedications, doing so doesn't let them use your work without crediting you.
+While releasing something (a paper or some code) lets normal uses happen without crediting you,
+it doesn't allow for an academic paper to be written.
+That is to say plagiarising something that is public domain (let alone something that is merely open-source) is still academic misconduct.
+That kind of thing gets you blacklisted from journals and really hurts your reputation.
 It is the responsibility of anyone using your work to credit you.
-It's not a responsibility you can free them from.
 
+Of course this is only a limited kind of protection.
+You can't actually hunt-down anyone who might have stolen your idea.
+It also doesn't let you horde the follow-up application papers.
+Getting citations to a draft in a Github repo isn't going to advance your career much.
+Getting acknowledges at the end of a paper even less so (no automatic tracking services for acknowledgements of people AFAIK.)).
 
+## Ideas are cheap
+Here is the thing though.
+Ideas are really cheap.
+I have dozens of new ideas every week.
+Most of them are probably bad.
 
+I don't have time to try them all out to see if they are bad.
+No-one does.
+So if someone steals your idea they have stolen anything irreplaceable.
 
+Even if they take that idea and go big with it
 
-
-## Plagiarism, copyright, and patents
