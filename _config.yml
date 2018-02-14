@@ -1,3 +1,6 @@
+url: https://white.ucc.asn.au
+enforce_ssl: white.ucc.asn.au
+
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,txt"
 markdown: kramdown
 kramdown:
