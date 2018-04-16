@@ -1,3 +1,9 @@
+- title: Finding Word Sense Embeddings Of Known Meaning
+  author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
+  venue: Conference on Intelligent Text Processing and Computational Linguistics (CICLing)
+  year: 2018
+  key: White2018RefittingSenses
+
 - title: Modelling Sentence Generation from Sum of Word Embedding Vectors as a Mixed Integer Programming Problem
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
   venue: 'IEEE International Conference on Data Mining: High Dimensional Data Mining Workshop (ICDM: HDM)'
