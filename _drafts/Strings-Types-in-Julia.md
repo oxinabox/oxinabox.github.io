@@ -6,7 +6,8 @@ tags:
 ---
 
 A shortish post about the various string type in Julia 0.6.
-
+Coving `Base.String`, `Base.SubString`, `WeakRefStrings.jl`, `InternedStrings.jl`, `ShortStrings.jl` and `Strs.jl`.
+Thanks to [Scott P John](https://github.com/ScottPJones), who helped write the section on his Strs.jl package.
 <!--more-->
 
 All strings are subtypes of `AbstractString`,
@@ -98,6 +99,7 @@ The last byte of the memory is used to store the length of the string.
 
 
 ## [Strs.jl](https://github.com/JuliaString/Strs.jl)
+Strs.jl is the only project I am aware of that is basically out to replace `Base.String` outright.
 
 Strs.jl provides string types for valid ASCII, Latin1, UCS2, UTF-8, UTF-16, and UTF-32 encoded strings, Binary strings,
 8-,16-,32-bit strings where the encoding is not known, and "raw" UTF-8 strings (like `String`, where the encoding is purportedly UTF-8,
@@ -117,7 +119,8 @@ Strs.jl also provides a `Chr` type, which is used to create a set of types, `ASC
 You can see [some outdated benchmarks here](https://discourse.julialang.org/t/ann-wip-strs-jl-package-ready-for-alpha-review-and-testing/8087/11).
 The current version is now almost universally much faster than `Base.String`.
 
-## Common Unicode Encodings
+### Common Unicode Encodings
+(This is not just relevant to Strs.jl, but as the main package being made for Unicode, it mostly is. When you start thinking about Unicode encodings while working in julia Strs.jl is almost certainly where you are going.)
 
 ASCII and Latin1 (ISO-8859-1) are fixed width 1 byte encodings, which can be used to represent any of the characters in
 Western European languages. ASCII is compatible with both UTF-8 and Latin1 encoding, which is a useful property when doing conversions.
@@ -161,3 +164,4 @@ which were valid prior to 2003, and those can be used for security exploits.
 [LegacyStrings.jl](https://github.com/JuliaArchive/LegacyStrings.jl) also provides unicode string types,
 however, I believe it is being maintained primarily for compatibility reasons.
 Most things in JuliaArchive are not being maintained, and I suspect LegacyStrings will join them after julia 1.0.
+Also as mentioned above one can use  [StringEncodings.jl](https://github.com/nalimilan/StringEncodings.jl) to convert between basdically any string encodings and the UTF-8 as implemented by `Base.String` during IO, if you just want to avoid the whole question (and just want the mostly good enough `Base.String`).
