@@ -5,8 +5,9 @@ tags:
     - julia
 ---
 
-A shortish post about the various string type in Julia 0.6.
-Coving `Base.String`, `Base.SubString`, `WeakRefStrings.jl`, `InternedStrings.jl`, `ShortStrings.jl` and `Strs.jl`.
+A shortish post about the various string type in Julia 0.6, and it's packages.
+This post covers  `Base.String`, `Base.SubString`, `WeakRefStrings.jl`, `InternedStrings.jl`, `ShortStrings.jl` and `Strs.jl`;
+and also mentioneds `StringEncodings.jl`.
 Thanks to [Scott P John](https://github.com/ScottPJones), who helped write the section on his Strs.jl package.
 <!--more-->
 
