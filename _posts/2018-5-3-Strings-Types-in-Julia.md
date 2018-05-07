@@ -62,7 +62,7 @@ InternedStrings have the property that only a single unique instance for a given
 All instances of such a string are just references to the same data.
 When the last reference is gone, that string can/will be garbage collected.
 
-In the upcoming (proposed) [v0.5.0](https://github.com/oxinabox/InternedStrings.jl/pull/9) it does the same thing,
+In the just released [v0.5.0+](https://github.com/oxinabox/InternedStrings.jl/pull/9) InternedStrings.jl does the same thing,
 except that it no longer has a type associated with it.
 One simply called `intern(str)` on the string type of choice and it either gives back a reference to a copy from the pool; or adds it to the pool (and acts as the identity).
 Because of these changes v0.5.0 of InternedStrings is compatible with (basically) any string type.
@@ -75,7 +75,7 @@ particularly if one eliminates the rare words.
 
 The other thing it gets you is really fast equality checking, since if two interned strings are not the same reference then they can't be equal.
 In InternedStrings.jl v0.4 this applies to all checks since it overloads `==` into `===`.
-In v0.5 this will have to be done explicitly via `===`.
+In v0.5+ this has to be done explicitly via `===`.
 (It might be worth defining `intern_eq(a,b)= a===b || intern!(a)==intern!(b)` or similar)
 
 
