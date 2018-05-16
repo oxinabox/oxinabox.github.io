@@ -1,3 +1,17 @@
+
+- title: "NovelPerspective: Identifying Point of View Characters"
+  author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
+  venue: '56th Annual Meeting of the Association for Computational Linguistics (ACL), System Demonstrations'
+  year: 2018
+  key: White2018NovelPerspective
+  supl: tools#novelperspective
+
+- title: "Learning-based Composite Metrics for Improved Caption Evaluation"
+  author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
+  venue: 'Association for Computational Linguistics (ACL), Student Research Workshop'
+  year: 2018
+  key: Sharif2018LearningCompositeMetrics
+
 - title: Finding Word Sense Embeddings Of Known Meaning
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
   venue: Conference on Intelligent Text Processing and Computational Linguistics (CICLing)
