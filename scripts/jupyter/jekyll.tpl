@@ -17,9 +17,11 @@ tags:
 
 
 {% block input %}
+<div class="jupyter-input jupyter-cell">
 {{ '{% highlight julia %}' }}
 {{ cell.source }}
 {{ '{% endhighlight %}' }}
+</div>
 {% endblock input %}
 
 {% block output_prompt %}
@@ -28,7 +30,9 @@ tags:
 
 
 {% block stream %}
+<div class="jupyter-stream jupyter-cell">
 {{ '{% highlight plaintext %}' }}
 {{ output.text | strip_ansi}}
 {{ '{% endhighlight %}' }}
+</div>
 {% endblock stream %}
