@@ -39,7 +39,7 @@ A subset of the Opinosis corpus was manually grouped according to its meaning.
 
 The original Opinosis corpus can be obtained by following [this link](http://kavita-ganesan.com/opinosis-opinion-dataset)
 
-This dervived corpus is redistributed by permission of the orignal corpus creator.
+This derived corpus is redistributed by permission of the original corpus creator.
 
 Use of the derived corpus here should cite the paper detailing the original corpus:
 
@@ -60,7 +60,7 @@ Use of the derived corpus here should cite the paper detailing the original corp
 
 [Download](./msrp_paraphrase_grouped.zip)
 
-A subset of the Microsoft Reseach Paraphrase corpus was automatically grouped according to its original manually annotated meaning. This was done by taking the symetric and transitive closure over the original set of paraphrase pairs.
+A subset of the Microsoft Research Paraphrase corpus was automatically grouped according to its original manually annotated meaning. This was done by taking the symetric and transitive closure over the original set of paraphrase pairs.
 
 The original MSRP corpus can be obtained by following [this link](http://research.microsoft.com/en-us/downloads/607d14d9-20cd-47e3-85bc-a2f65cd28042/)
 

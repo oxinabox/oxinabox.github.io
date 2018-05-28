@@ -291,10 +291,7 @@ blockquote {
 code {
   font-family: 'Source Code Pro', monospace;
   color: #efefef;
-  font-size: 13px;
-  margin: 0 4px;
-  padding: 4px 6px;
-  border-radius: 2px;
+  font-size: 15.5px;
 }
 
 pre {
