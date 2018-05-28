@@ -33,10 +33,12 @@ The same criticism kinda occurs here too.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 using JuMP
 using GLPKMathProgInterface
 {% endhighlight %}
+</div>
 
 We are going to load up JuMP.
 We are using [GLPK](https://www.gnu.org/software/glpk/) as the solver.
@@ -58,6 +60,7 @@ We define a data dependency of this program on that database using [DataDeps.jl]
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 using DataDeps
 register(DataDep(
@@ -72,15 +75,18 @@ register(DataDep(
     post_fetch_method = (fn)->mv(fn, "database.xls")
 ));
 {% endhighlight %}
+</div>
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 using ExcelFiles, DataFrames
 
 const nutrients = DataFrame(load(datadep"AUSNUT Food Nutrient Database/database.xls", "Food Nutrient Database"))
 nutrients[1:4,:]
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -96,9 +102,11 @@ So basical dataframes usage lets us look up a column:
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 nutrients[:, Symbol("Protein (g)")] 
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -139,9 +147,11 @@ If I wanted to know how much Protein was in  100g of Beef extract (the first foo
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 nutrients[1, Symbol("Protein (g)")]
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -157,9 +167,11 @@ That would be:
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 1*nutrients[1, Symbol("Protein (g)")] + 1.5*nutrients[3, Symbol("Protein (g)")]
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -175,12 +187,14 @@ I could write it using the [dot product](https://en.wikipedia.org/wiki/Dot_produ
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 x = zeros(size(nutrients,1))
 x[1] = 1   # 100g Beef extract
 x[3] = 1.5 # 150g Cardamom seeds
 nutrients[:, Symbol("Protein (g)")] ⋅ x
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -207,6 +221,7 @@ so when we declare a new constraint or variable we always pass in the model to s
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 using JuMP
 function new_diet(solver = GLPKSolverLP())
@@ -215,6 +230,7 @@ function new_diet(solver = GLPKSolverLP())
     m, diet 
 end
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -248,6 +264,7 @@ We'ld define a function to add those constraints to our model.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 function total_intake(nutrient_name, diet)
     nutrients[:, Symbol(nutrient_name)] ⋅ diet
@@ -298,6 +315,7 @@ end
 
 
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -322,9 +340,11 @@ the system so far has 25 constraints, each referring to 5740 variables
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 filter(x->contains(x, "Vitamin B"), String.(collect(names(nutrients))))
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -344,6 +364,7 @@ So I define an function to print it out neatly
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 function show_diet(diet)
     for ii in eachindex(diet)
@@ -357,6 +378,7 @@ function show_diet(diet)
     end
 end
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -379,6 +401,7 @@ But that is fine we just want one.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -387,9 +410,11 @@ basic_nutrient_requirements(m, diet);
 @show status = solve(m)
 show_diet(diet)
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
     5 grams 	Cream of tartar, dry powder
@@ -410,6 +435,7 @@ status = solve(m) = :Optimal
   263 grams 	Mixed vegetables, Asian greens, boiled, microwaved or steamed, drained
 
 {% endhighlight %}
+</div>
 
 So looking at that result it is fairly ok.
 A buch of basically supplements, plus some oils, and vegetables.
@@ -435,6 +461,7 @@ so lets add a constraint that one shouldn't ever consume >500gram of the same it
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -447,9 +474,11 @@ basic_nutrient_requirements(m, diet);
 @show status = solve(m)
 show_diet(diet)
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
   192 grams 	Stock, liquid, all flavours (except fish), homemade from basic ingredients
@@ -473,6 +502,7 @@ status = solve(m) = :Optimal
    43 grams 	Cabbage, pickled, canned, drained
 
 {% endhighlight %}
+</div>
 
 This is a bit better than before.
 I particularly appreciate the handful of Cumquats and the half an oster.
@@ -483,9 +513,11 @@ How much caffine is that?
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 total_intake("Caffeine (mg)", getvalue(diet))
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -509,6 +541,7 @@ After all I do drink water on my own.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -522,9 +555,11 @@ basic_nutrient_requirements(m, diet);
 @show status = solve(m)
 show_diet(diet)
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
   500 grams 	Salt substitute, potassium chloride
@@ -550,6 +585,7 @@ status = solve(m) = :Optimal
   229 grams 	Mixed vegetables, Asian greens, stir-fried or fried, fat not further defined
 
 {% endhighlight %}
+</div>
 
 mmmmmmmmmm, yum. Powdered suppliments.
 For interest: a Pipi is a tiny Australian Molusc that lives in the sand.
@@ -569,6 +605,7 @@ More sensible is to just blacklist by name, and cross-ref with moisture.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 function forbid_liquids(m::Model, diet, keywords=["milk", "drink", "Water", "Milk"])
     # not blocking lowercase "water" as that would block "Soup made with water"
@@ -581,6 +618,7 @@ function forbid_liquids(m::Model, diet, keywords=["milk", "drink", "Water", "Mil
 
 end
 {% endhighlight %}
+</div>
 
 **Output:**
 
@@ -593,6 +631,7 @@ end
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -606,9 +645,11 @@ forbid_liquids(m, diet)
 @show status = solve(m)
 show_diet(diet)
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
   500 grams 	Stock, liquid, all flavours (except fish), homemade from basic ingredients
@@ -631,6 +672,7 @@ status = solve(m) = :Optimal
    87 grams 	Mixed vegetables, Asian greens, boiled, microwaved or steamed, drained
 
 {% endhighlight %}
+</div>
 
 I hope you enjoy your shashi slice of lamb and goat.
 
@@ -640,6 +682,7 @@ So by friend trying to get buff, he wanted to maximize protein.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -651,9 +694,11 @@ basic_nutrient_requirements(m, diet);
 @show status = solve(m)
 show_diet(diet)
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
    10 grams 	Folic acid
@@ -665,6 +710,7 @@ status = solve(m) = :Optimal
 42752 grams 	Intense sweetener, containing aspartame, powdered formulation
 
 {% endhighlight %}
+</div>
 
 Again, if we just want to maximize Protein, then the solution comes out rather silly.
 It basically says eat as much protein containing food as you can until you hit one of the nutrient upper bounds.
@@ -685,6 +731,7 @@ So lets say between 8,000Kj and 15,000Kj.
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -701,9 +748,11 @@ basic_nutrient_requirements(m, diet);
 @show status = solve(m)
 show_diet(diet)
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
    17 grams 	Fibre
@@ -722,6 +771,7 @@ status = solve(m) = :Optimal
   296 grams 	Mixed vegetables, Asian greens, boiled, microwaved or steamed, drained
 
 {% endhighlight %}
+</div>
 
 ## Diet 7: Minimize Weight
 
@@ -731,6 +781,7 @@ and remove the cap on it (since weight alone can constrol our upper bound)
 
 **Input:**
 
+<div class="jupyter-input jupyter-cell">
 {% highlight julia %}
 m, diet = new_diet()
 basic_nutrient_requirements(m, diet);
@@ -747,9 +798,11 @@ show_diet(diet)
 
 println("Total: $(round(Int, 100sum(getvalue(diet)))) grams")
 {% endhighlight %}
+</div>
 
 **Output:**
 
+<div class="jupyter-stream jupyter-cell">
 {% highlight plaintext %}
 status = solve(m) = :Optimal
     2 grams 	Salt substitute, potassium chloride
@@ -768,6 +821,7 @@ status = solve(m) = :Optimal
 Total: 501 grams
 
 {% endhighlight %}
+</div>
 
 This is actually fairly inline with the [kind of stuff intense hikers eat](http://blackwoodspress.com/blog/5521/10-ultralight-backpacking-foods/).
 Nuts (well nut, singular), crisps, protein powder, cereal.
