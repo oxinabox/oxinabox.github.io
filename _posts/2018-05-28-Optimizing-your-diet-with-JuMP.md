@@ -389,7 +389,7 @@ end
 
 
 
-## Diet 1: Minimize Energy, with only basic nutritional constraints
+## Diet 1: Minimize Energy, with only basic nutritional constraints (LP)
 
 So now we are ready to go.
 We set up out system of constraints, 
@@ -457,7 +457,7 @@ That is pretty boring,
 so lets add a constraint that one shouldn't ever consume >500gram of the same item.
 
 
-## Diet 2: Minimize Energy, improved
+## Diet 2: Minimize Energy, improved (LP)
 
 **Input:**
 
@@ -505,7 +505,7 @@ status = solve(m) = :Optimal
 </div>
 
 This is a bit better than before.
-I particularly appreciate the handful of Cumquats and the half an oster.
+I particularly appreciate the handful of Cumquats and the half an oyster.
 
 Still rather high on Milk, since it has basically worked around the 500g limit, by using 3 different types of watered-down Milk.
 Also that seems like a whole lot of coffee, even if some is decaff.
@@ -534,9 +534,9 @@ This isn't surprising, since the optimal solution to a linear programming proble
 I'm just not happy with the amount of liquid in this diet still though.
 
 
-## Diet 4: Minimize Energy, improved, limit liquid portions
+## Diet 4: Minimize Energy, improved, limit liquid portions (LP)
 
-I think, I'ld just like my diet to be less than 5% liquid by mass.
+I think, I'ld just like my diet to be less than 25% liquid by mass.
 After all I do drink water on my own.
 
 **Input:**
@@ -588,16 +588,12 @@ status = solve(m) = :Optimal
 </div>
 
 mmmmmmmmmm, yum. Powdered suppliments.
-For interest: a Pipi is a tiny Australian Molusc that lives in the sand.
-As a child I would watch them wash up on the beach,  and try and grab then before the burrowed into the ground.
-2grams would be about 1 of them, you could cook it with a lighter.
-
 One thing that is going on here is that it is stocking up on powder's to bring the total moister portion down.
 For example Thiamin  is B1 suppliments,
 Apparently [you can't normally overdose on B1](https://www.livestrong.com/article/367247-vitamin-b1-overdose-symptoms/),
 and so we have no containts on B1 intake, except the 500gram max.
 
-## Diet 5: Minimize Energy, improved, ban liquids
+## Diet 5: Minimize Energy, improved, ban liquids (LP)
 What I really want to do is just remove items from the list that are basically liquids.
 I could filter the list to remove anything with more than 96% liquid,
 but actually that knocks out things like lettuce, but doesn't knock out all the varients milk.
@@ -676,9 +672,9 @@ status = solve(m) = :Optimal
 
 I hope you enjoy your shashi slice of lamb and goat.
 
-## Diet 6: Maximize protein 
+## Diet 6: Maximize protein   (LP)
 
-So by friend trying to get buff, he wanted to maximize protein.
+So my friend trying to get buff, he wanted to maximize protein.
 
 **Input:**
 
@@ -720,7 +716,7 @@ It is kinda amazing that this is apparently hitting all the nutritonal requireme
 
 Obvious mistake is we forgot to bound the amount of energy.
 
-## Diet 7: Maximize Protein with Energy Constraints
+## Diet 7: Maximize Protein with Energy Constraints (LP)
 We could do the [Basal Metabolic Rate](https://en.wikipedia.org/wiki/Basal_metabolic_rate) calculations,
 to determine how much energy a person needs,
 but I'm willing to just ball-park it.
@@ -773,7 +769,7 @@ status = solve(m) = :Optimal
 {% endhighlight %}
 </div>
 
-## Diet 7: Minimize Weight
+## Diet 7: Minimize Weight (LP)
 
 What is the least weight of food we can be carrying while hiking?
 We'll up the minimum energy to take into account the high expenditure,
@@ -790,7 +786,6 @@ basic_nutrient_requirements(m, diet);
     10_000 <= total_intake("Energy, with dietary fibre (kJ)", diet)
     )
 
-#@constraint(m, total_intake("Moisture (g)", diet) <= 0.70sum(diet)*100) # Less than 25% liquid
 
 @objective(m, Min,  sum(diet))
 @show status = solve(m)
@@ -826,21 +821,20 @@ Total: 501 grams
 This is actually fairly inline with the [kind of stuff intense hikers eat](http://blackwoodspress.com/blog/5521/10-ultralight-backpacking-foods/).
 Nuts (well nut, singular), crisps, protein powder, cereal.
 
-The trick in here seems to be the use of Breakfast serial, to hit most nutient requirements,
-the Seweed/ nori to cover a whole bunch more, 
+The trick in here seems to be the use of Breakfast cereal, to hit most nutient requirements,
+the Seaweed/nori to cover a whole bunch more, in particular iodine. 
 and then abusing the actual contents of additives and subsitutes  like acesulfame-potassium and stevia, to hit the others.
 
 ## Conclusion
 One can go a long way with just linear programming.
-To go a bit further (e.g. mimize the number of things, or (if you had the data) require nonfactional amounts of fruit etc), you'ld need mixed integer programming.
+To go a bit further (for example if you had the data require nonfactional amounts of fruit etc), you'ld need mixed integer programming.
 JuMP makes both easy; and with this number of variables even the NP-Hard mixed iteger programming can be solved in fairly reasonable time using the free solvers.
 
 I'll conclude with another disclaimer: please don't try using diets you've made up based on constraints you've found online, and solved using linear programming.
 I do not want to know what actually happens when someone eats 42Kg of powdered sweetener.
 
 Still I hope this has been illustrative of the power of constrained optimization.
-In general if  one can often transform problem into linear programming (Not technically, but effectively P),
-or mixed integer programming (NP-hard),
-that is a generally a short path to solving it.
-Unless you've screwed up, such a formulation will likely correspond to the algorithm of minimum known time complexity for your problem.
+In general if  one can often transform problem into linear programming (P), or mixed integer programming (NP-hard),
+then that is a generally a short path to solving it.
+And unless you've screwed up, such a formulation will likely correspond to the algorithm of minimum known time complexity for your problem.
 
