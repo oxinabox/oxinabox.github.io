@@ -47,7 +47,7 @@ This is one of the more obscure python features that I missed when switching to 
 
 
 
-### [Combining Characters in Operators](https://github.com/JuliaLang/julia/pull/22089) \#2209
+### [Combining Characters in Operators](https://github.com/JuliaLang/julia/pull/22089)
 
 > Custom infix operators can now be defined by appending Unicode
 combining marks, primes, and sub/superscripts to other operators.
@@ -187,7 +187,7 @@ To this day there remains only [8 open issues older than it](https://github.com/
 Contrast the newest issue/PR number in this is [#27212](https://github.com/JuliaLang/julia/pull/27212),
 an improvement to interface for matrix factorizations, written under 2 weeks ago.
 
-### [ccall is now less magic in how it parses ampersand](https://github.com/JuliaLang/julia/issues/6080)
+### [ccall is now less magic in how it uses ampersand](https://github.com/JuliaLang/julia/issues/6080)
 
 > Prefix `&` for by-reference arguments to `ccall` has been deprecated in favor of
 `Ref` argument types ([#6080]).
@@ -211,7 +211,7 @@ julia> ccall((:clock, "libc"), Int32, ())
 But at least with this change it doesn't use the  `&` operator entirely differently to the rest of the language.
 
 
-### [Save begin keyword for use in indexing expression](https://github.com/JuliaLang/julia/issues/23354)
+### [Begin keyword in indexing expression](https://github.com/JuliaLang/julia/issues/23354)
 
 > `begin` is disallowed inside indexing expressions, in order to enable the syntax
     `a[begin]` (for selecting the first element) in the future ([#23354]).
@@ -233,15 +233,15 @@ This is just nice, it is what you expect to happen.
 [DataDeps.jl](https://github.com/oxinabox/DataDeps.jl) has some specialized code to deal with exactly this case.
 (and said code had bugs, which I am not proud of considering it should be a simple work-around; but I was over using default arguments at the time.)
 
-### [When promoting types, if the types don't change that is now an error](https://github.com/JuliaLang/julia/issues/22801)
+### [When promoting types, it is now an error if the types don't change](https://github.com/JuliaLang/julia/issues/22801)
 
 > The `promote` function now raises an error if its arguments are of different types
 and if attempting to convert them to a common type fails to change any of their types.
 This avoids stack overflows in the common case of definitions like
 `f(x, y) = f(promote(x, y)...)` ([#22801]).
 
-This is good,
-it is very similar to this [line](https://github.com/JuliaMath/SpecialFunctions.jl/pull/18/files#diff-f839a13f2df5472f7fd840f52ce84e16R502).
+This is good.
+I encountered similar issues when writing this [line](https://github.com/JuliaMath/SpecialFunctions.jl/pull/18/files#diff-f839a13f2df5472f7fd840f52ce84e16R502), though it doesn't use promote.
 The fact that you are hitting a `promote` at all, means that nothing accepting these argument types exists,
 so if you're promoting them and not getting a new type, then there is no hope for you to find something better to do with them anyway.
 
