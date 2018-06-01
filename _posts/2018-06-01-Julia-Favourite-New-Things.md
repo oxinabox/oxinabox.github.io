@@ -14,10 +14,12 @@ But since since 1.0 is going to be 0.7 with deprecations removed,
 We can look at it as a 1.0 list.
 
 Many people are getting excited about big changes like
+[Pkg3](https://docs.julialang.org/en/latest/stdlib/Pkg/),
 [named tuples](https://github.com/JuliaLang/julia/issues/22194),
 [field access overloading](https://github.com/JuliaLang/julia/issues/1974), 
 [lazy broadcasting](https://docs.julialang.org/en/latest/manual/interfaces/#man-interfaces-broadcasting-1). 
 I am excited about them too, but I think they're going to get all the attention they need.
+(If not then they deserve a post of their own each, not going to try and squeeze them into this one.)
 Here are some of the smaller changes I am excited about.
 
 These are excepts from [0.7-alpha NEWS.md](https://github.com/JuliaLang/julia/blob/v0.7.0-alpha/NEWS.md)
