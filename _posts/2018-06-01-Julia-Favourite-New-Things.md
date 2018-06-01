@@ -352,6 +352,27 @@ And this means we are [taking transpose seriously still (read these 417 comments
 This is my only real contribution to `Base`	in the 0.7 timeframe.
 It is just one of those tiny "I assumed it always worked that way" things that are technically breaking changes, that are good to get in before they become blocked until Julia 2.0.
 
+### [Iterator Changes](https://github.com/JuliaLang/julia/pull/25261)
+These seem to be missing from the change log, but they are going to make a whole lot of iterators easier to define.
+
+
+In 0.6 one had to define 3 functions:
+
+ -  `start(iterable)` which returned the initial `state`
+ -  `next(iterable, state)` which return `(element, newstate)`
+ -   and `done(iterable, state)` returning a boolean to indicate if done.
+ 
+This often mean one would have to read-ahead and store future element in the state so that one could check if a source was going to be empty when done was called.
+It was an annoying pattern. 
+The changes proposed in [Julep #18823](https://github.com/JuliaLang/julia/issues/18823) are now in.
+
+Now there is just one function `iterate`
+  - `iterate(iterable)` returns the initial `state` and the  first element (basically same as `start` + `next` combined)
+  - `iterate(iterable, state)` returns the `newstate` and the  next element (basically same as `next`)
+  - However both the 1-arg and 2-arg forms return `nothing` when there are no more items (i.e. what uesd to be check for in `done`.)
+This is going to make a lot of code easier to write.
+
+See the [docs](https://docs.julialang.org/en/latest/manual/interfaces/#man-interface-iteration-1).
 
 ### [More pure julia math](https://github.com/JuliaLang/julia/issues/26434)
 
