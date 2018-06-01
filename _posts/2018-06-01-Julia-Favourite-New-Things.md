@@ -313,6 +313,24 @@ This is my only real contribution to `Base`	in the 0.7 timeframe.
 It is just one of those tiny "I assumed it always worked that way" things that are technically breaking changes, that are good to get in before they become blocked until Julia 2.0.
 
 
+### [More pure julia math](https://github.com/JuliaLang/julia/issues/26434)
+
+It's not in the changelog, because it is basically invisible to users,
+but thanks to the work of [@pkofof](https://github.com/pkofod) and several others,
+julia is now really close to not shipping with a C based math library.
+A pure julia math library at the lowest level.
+I suggested [that here](https://github.com/JuliaLang/julia/issues/18102#issuecomment-240618613),
+though I am sure I wasn't the first to suggest it.
+It will be much nicer to maintain,
+and I think, given the people working with julia, will in time exceed(/become) the state of the art, in performance and accuracy.
+(To my knowledge there are no speed regressions with this change, so it can only get better.)
+
+
+
+Julia 0.7-alpha is still shipping [openlibm](https://github.com/JuliaLang/openlibm).
+There is a solid chance that 1.0 won't, and if not 1.0 then definitely gone in the 1.x timeframe.
+
+
 ### [Compiler/Runtime improvements](https://github.com/JuliaLang/julia/pull/22210)
 
 > * The inlining heuristic now models the approximate runtime cost of
