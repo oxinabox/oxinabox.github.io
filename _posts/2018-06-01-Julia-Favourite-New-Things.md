@@ -59,7 +59,7 @@ precedence as `+` ([#22089]).
 
 This means unlimited infix operations can be defined, without allowing some of the unread-ability that just letting words be used as infix would do.
 Obviously should still be used with caution, and I think the need to use unicode will cause surficent caution and strike a good balance.
-It should be understood that julia supporting editors (including vim and emacs) transform e.g. `\_2` into ₂ on a <kbd>tab<kbd>.
+It should be understood that julia supporting editors (including vim and emacs) transform e.g. `\_2` into ₂ on a <kbd>tab</kbd>.
 But still, that extra combination of key-presses I think will make people use them with caution.
 Which should stop us seeing an unreadable mess.
 
