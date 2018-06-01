@@ -67,7 +67,7 @@ julia> 1 +₂ 2
 2.23606797749979
 ```
 
-### The [Missing singleton](https://github.com/JuliaLang/julia/pull/24653)
+### [The missing value](https://github.com/JuliaLang/julia/pull/24653)
 
 > The `missing` singleton object (of type `Missing`) has been added to represent
 missing values ([#24653]). It propagates through standard operators and mathematical functions,
