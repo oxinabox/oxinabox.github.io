@@ -166,7 +166,7 @@ Not sure I have any uses for it right now, but it open's up options.
 There are a few other backet-type unicode characters, so maybe in the 1.x timeframe we might also be able to overload those as circumfix.
 (and maybe use them for call/`getindex` type overload too).
 
-### For loop variable binding changes
+### [For loop variable binding changes](https://github.com/JuliaLang/julia/issues/22314)
 
 >  * In `for i = ...`, if a local variable `i` already existed it would be overwritten
 during the loop. This behavior is deprecated, and in the future `for` loop variables
@@ -310,7 +310,7 @@ This is my only real contribution to `Base`	in the 0.7 timeframe.
 It is just one of those tiny "I assumed it always worked that way" things that are technically breaking changes, that are good to get in before they become blocked until Julia 2.0.
 
 
-### Compiler/Runtime improvements
+### [Compiler/Runtime improvements](https://github.com/JuliaLang/julia/pull/22210)
 
 > * The inlining heuristic now models the approximate runtime cost of
 a method (using some strongly-simplifying assumptions). Functions
