@@ -298,15 +298,51 @@ recommended approach for manipulating arrays of data, rather than the recursivel
 defined, linear-algebra function `transpose`. Similarly,
 `permutedims(v::AbstractVector)` will create a row matrix ([#24839]).
 
-Good, being unable to tranpose arrays of strings in 0.6 (without giving dims) was annoying.
+Good, being unable to transpose arrays of strings in 0.6 (without giving dims) was annoying.
 No more:
 
 ```julia
-julia> ["alpha", "omega"]'
+julia> ["alpha" "omega"]'
 1×2 RowVector{Any,ConjArray{String,1,Array{String,1}}}:
 Error showing value of type RowVector{Any,ConjArray{String,1,Array{String,1}}}:
 ERROR: MethodError: no method matching transpose(::String)
+
+julia> #err no mistakes have been made, that hasn't worked since 0.5
+	   
+julia> reshape(["alpha", "omega"], (:,1) )
+2×1 Array{String,2}:
+ "alpha"
+ "omega"
+ 
+julia> ["alpha" "omega"; "beta" "gamma"]'
+ERROR: MethodError: no method matching transpose(::String)
+
+julia> # Oh No. mistakes have been made, AGAIN, that hasn't worked since 0.5
+
+julia> permutedims(["alpha" "omega"; "beta" "gamma"], (2,1))
+2×2 Array{String,2}:
+ "alpha"  "beta"
+ "omega"  "gamma"
 ```
+
+0.6 used `reshape` to transpose vectors of strings, and `permutedims` to transpose matrices of strings.
+
+Now we can just do `permutedims` without specifying the dims for both.
+
+```
+julia> permutedims(["alpha", "omega"])
+1×2 Array{String,2}:
+ "alpha"  "omega"
+ 
+julia> permutedims(["alpha" "omega"; "beta" "gamma"])
+2×2 Array{String,2}:
+ "alpha"  "beta"
+ "omega"  "gamma"
+```
+
+Not quiet as brief as a apostrophe, but still `permutedims` for both is a lot clearer.
+And this means we are [taking transpose seriously still (read these 417 comments, over 3 years to know what that means)](https://github.com/JuliaLang/julia/issues/4774).
+
 
 ### [Most functions that create or modify a file/folder return the path](https://github.com/JuliaLang/julia/pull/27071)
 
