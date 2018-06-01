@@ -377,7 +377,7 @@ See the [docs](https://docs.julialang.org/en/latest/manual/interfaces/#man-inter
 ### [More pure julia math](https://github.com/JuliaLang/julia/issues/26434)
 
 It's not in the changelog, because it is basically invisible to users,
-but thanks to the work of [@pkofof](https://github.com/pkofod) and several others,
+but thanks to the work of [@pkofod](https://github.com/pkofod) and several others,
 julia is now really close to not shipping with a C based math library.
 A pure julia math library at the lowest level.
 I suggested [that here](https://github.com/JuliaLang/julia/issues/18102#issuecomment-240618613),
@@ -385,7 +385,6 @@ though I am sure I wasn't the first to suggest it.
 It will be much nicer to maintain,
 and I think, given the people working with julia, will in time exceed(/become) the state of the art, in performance and accuracy.
 (To my knowledge there are no speed regressions with this change, so it can only get better.)
-
 
 
 Julia 0.7-alpha is still shipping [openlibm](https://github.com/JuliaLang/openlibm).
