@@ -115,7 +115,7 @@ vs
 end
 ```
 
-### [Convert no longer falls back to constructors](https://github.com/JuliaLang/julia/issues/15120)
+### [Constructors no longer falls back to convert](https://github.com/JuliaLang/julia/issues/15120)
 
 >The fallback constructor that calls `convert` is deprecated. Instead, new types should
 prefer to define constructors, and add `convert` methods that call those constructors
