@@ -288,6 +288,10 @@ As they say TIMTOWTDIBSCINABTE.
 
 >  * The keyword `importall` is deprecated. Use `using` and/or individual `import` statements
     instead ([#22789]).
+    
+This is good, it was generally a bad-idea, and I don't know anyone who was using it seriously.
+It is easy enough to recreate with some metaprogramming and `names(::Module, true)`.
+
 
 
 ### [Non-recursive transpose is now done with permutedims](https://github.com/JuliaLang/julia/pull/24839)
