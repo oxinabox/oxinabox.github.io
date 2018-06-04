@@ -90,7 +90,7 @@ One can contrast `Array(Union{Missing,T})` with  `DataArray{T}` from [DataArrays
 One can also contrast `Array(Union{Nothing,T})` with `Array{Nullable{T}}` and `NullableArray{T}` from the deprecated [NullableArrays.jl](https://github.com/JuliaStats/NullableArrays.jl).
 
 It will be interesting to see exactly how `nothing` and `missing` play out in-practice.
-I feel like if all things go well, then in most circumstances operating with a `missing` should return a `missing` (i.e. properation),
+I feel like if all things go well, then in most circumstances operating with a `missing` should return a `missing` (i.e. propagation),
 and operating with a `nothing` should throw an error (Much like a `NullReferenceError`).
 
 ### [Use begin blocks when defining enum values](https://github.com/JuliaLang/julia/pull/25424)
@@ -200,10 +200,10 @@ an improvement to interface for matrix factorizations, written under 2 weeks ago
 `Ref` argument types ([#6080]).
 
 
-`ccall` used to be really magic, [\#18754](https://github.com/JuliaLang/julia/pull/18754),
-made it less so -- it is still pretty magic though.
-It looks like a function, but it is not a function at all but an actual part of the language.
-It is still not a function, in both 0.6 and 0.7 it's first parameter needs to be resolve-able at compile time:
+`ccall` used to be really magic.
+While  [\#18754](https://github.com/JuliaLang/julia/pull/18754) made it less so -- it is still pretty magic.
+It looks like a function, but it is not a function at all, but an actual part of the language.
+Notice from example that in both 0.6 and 0.7 it's first parameter needs to be resolve-able at compile time:
 so
 
 ```julia
