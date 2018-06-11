@@ -17,4 +17,7 @@ Email is by far the most reliable way to contact me. Better than phone. [lyndon[
 
 I mostly use twitter to complain to companies, and for technical discussions.
 
-
+## LinkedIn
+https://www.linkedin.com/in/lyndon-white-46b9a035/
+I used LinkedIn only because it is uquitious, and it is better than letting any work stuff touch my personal social media (e.g. facebook).
+But if I am not looking for a job, I may go years without openning it.
