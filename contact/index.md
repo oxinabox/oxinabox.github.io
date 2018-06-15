@@ -9,15 +9,12 @@ Make sure to send me an email before turning up. I'm usually somewhere on-campus
 
 
 ## Email
-Email is by far the most reliable way to contact me. Better than phone. [lyndon[dot]white[at]research[dot]uwa[dot]edu[dot]au](mailto:lyndon[dot]white[at]research[dot]uwa[dot]edu[dot]au)
+[lyndon[dot]white[at]research[dot]uwa[dot]edu[dot]au](mailto:lyndon[dot]white[at]research[dot]uwa[dot]edu[dot]au)
 
+Email is by far the most reliable way to contact me. Better than phone.
 
-## Twitter
-[@oxinabox_frames](https://twitter.com/oxinabox_frames)
-
-I mostly use twitter to complain to companies, and for technical discussions.
-
-## LinkedIn
-https://www.linkedin.com/in/lyndon-white-46b9a035/
-I used LinkedIn only because it is uquitious, and it is better than letting any work stuff touch my personal social media (e.g. facebook).
-But if I am not looking for a job, I may go years without openning it.
+## Other Profiles
+ - [Twitter: @oxinabox_frames](https://twitter.com/oxinabox_frames) (Primarily for technical discussions)
+ - [LinkedIn](https://www.linkedin.com/in/lyndon-white-46b9a035/) (Potentially rarely checked)
+ - [Stack Overflow](https://stackoverflow.com/users/179081/lyndon-white)
+ - [Github](https://github.com/oxinabox/)
