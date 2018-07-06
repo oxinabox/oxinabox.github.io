@@ -260,8 +260,11 @@ and replaced with the logging macros `@info`, `@warn`, `@debug` and
 `AbstractLogger` and the functions from the new standard `Logging` library.
 ([#24490])
 
-New logging system, it is going to be just that little bit nicer.
-
+The new logging system, is really cool.
+It is a lot prettier in the console for a start.
+`@warn` includes a 1-line backtrace showing where it was triggered.
+The whole system is configurable and extendable.
+Its nice.
 
 ### [Getting the name of things is now easier](https://github.com/JuliaLang/julia/pull/25622)
 
@@ -353,7 +356,7 @@ And this means we are [taking transpose seriously still (read these 417 comments
  >  * `mv`,`cp`, `touch`, `mkdir`, `mkpath`, now return the path that was created/modified
     rather than `nothing` ([#27071]).
 	
-This is my only real contribution to `Base`	in the 0.7 timeframe.
+This is my only real contribution to `Base` in the 0.7 timeframe.
 It is just one of those tiny "I assumed it always worked that way" things that are technically breaking changes, that are good to get in before they become blocked until Julia 2.0.
 
 ### [Iterator Changes](https://github.com/JuliaLang/julia/pull/25261)
@@ -376,7 +379,8 @@ Now there is just one function `iterate`
   - However both the 1-arg and 2-arg forms return `nothing` when there are no more items (i.e. what uesd to be check for in `done`.)
 This is going to make a lot of code easier to write.
 
-See the [docs](https://docs.julialang.org/en/latest/manual/interfaces/#man-interface-iteration-1).
+See the [docs](https://docs.julialang.org/en/latest/manual/interfaces/#man-interface-iteration-1),
+and [Eric Davies excellent blog post on the changes](https://invenia.github.io/blog/2018/07/06/iteratorsinjulia07/)
 
 ### [More pure julia math](https://github.com/JuliaLang/julia/issues/26434)
 
