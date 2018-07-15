@@ -182,7 +182,7 @@ skipping any papers with no author or abstract.
                     authors,
                     metadata["year"],
                     abstract_toks
-                    )
+                )
             )
         end
     end
@@ -230,9 +230,9 @@ One after the other.
 function serial_channel_load(fileload_func, filenames; ctype=Any, csize=BUFFER_SIZE)
     Channel(ctype=ctype, csize=csize) do ch
         for filename in filenames
-            load_paper_data(ch, filename)
+            fileload_func(ch, filename)
         end
-	end
+    end
 end
 
 {% endhighlight %}
@@ -300,7 +300,7 @@ julia cans switch the CPU over to another task which is wanting to do some compu
 Like parsing JSON.
 
 Just to be clear 
-Async isn’t true parallelism, it is just swapping Tasks when one is blocked/yields.
+async isn’t true parallelism, it is just swapping `Task`s when one is blocked/yields.
 Only one bit of julia code runs at a time.
 
 **Input:**
@@ -312,7 +312,7 @@ function async_channel_load(fileload_func, filenames; ctype=Any, csize=BUFFER_SI
         @sync for fn in filenames
             @async fileload_func(ch, fn)
         end
-		# channel will be closed once this do block completes.
+        # channel will be closed once this do block completes.
     end
 end
 {% endhighlight %}
@@ -328,7 +328,7 @@ end
 
 
 The `@async` starts the new tasks for each file.
-The `@sync` needed to not exist this loop before all contained `@async`s are done.
+The `@sync` needed to avoid exiting this loop before all the contained `@async`s are done.
 The `Channel` does itself starts a task, to run that do block which starts up all the other tasks.
 So  `async_channel_load` actually returns the channel almost immediately.
 Most of the loading will happen as we try to read from the channel.
@@ -367,6 +367,12 @@ as in that case the hard-drive spends a lot more time moving around the disk.
 But since it actually spends most of its time reading consecutive entries into the cannels buffer rather than seeking,
 the async doesn't do much.
 
+#### Note: zombie tasks
+It is worth noting that because we are running `Iterators.take` to take a finite number of elements from the tasks, that we are potentially accumulating zombie tasks.
+However, I believe they should all be being caught by their finalizers ones all channels they are pointing to are garbage collected.
+It might well be better to be closing them explictly, but I have a lot of RAM.
+(thanks Spencer Russell for suggesting I point this out)
+
 ## Distributed Loader
 This is more fiddly.
 But it is true parallelism.
@@ -384,19 +390,19 @@ With that said we are still IO bound, since the processes do all have to share t
 {% highlight julia %}
 function distributed_channel_load(fileload_func, filenames; ctype=Any, csize=BUFFER_SIZE)
     Channel(ctype=ctype, csize=csize) do local_ch
-		remote_ch = RemoteChannel(()->local_ch)
+        remote_ch = RemoteChannel(()->local_ch)
 
-		c_pool = CachingPool(workers())
+        c_pool = CachingPool(workers())
         file_dones = map(filenames) do filename
             remotecall(fileload_func, c_pool, remote_ch, filename)
         end
 
-		# Wait till all the all files are done
-		for file_done in file_dones
-			wait(file_done)
-		end 
-		clear!(c_pool)
-	end
+        # Wait till all the all files are done
+        for file_done in file_dones
+            wait(file_done)
+        end 
+        clear!(c_pool)
+    end
 end
 
 {% endhighlight %}
@@ -452,20 +458,3 @@ It would be nice to have a threaded version of this to go with it;
 but making a threaded version of this is really annoying, at least until the [PATR work is complete](https://github.com/JuliaLang/julia/pull/22631).
 I am very excited about that PR; though it is a fair way off (julia 1.x time frame).
 Eventually (though maybe not in that PR), there is a good chance the threaded version of this code would look just like the asynchronous version.
-
-**Input:**
-
-<div class="jupyter-input jupyter-cell">
-{% highlight julia %}
-1+1
-{% endhighlight %}
-</div>
-
-**Output:**
-
-
-
-
-    2
-
-
