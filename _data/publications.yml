@@ -5,7 +5,13 @@
   year: 2018
   key: White2018NovelPerspective
   supl: tools#novelperspective
-
+  
+- title: "NNEval: Neural Network based Evaluation Metric"
+  author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
+  venue: '15th European Conference on Computer Vision'
+  year: 2018
+  key: Sharif2018NNEval
+  
 - title: "Learning-based Composite Metrics for Improved Caption Evaluation"
   author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
   venue: 'Association for Computational Linguistics (ACL), Student Research Workshop'
