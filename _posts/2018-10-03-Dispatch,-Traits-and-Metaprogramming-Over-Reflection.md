@@ -57,13 +57,11 @@ display_percent(x) = println(100x,"%")
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 display_percent (generic function with 1 method)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -116,13 +114,11 @@ display_percent(x::Rational) = println(round(100x; digits=2), "%")
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 display_percent (generic function with 2 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -199,13 +195,11 @@ end
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 display_percent (generic function with 3 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -281,13 +275,11 @@ display_percent(::Half) = println("50%")
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 display_percent (generic function with 4 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -337,13 +329,11 @@ end
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 display_percent_bad (generic function with 1 method)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -438,13 +428,11 @@ aslist_direct(x::Union{AbstractArray,Tuple}) = x
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 aslist_direct (generic function with 2 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -489,13 +477,11 @@ aslist_direct(x::String) = x
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 aslist_direct (generic function with 3 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -568,13 +554,11 @@ typeof(Int) = DataType
 </div>
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 DataType
 {% endhighlight %}
-
-
 
 
 </div>
@@ -590,13 +574,11 @@ String isa DataType
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 true
 {% endhighlight %}
-
-
 
 
 </div>
@@ -632,13 +614,11 @@ String isa Type{<:AbstractString} = true
 </div>
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 true
 {% endhighlight %}
-
-
 
 
 </div>
@@ -687,13 +667,11 @@ scalarness(::Type{<:AbstractString}) = NonScalar()
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 scalarness (generic function with 4 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -770,13 +748,11 @@ aslist(::NonScalar, x) = x
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 aslist (generic function with 3 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -853,13 +829,11 @@ scalarness(::Type{T}) where T = hasmethod(Base.iterate, (T,)) ? NonScalar() : Sc
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 scalarness (generic function with 5 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -891,13 +865,11 @@ aslist(1) = 1
 </div>
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 1
 {% endhighlight %}
-
-
 
 
 </div>
@@ -935,14 +907,12 @@ aslist(1)
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 1-element Array{Int64,1}:
  1
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1040,13 +1010,15 @@ collect(methods(Base.iterate))[1:5]
 **Output:**
 
 <div class="jupyter-cell">
-  
-
-<div class="jupyter-other-output">
-5-element Array{Method,1}:<ul><li> iterate(v::<b>Core.SimpleVector</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a><li> iterate(v::<b>Core.SimpleVector</b>, i) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a><li> iterate(ebo::<b>ExponentialBackOff</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/error.jl#L171" target="_blank">error.jl:171</a><li> iterate(ebo::<b>ExponentialBackOff</b>, state) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/error.jl#L171" target="_blank">error.jl:171</a><li> iterate(m::<b>Base.MethodList</b>, s...) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/reflection.jl#L730" target="_blank">reflection.jl:730</a></ul>
-</div>
 
 
+{% highlight plaintext %}
+[1] iterate(v::Core.SimpleVector) in Base at essentials.jl:578
+[2] iterate(v::Core.SimpleVector, i) in Base at essentials.jl:578
+[3] iterate(ebo::ExponentialBackOff) in Base at error.jl:171
+[4] iterate(ebo::ExponentialBackOff, state) in Base at error.jl:171
+[5] iterate(m::Base.MethodList, s...) in Base at reflection.jl:730
+{% endhighlight %}
 
 
 </div>
@@ -1064,13 +1036,11 @@ mm = first(methods(Base.iterate))
 **Output:**
 
 <div class="jupyter-cell">
-  
-
-<div class="jupyter-other-output">
-iterate(v::<b>Core.SimpleVector</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a>
-</div>
 
 
+{% highlight plaintext %}
+iterate(v::Core.SimpleVector) in Base at essentials.jl:578
+{% endhighlight %}
 
 
 </div>
@@ -1086,13 +1056,11 @@ mm.sig
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 Tuple{typeof(iterate),Core.SimpleVector}
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1121,13 +1089,11 @@ try_get_single_argtype(::Type{Tuple{F, T}}) where {F, T} = T
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 try_get_single_argtype (generic function with 4 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1143,13 +1109,11 @@ try_get_single_argtype(mm)
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 Core.SimpleVector
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1165,13 +1129,11 @@ try_get_single_argtype(methods(Base.iterate).ms[2])==nothing
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 true
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1192,7 +1154,7 @@ nonscalar_types = unique(filter(!is_nothing, try_get_single_argtype(Base.iterate
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 75-element Array{Any,1}:
@@ -1225,8 +1187,6 @@ nonscalar_types = unique(filter(!is_nothing, try_get_single_argtype(Base.iterate
 {% endhighlight %}
 
 
-
-
 </div>
 
 Notice however some of the types we found are from other modules -- modules that are loaded but not in
@@ -1246,7 +1206,7 @@ end
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 34-element Array{Any,1}:
@@ -1277,8 +1237,6 @@ end
  Schur                         
  GeneralizedSchur              
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1321,13 +1279,11 @@ end
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 scalarness_function_expr (generic function with 3 methods)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1343,7 +1299,7 @@ scalarness_function_expr(BitSet)
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 :(scalarness(::Type{<:BitSet}) = begin
@@ -1351,8 +1307,6 @@ scalarness_function_expr(BitSet)
           NonScalar()
       end)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1368,7 +1322,7 @@ scalarness_function_expr(last(nonscalar_types))
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 :(((scalarness(::Type{<:GeneralizedSchur{Ty, M}}) where M <: (AbstractArray{T, 2} where T)) where Ty) = begin
@@ -1376,8 +1330,6 @@ scalarness_function_expr(last(nonscalar_types))
           NonScalar()
       end)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1393,7 +1345,7 @@ scalarness_function_expr(nonscalar_types[6])
 **Output:**
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 :(((scalarness(::Type{<:Pair{A, B}}) where B) where A) = begin
@@ -1401,8 +1353,6 @@ scalarness_function_expr(nonscalar_types[6])
           NonScalar()
       end)
 {% endhighlight %}
-
-
 
 
 </div>
@@ -1475,13 +1425,45 @@ methods(scalarness)
 **Output:**
 
 <div class="jupyter-cell">
-  
-
-<div class="jupyter-other-output">
-34 methods for generic function <b>scalarness</b>:<ul><li> scalarness(::<b>Type{#s11} where #s11<:Union{LinRange, StepRangeLen}</b>) in Main at In[41]:16</li> <li> scalarness<i>{T, S}</i>(::<b>Type{#s11} where #s11<:OrdinalRange{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}}</i>(::<b>Type{#s11} where #s11<:LinearIndices{N,R}</b>) in Main at none:1</li> <li> scalarness<i>{T, N}</i>(::<b>Type{#s11} where #s11<:Array{T,N}</b>) in Main at none:1</li> <li> scalarness<i>{N}</i>(::<b>Type{#s11} where #s11<:BitArray{N}</b>) in Main at none:1</li> <li> scalarness<i>{N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}}</i>(::<b>Type{#s11} where #s11<:CartesianIndices{N,R}</b>) in Main at none:1</li> <li> scalarness<i>{T, N}</i>(::<b>Type{#s11} where #s11<:AbstractArray{T,N}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s1} where #s1<:AbstractArray</b>) in Main at In[20]:2</li> <li> scalarness(::<b>Type{#s11} where #s11<:String</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s1} where #s1<:AbstractString</b>) in Main at In[20]:4</li> <li> scalarness(::<b>Type{#s11} where #s11<:BitSet</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:AbstractSet</b>) in Main at In[25]:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:ExponentialBackOff</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:Cmd</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:Tuple</b>) in Main at In[41]:16</li> <li> scalarness<i>{A, B}</i>(::<b>Type{#s11} where #s11<:Pair{A,B}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:Number</b>) in Main at In[41]:16</li> <li> scalarness<i>{T}</i>(::<b>Type{#s11} where #s11<:Ref{T}</b>) in Main at none:1</li> <li> scalarness<i>{names, T<:Tuple}</i>(::<b>Type{#s11} where #s11<:NamedTuple{names,T}</b>) in Main at none:1</li> <li> scalarness<i>{K, V}</i>(::<b>Type{#s11} where #s11<:Dict{K,V}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:AbstractChar</b>) in Main at In[41]:16</li> <li> scalarness<i>{N}</i>(::<b>Type{#s11} where #s11<:CartesianIndex{N}</b>) in Main at none:1</li> <li> scalarness<i>{T}</i>(::<b>Type{#s11} where #s11<:Channel{T}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:QR{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:QRPivoted{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:Hessenberg{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:LQ{T,S}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:Union{Eigen, GeneralizedEigen}</b>) in Main at In[41]:16</li> <li> scalarness<i>{T, Tr, M<:(AbstractArray{T,N} where N)}</i>(::<b>Type{#s11} where #s11<:SVD{T,Tr,M}</b>) in Main at none:1</li> <li> scalarness<i>{T, S}</i>(::<b>Type{#s11} where #s11<:GeneralizedSVD{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:LU{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{Ty, S<:(AbstractArray{T,2} where T)}</i>(::<b>Type{#s11} where #s11<:Schur{Ty,S}</b>) in Main at none:1</li> <li> scalarness<i>{Ty, M<:(AbstractArray{T,2} where T)}</i>(::<b>Type{#s1} where #s1<:GeneralizedSchur{Ty,M}</b>) in Main at none:1</li> <li> scalarness<i>{T}</i>(::<b>Type{T}</b>) in Main at In[27]:2</li> </ul>
-</div>
 
 
+{% highlight plaintext %}
+# 34 methods for generic function "scalarness":
+[1] scalarness(::Type{#s11} where #s11<:Union{LinRange, StepRangeLen}) in Main at In[41]:16
+[2] scalarness(::Type{#s11} where #s11<:OrdinalRange{T,S}) where {T, S} in Main at none:1
+[3] scalarness(::Type{#s11} where #s11<:LinearIndices{N,R}) where {N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}} in Main at none:1
+[4] scalarness(::Type{#s11} where #s11<:Array{T,N}) where {T, N} in Main at none:1
+[5] scalarness(::Type{#s11} where #s11<:BitArray{N}) where N in Main at none:1
+[6] scalarness(::Type{#s11} where #s11<:CartesianIndices{N,R}) where {N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}} in Main at none:1
+[7] scalarness(::Type{#s11} where #s11<:AbstractArray{T,N}) where {T, N} in Main at none:1
+[8] scalarness(::Type{#s1} where #s1<:AbstractArray) in Main at In[20]:2
+[9] scalarness(::Type{#s11} where #s11<:String) in Main at In[41]:16
+[10] scalarness(::Type{#s1} where #s1<:AbstractString) in Main at In[20]:4
+[11] scalarness(::Type{#s11} where #s11<:BitSet) in Main at In[41]:16
+[12] scalarness(::Type{#s11} where #s11<:AbstractSet) in Main at In[25]:1
+[13] scalarness(::Type{#s11} where #s11<:ExponentialBackOff) in Main at In[41]:16
+[14] scalarness(::Type{#s11} where #s11<:Cmd) in Main at In[41]:16
+[15] scalarness(::Type{#s11} where #s11<:Tuple) in Main at In[41]:16
+[16] scalarness(::Type{#s11} where #s11<:Pair{A,B}) where {A, B} in Main at none:1
+[17] scalarness(::Type{#s11} where #s11<:Number) in Main at In[41]:16
+[18] scalarness(::Type{#s11} where #s11<:Ref{T}) where T in Main at none:1
+[19] scalarness(::Type{#s11} where #s11<:NamedTuple{names,T}) where {names, T<:Tuple} in Main at none:1
+[20] scalarness(::Type{#s11} where #s11<:Dict{K,V}) where {K, V} in Main at none:1
+[21] scalarness(::Type{#s11} where #s11<:AbstractChar) in Main at In[41]:16
+[22] scalarness(::Type{#s11} where #s11<:CartesianIndex{N}) where N in Main at none:1
+[23] scalarness(::Type{#s11} where #s11<:Channel{T}) where T in Main at none:1
+[24] scalarness(::Type{#s11} where #s11<:QR{T,S}) where {T, S<:AbstractArray{T,2}} in Main at none:1
+[25] scalarness(::Type{#s11} where #s11<:QRPivoted{T,S}) where {T, S<:AbstractArray{T,2}} in Main at none:1
+[26] scalarness(::Type{#s11} where #s11<:Hessenberg{T,S}) where {T, S<:AbstractArray{T,2}} in Main at none:1
+[27] scalarness(::Type{#s11} where #s11<:LQ{T,S}) where {T, S<:AbstractArray{T,2}} in Main at none:1
+[28] scalarness(::Type{#s11} where #s11<:Union{Eigen, GeneralizedEigen}) in Main at In[41]:16
+[29] scalarness(::Type{#s11} where #s11<:SVD{T,Tr,M}) where {T, Tr, M<:(AbstractArray{T,N} where N)} in Main at none:1
+[30] scalarness(::Type{#s11} where #s11<:GeneralizedSVD{T,S}) where {T, S} in Main at none:1
+[31] scalarness(::Type{#s11} where #s11<:LU{T,S}) where {T, S<:AbstractArray{T,2}} in Main at none:1
+[32] scalarness(::Type{#s11} where #s11<:Schur{Ty,S}) where {Ty, S<:(AbstractArray{T,2} where T)} in Main at none:1
+[33] scalarness(::Type{#s1} where #s1<:GeneralizedSchur{Ty,M}) where {Ty, M<:(AbstractArray{T,2} where T)} in Main at none:1
+[34] scalarness(::Type{T}) where T in Main at In[27]:2
+{% endhighlight %}
 
 
 </div>
@@ -1506,13 +1488,11 @@ scalarness(typeof(([1, 3, 2])')) = NonScalar()
 </div>
 
 <div class="jupyter-cell">
-  
+
 
 {% highlight plaintext %}
 NonScalar()
 {% endhighlight %}
-
-
 
 
 </div>
