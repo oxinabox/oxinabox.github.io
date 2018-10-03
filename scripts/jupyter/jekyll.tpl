@@ -45,7 +45,9 @@ tags:
 {{ output.data['text/plain'] | strip_ansi}}
 {{ '{% endhighlight %}' }}
 {% else %}
+<div class="jupyter-other-output">
 {{ output.data[type] }}
+</div>
 {% endif %}
 
 {% endfor %}

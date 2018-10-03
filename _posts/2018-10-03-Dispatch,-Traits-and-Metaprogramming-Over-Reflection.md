@@ -1042,7 +1042,9 @@ collect(methods(Base.iterate))[1:5]
 <div class="jupyter-cell">
   
 
+<div class="jupyter-other-output">
 5-element Array{Method,1}:<ul><li> iterate(v::<b>Core.SimpleVector</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a><li> iterate(v::<b>Core.SimpleVector</b>, i) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a><li> iterate(ebo::<b>ExponentialBackOff</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/error.jl#L171" target="_blank">error.jl:171</a><li> iterate(ebo::<b>ExponentialBackOff</b>, state) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/error.jl#L171" target="_blank">error.jl:171</a><li> iterate(m::<b>Base.MethodList</b>, s...) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/reflection.jl#L730" target="_blank">reflection.jl:730</a></ul>
+</div>
 
 
 
@@ -1064,7 +1066,9 @@ mm = first(methods(Base.iterate))
 <div class="jupyter-cell">
   
 
+<div class="jupyter-other-output">
 iterate(v::<b>Core.SimpleVector</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a>
+</div>
 
 
 
@@ -1473,7 +1477,9 @@ methods(scalarness)
 <div class="jupyter-cell">
   
 
+<div class="jupyter-other-output">
 34 methods for generic function <b>scalarness</b>:<ul><li> scalarness(::<b>Type{#s11} where #s11<:Union{LinRange, StepRangeLen}</b>) in Main at In[41]:16</li> <li> scalarness<i>{T, S}</i>(::<b>Type{#s11} where #s11<:OrdinalRange{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}}</i>(::<b>Type{#s11} where #s11<:LinearIndices{N,R}</b>) in Main at none:1</li> <li> scalarness<i>{T, N}</i>(::<b>Type{#s11} where #s11<:Array{T,N}</b>) in Main at none:1</li> <li> scalarness<i>{N}</i>(::<b>Type{#s11} where #s11<:BitArray{N}</b>) in Main at none:1</li> <li> scalarness<i>{N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}}</i>(::<b>Type{#s11} where #s11<:CartesianIndices{N,R}</b>) in Main at none:1</li> <li> scalarness<i>{T, N}</i>(::<b>Type{#s11} where #s11<:AbstractArray{T,N}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s1} where #s1<:AbstractArray</b>) in Main at In[20]:2</li> <li> scalarness(::<b>Type{#s11} where #s11<:String</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s1} where #s1<:AbstractString</b>) in Main at In[20]:4</li> <li> scalarness(::<b>Type{#s11} where #s11<:BitSet</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:AbstractSet</b>) in Main at In[25]:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:ExponentialBackOff</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:Cmd</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:Tuple</b>) in Main at In[41]:16</li> <li> scalarness<i>{A, B}</i>(::<b>Type{#s11} where #s11<:Pair{A,B}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:Number</b>) in Main at In[41]:16</li> <li> scalarness<i>{T}</i>(::<b>Type{#s11} where #s11<:Ref{T}</b>) in Main at none:1</li> <li> scalarness<i>{names, T<:Tuple}</i>(::<b>Type{#s11} where #s11<:NamedTuple{names,T}</b>) in Main at none:1</li> <li> scalarness<i>{K, V}</i>(::<b>Type{#s11} where #s11<:Dict{K,V}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:AbstractChar</b>) in Main at In[41]:16</li> <li> scalarness<i>{N}</i>(::<b>Type{#s11} where #s11<:CartesianIndex{N}</b>) in Main at none:1</li> <li> scalarness<i>{T}</i>(::<b>Type{#s11} where #s11<:Channel{T}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:QR{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:QRPivoted{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:Hessenberg{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:LQ{T,S}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:Union{Eigen, GeneralizedEigen}</b>) in Main at In[41]:16</li> <li> scalarness<i>{T, Tr, M<:(AbstractArray{T,N} where N)}</i>(::<b>Type{#s11} where #s11<:SVD{T,Tr,M}</b>) in Main at none:1</li> <li> scalarness<i>{T, S}</i>(::<b>Type{#s11} where #s11<:GeneralizedSVD{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:LU{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{Ty, S<:(AbstractArray{T,2} where T)}</i>(::<b>Type{#s11} where #s11<:Schur{Ty,S}</b>) in Main at none:1</li> <li> scalarness<i>{Ty, M<:(AbstractArray{T,2} where T)}</i>(::<b>Type{#s1} where #s1<:GeneralizedSchur{Ty,M}</b>) in Main at none:1</li> <li> scalarness<i>{T}</i>(::<b>Type{T}</b>) in Main at In[27]:2</li> </ul>
+</div>
 
 
 
