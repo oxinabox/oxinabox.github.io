@@ -39,19 +39,23 @@ tags:
 
 {% block execute_result scoped %}
 <div class="jupyter-cell">
-{% for type in output.data | filter_data_type %}  {# Not actually a for-loop, only gives the single preferred type #}
+{# For now only do plain text
+{% for type in output.data | filter_data_type %}
 {% if type in ['text/plain'] %}
+#}
+
 {{ '{% highlight plaintext %}' }}
 {{ output.data['text/plain'] | strip_ansi}}
 {{ '{% endhighlight %}' }}
+
+{# Later renable this
 {% else %}
 <div class="jupyter-other-output">
 {{ output.data[type] }}
 </div>
 {% endif %}
-
 {% endfor %}
-
+#}
 </div>
 {% endblock execute_result %}
 
