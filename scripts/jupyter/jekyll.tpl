@@ -36,3 +36,22 @@ tags:
 {{ '{% endhighlight %}' }}
 </div>
 {% endblock stream %}
+
+{% block execute_result scoped %}
+<div class="jupyter-cell">
+{% for type in output.data | filter_data_type %}  {# Not actually a for-loop, only gives the single preferred type #}
+{% if type in ['text/plain'] %}
+{{ '{% highlight plaintext %}' }}
+{{ output.data['text/plain'] | strip_ansi}}
+{{ '{% endhighlight %}' }}
+{% else %}
+{{ output.data[type] }}
+{% endif %}
+
+{% endfor %}
+
+</div>
+{% endblock execute_result %}
+
+
+

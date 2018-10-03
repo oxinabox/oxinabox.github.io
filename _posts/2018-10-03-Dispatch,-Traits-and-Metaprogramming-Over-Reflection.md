@@ -56,12 +56,17 @@ display_percent(x) = println(100x,"%")
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+display_percent (generic function with 1 method)
+{% endhighlight %}
 
 
 
-    display_percent (generic function with 1 method)
 
-
+</div>
 
 That gives me a general rule that works for most types.
 
@@ -110,12 +115,17 @@ display_percent(x::Rational) = println(round(100x; digits=2), "%")
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+display_percent (generic function with 2 methods)
+{% endhighlight %}
 
 
 
-    display_percent (generic function with 2 methods)
 
-
+</div>
 
 **Input:**
 
@@ -188,12 +198,17 @@ end
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+display_percent (generic function with 3 methods)
+{% endhighlight %}
 
 
 
-    display_percent (generic function with 3 methods)
 
-
+</div>
 
 **Input:**
 
@@ -265,12 +280,17 @@ display_percent(::Half) = println("50%")
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+display_percent (generic function with 4 methods)
+{% endhighlight %}
 
 
 
-    display_percent (generic function with 4 methods)
 
-
+</div>
 
 **Input:**
 
@@ -316,12 +336,17 @@ end
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+display_percent_bad (generic function with 1 method)
+{% endhighlight %}
 
 
 
-    display_percent_bad (generic function with 1 method)
 
-
+</div>
 
 **Input:**
 
@@ -412,12 +437,17 @@ aslist_direct(x::Union{AbstractArray,Tuple}) = x
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+aslist_direct (generic function with 2 methods)
+{% endhighlight %}
 
 
 
-    aslist_direct (generic function with 2 methods)
 
-
+</div>
 
 The `Union` is just a way of saying the argument needs ot match either of these types.
 
@@ -458,12 +488,17 @@ aslist_direct(x::String) = x
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+aslist_direct (generic function with 3 methods)
+{% endhighlight %}
 
 
 
-    aslist_direct (generic function with 3 methods)
 
-
+</div>
 
 Repeating code is bad.
 Further what if we want the notion of _Scalarness_ elsewhere in our code?
@@ -532,12 +567,17 @@ typeof(Int) = DataType
 {% endhighlight %}
 </div>
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+DataType
+{% endhighlight %}
 
 
 
-    DataType
 
-
+</div>
 
 **Input:**
 
@@ -549,12 +589,17 @@ String isa DataType
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+true
+{% endhighlight %}
 
 
 
-    true
 
-
+</div>
 
 So the type of a type (such as `String`) is `DataType`.
 A special thing for types though,
@@ -586,12 +631,17 @@ String isa Type{<:AbstractString} = true
 {% endhighlight %}
 </div>
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+true
+{% endhighlight %}
 
 
 
-    true
 
-
+</div>
 
 Mostly, we will want to use triangular dispatch rules.
 That is the form `Type{<:AbstractString}`,
@@ -636,12 +686,17 @@ scalarness(::Type{<:AbstractString}) = NonScalar()
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+scalarness (generic function with 4 methods)
+{% endhighlight %}
 
 
 
-    scalarness (generic function with 4 methods)
 
-
+</div>
 
 Nice, declarative code.
 Users can add the scalarness type to their types
@@ -714,12 +769,17 @@ aslist(::NonScalar, x) = x
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+aslist (generic function with 3 methods)
+{% endhighlight %}
 
 
 
-    aslist (generic function with 3 methods)
 
-
+</div>
 
 Notice how the first is evaluating the trait function(on the type).
 The return type of this is used for the dispatch to one of the other two.
@@ -792,12 +852,17 @@ scalarness(::Type{T}) where T = hasmethod(Base.iterate, (T,)) ? NonScalar() : Sc
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+scalarness (generic function with 5 methods)
+{% endhighlight %}
 
 
 
-    scalarness (generic function with 5 methods)
 
-
+</div>
 
 Now this makes may thing things work without having to define the scalarness trait,
 though you would be surprised how many things have `iterate` defined.
@@ -825,12 +890,17 @@ aslist(1) = 1
 {% endhighlight %}
 </div>
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+1
+{% endhighlight %}
 
 
 
-    1
 
-
+</div>
 
 All `number` types have the iterate function defined on them.
 So we probably want to overwrite that.
@@ -864,13 +934,18 @@ aslist(1)
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+1-element Array{Int64,1}:
+ 1
+{% endhighlight %}
 
 
 
-    1-element Array{Int64,1}:
-     1
 
-
+</div>
 
 Also, **notice that it is now nolonger a nice clean static dispatch.**
 Because it depends on the global state of the method table.
@@ -964,12 +1039,15 @@ collect(methods(Base.iterate))[1:5]
 
 **Output:**
 
-
-
+<div class="jupyter-cell">
+  
 
 5-element Array{Method,1}:<ul><li> iterate(v::<b>Core.SimpleVector</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a><li> iterate(v::<b>Core.SimpleVector</b>, i) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a><li> iterate(ebo::<b>ExponentialBackOff</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/error.jl#L171" target="_blank">error.jl:171</a><li> iterate(ebo::<b>ExponentialBackOff</b>, state) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/error.jl#L171" target="_blank">error.jl:171</a><li> iterate(m::<b>Base.MethodList</b>, s...) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/reflection.jl#L730" target="_blank">reflection.jl:730</a></ul>
 
 
+
+
+</div>
 
 We can extract their parameter types.
 
@@ -983,12 +1061,15 @@ mm = first(methods(Base.iterate))
 
 **Output:**
 
-
-
+<div class="jupyter-cell">
+  
 
 iterate(v::<b>Core.SimpleVector</b>) in Base at <a href="https://github.com/JuliaLang/julia/tree/5d4eaca0c9fa3d555c79dbacdccb9169fdf64b65/base/essentials.jl#L578" target="_blank">essentials.jl:578</a>
 
 
+
+
+</div>
 
 **Input:**
 
@@ -1000,12 +1081,17 @@ mm.sig
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+Tuple{typeof(iterate),Core.SimpleVector}
+{% endhighlight %}
 
 
 
-    Tuple{typeof(iterate),Core.SimpleVector}
 
-
+</div>
 
 Note that that this is not a Tuple **value**, that is a Tuple **type**.
 First type-param is the function, and the rest are the arguments.
@@ -1030,12 +1116,17 @@ try_get_single_argtype(::Type{Tuple{F, T}}) where {F, T} = T
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+try_get_single_argtype (generic function with 4 methods)
+{% endhighlight %}
 
 
 
-    try_get_single_argtype (generic function with 4 methods)
 
-
+</div>
 
 **Input:**
 
@@ -1047,12 +1138,17 @@ try_get_single_argtype(mm)
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+Core.SimpleVector
+{% endhighlight %}
 
 
 
-    Core.SimpleVector
 
-
+</div>
 
 **Input:**
 
@@ -1064,12 +1160,17 @@ try_get_single_argtype(methods(Base.iterate).ms[2])==nothing
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+true
+{% endhighlight %}
 
 
 
-    true
 
-
+</div>
 
 Now we can go through and filter based on if `try_get_single_argtype` returned nothing,
 
@@ -1086,38 +1187,43 @@ nonscalar_types = unique(filter(!is_nothing, try_get_single_argtype(Base.iterate
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+75-element Array{Any,1}:
+ Core.SimpleVector                      
+ ExponentialBackOff                     
+ Base.Iterators.ProductIterator{Tuple{}}
+ BitSet                                 
+ String                                 
+ Base.RegexMatchIterator                
+ Base.EnvDict                           
+ Cmd                                    
+ Base.AsyncCollector                    
+ Base.AsyncGenerator                    
+ LibGit2.GitBranchIter                  
+ LibGit2.GitConfigIter                  
+ LibGit2.GitRevWalker                   
+ ⋮                                      
+ QR                                     
+ LinearAlgebra.QRCompactWY              
+ QRPivoted                              
+ Hessenberg                             
+ LQ                                     
+ Union{Eigen, GeneralizedEigen}         
+ SVD                                    
+ GeneralizedSVD                         
+ LU                                     
+ BunchKaufman                           
+ Schur                                  
+ GeneralizedSchur                       
+{% endhighlight %}
 
 
 
-    75-element Array{Any,1}:
-     Core.SimpleVector                      
-     ExponentialBackOff                     
-     Base.Iterators.ProductIterator{Tuple{}}
-     BitSet                                 
-     String                                 
-     Base.RegexMatchIterator                
-     Base.EnvDict                           
-     Cmd                                    
-     Base.AsyncCollector                    
-     Base.AsyncGenerator                    
-     LibGit2.GitBranchIter                  
-     LibGit2.GitConfigIter                  
-     LibGit2.GitRevWalker                   
-     ⋮                                      
-     QR                                     
-     LinearAlgebra.QRCompactWY              
-     QRPivoted                              
-     Hessenberg                             
-     LQ                                     
-     Union{Eigen, GeneralizedEigen}         
-     SVD                                    
-     GeneralizedSVD                         
-     LU                                     
-     BunchKaufman                           
-     Schur                                  
-     GeneralizedSchur                       
 
-
+</div>
 
 Notice however some of the types we found are from other modules -- modules that are loaded but not in
 a quick hack that lets use exclude those is to check if `occursin(".", string(T))`.
@@ -1135,38 +1241,43 @@ end
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+34-element Array{Any,1}:
+ ExponentialBackOff            
+ BitSet                        
+ String                        
+ Cmd                           
+ Tuple                         
+ Pair                          
+ Union{LinRange, StepRangeLen} 
+ OrdinalRange                  
+ Number                        
+ Ref                           
+ LinearIndices                 
+ Array                         
+ BitArray                      
+ ⋮                             
+ Channel                       
+ QR                            
+ QRPivoted                     
+ Hessenberg                    
+ LQ                            
+ Union{Eigen, GeneralizedEigen}
+ SVD                           
+ GeneralizedSVD                
+ LU                            
+ BunchKaufman                  
+ Schur                         
+ GeneralizedSchur              
+{% endhighlight %}
 
 
 
-    34-element Array{Any,1}:
-     ExponentialBackOff            
-     BitSet                        
-     String                        
-     Cmd                           
-     Tuple                         
-     Pair                          
-     Union{LinRange, StepRangeLen} 
-     OrdinalRange                  
-     Number                        
-     Ref                           
-     LinearIndices                 
-     Array                         
-     BitArray                      
-     ⋮                             
-     Channel                       
-     QR                            
-     QRPivoted                     
-     Hessenberg                    
-     LQ                            
-     Union{Eigen, GeneralizedEigen}
-     SVD                           
-     GeneralizedSVD                
-     LU                            
-     BunchKaufman                  
-     Schur                         
-     GeneralizedSchur              
 
-
+</div>
 
 Once we have out types we need to generate the code.
 The following is a pretty hacky way to do so, abusing strings.
@@ -1205,12 +1316,17 @@ end
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+scalarness_function_expr (generic function with 3 methods)
+{% endhighlight %}
 
 
 
-    scalarness_function_expr (generic function with 3 methods)
 
-
+</div>
 
 **Input:**
 
@@ -1222,15 +1338,20 @@ scalarness_function_expr(BitSet)
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+:(scalarness(::Type{<:BitSet}) = begin
+          #= In[41]:16 =#
+          NonScalar()
+      end)
+{% endhighlight %}
 
 
 
-    :(scalarness(::Type{<:BitSet}) = begin
-              #= In[41]:16 =#
-              NonScalar()
-          end)
 
-
+</div>
 
 **Input:**
 
@@ -1242,15 +1363,20 @@ scalarness_function_expr(last(nonscalar_types))
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+:(((scalarness(::Type{<:GeneralizedSchur{Ty, M}}) where M <: (AbstractArray{T, 2} where T)) where Ty) = begin
+          #= none:1 =#
+          NonScalar()
+      end)
+{% endhighlight %}
 
 
 
-    :(((scalarness(::Type{<:GeneralizedSchur{Ty, M}}) where M <: (AbstractArray{T, 2} where T)) where Ty) = begin
-              #= none:1 =#
-              NonScalar()
-          end)
 
-
+</div>
 
 **Input:**
 
@@ -1262,15 +1388,20 @@ scalarness_function_expr(nonscalar_types[6])
 
 **Output:**
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+:(((scalarness(::Type{<:Pair{A, B}}) where B) where A) = begin
+          #= none:1 =#
+          NonScalar()
+      end)
+{% endhighlight %}
 
 
 
-    :(((scalarness(::Type{<:Pair{A, B}}) where B) where A) = begin
-              #= none:1 =#
-              NonScalar()
-          end)
 
-
+</div>
 
 Looks like good code that we could evaluate.
 I know it doesn't capture all cases,
@@ -1339,12 +1470,15 @@ methods(scalarness)
 
 **Output:**
 
-
-
+<div class="jupyter-cell">
+  
 
 34 methods for generic function <b>scalarness</b>:<ul><li> scalarness(::<b>Type{#s11} where #s11<:Union{LinRange, StepRangeLen}</b>) in Main at In[41]:16</li> <li> scalarness<i>{T, S}</i>(::<b>Type{#s11} where #s11<:OrdinalRange{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}}</i>(::<b>Type{#s11} where #s11<:LinearIndices{N,R}</b>) in Main at none:1</li> <li> scalarness<i>{T, N}</i>(::<b>Type{#s11} where #s11<:Array{T,N}</b>) in Main at none:1</li> <li> scalarness<i>{N}</i>(::<b>Type{#s11} where #s11<:BitArray{N}</b>) in Main at none:1</li> <li> scalarness<i>{N, R<:Tuple{Vararg{AbstractUnitRange{Int64},N}}}</i>(::<b>Type{#s11} where #s11<:CartesianIndices{N,R}</b>) in Main at none:1</li> <li> scalarness<i>{T, N}</i>(::<b>Type{#s11} where #s11<:AbstractArray{T,N}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s1} where #s1<:AbstractArray</b>) in Main at In[20]:2</li> <li> scalarness(::<b>Type{#s11} where #s11<:String</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s1} where #s1<:AbstractString</b>) in Main at In[20]:4</li> <li> scalarness(::<b>Type{#s11} where #s11<:BitSet</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:AbstractSet</b>) in Main at In[25]:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:ExponentialBackOff</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:Cmd</b>) in Main at In[41]:16</li> <li> scalarness(::<b>Type{#s11} where #s11<:Tuple</b>) in Main at In[41]:16</li> <li> scalarness<i>{A, B}</i>(::<b>Type{#s11} where #s11<:Pair{A,B}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:Number</b>) in Main at In[41]:16</li> <li> scalarness<i>{T}</i>(::<b>Type{#s11} where #s11<:Ref{T}</b>) in Main at none:1</li> <li> scalarness<i>{names, T<:Tuple}</i>(::<b>Type{#s11} where #s11<:NamedTuple{names,T}</b>) in Main at none:1</li> <li> scalarness<i>{K, V}</i>(::<b>Type{#s11} where #s11<:Dict{K,V}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:AbstractChar</b>) in Main at In[41]:16</li> <li> scalarness<i>{N}</i>(::<b>Type{#s11} where #s11<:CartesianIndex{N}</b>) in Main at none:1</li> <li> scalarness<i>{T}</i>(::<b>Type{#s11} where #s11<:Channel{T}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:QR{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:QRPivoted{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:Hessenberg{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:LQ{T,S}</b>) in Main at none:1</li> <li> scalarness(::<b>Type{#s11} where #s11<:Union{Eigen, GeneralizedEigen}</b>) in Main at In[41]:16</li> <li> scalarness<i>{T, Tr, M<:(AbstractArray{T,N} where N)}</i>(::<b>Type{#s11} where #s11<:SVD{T,Tr,M}</b>) in Main at none:1</li> <li> scalarness<i>{T, S}</i>(::<b>Type{#s11} where #s11<:GeneralizedSVD{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{T, S<:AbstractArray{T,2}}</i>(::<b>Type{#s11} where #s11<:LU{T,S}</b>) in Main at none:1</li> <li> scalarness<i>{Ty, S<:(AbstractArray{T,2} where T)}</i>(::<b>Type{#s11} where #s11<:Schur{Ty,S}</b>) in Main at none:1</li> <li> scalarness<i>{Ty, M<:(AbstractArray{T,2} where T)}</i>(::<b>Type{#s1} where #s1<:GeneralizedSchur{Ty,M}</b>) in Main at none:1</li> <li> scalarness<i>{T}</i>(::<b>Type{T}</b>) in Main at In[27]:2</li> </ul>
 
 
+
+
+</div>
 
 **Input:**
 
@@ -1365,12 +1499,17 @@ scalarness(typeof(([1, 3, 2])')) = NonScalar()
 {% endhighlight %}
 </div>
 
+<div class="jupyter-cell">
+  
+
+{% highlight plaintext %}
+NonScalar()
+{% endhighlight %}
 
 
 
-    NonScalar()
 
-
+</div>
 
 **Input:**
 
