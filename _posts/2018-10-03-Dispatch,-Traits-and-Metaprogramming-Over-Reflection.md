@@ -17,7 +17,7 @@ This post starts simple, and becomes complex.
  
 The last of which is kinda evil.
 
-<!--see more-->
+<!--more-->
 
 
 I think dispatch is very intutitive as a concept.
