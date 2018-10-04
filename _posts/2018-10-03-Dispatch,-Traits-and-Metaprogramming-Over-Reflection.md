@@ -259,7 +259,7 @@ we need a good way of dealing with those cases.
 
         
 It is also nicely extensible.
-Lets say we created a singlton type to represent a half.
+Lets say we created a singleton type to represent a half.
 
 **Input:**
 
@@ -385,7 +385,7 @@ This kinda code is common in a fair bit of python code.
 ## Part 2: `AsList`, (including using traits)
 
 The kind of code which uses `if` conditionals,
-is quiet common in practice.
+is quite common in practice.
 
 In [Python TensorFlow has a helper function](https://github.com/tensorflow/tensorflow/blob/r1.11/tensorflow/python/ops/gradients_impl.py#L202-L203), `_AsList`:
 
@@ -917,7 +917,7 @@ aslist(1)
 
 </div>
 
-Also, **notice that it is now nolonger a nice clean static dispatch.**
+Also, **notice that it is now no longer a nice clean static dispatch.**
 Because it depends on the global state of the method table.
 Which will mean that it has to resolve the trait at run-time.
 So it will be slower.
