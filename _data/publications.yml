@@ -1,11 +1,13 @@
 - title: "TensorFlow.jl: An Idiomatic Julia Front End for TensorFlow"
   author: Jonathan Malmaud and Lyndon White
   venue: "Journal of Open Source Software (JOSS)"
+  year: 2018
   link: "http://joss.theoj.org/papers/10.21105/joss.01002"
 
 - title: "DataDepsGenerators.jl: making reusing data easy by automatically generating DataDeps.jl registration code"
   author: Lyndon White, and Sebastin Santy
   venue: "Journal of Open Source Software (JOSS)"
+  year: 2018
   link: "http://joss.theoj.org/papers/10.21105/joss.00921"
 
 - title: "Neural Representations of Natural Language"
@@ -13,7 +15,6 @@
   venue: 'Springer: Studies in Computational Intelligence'
   year: 2018
   link: "https://www.springer.com/us/book/9789811300615"
- 
     
 - title: "NovelPerspective: Identifying Point of View Characters"
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
