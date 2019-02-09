@@ -1,8 +1,8 @@
 [deps]
+DecisionTree = "7806a523-6efd-50cb-b5f6-3fa6f1930dbb"
 FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
-FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
-Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
+LIBSVM = "b1bec4e5-fd48-53fe-b0cb-9723c09d164b"
 MLDataUtils = "cc2ba9b6-d476-5e6d-8eaf-a92d5412d41d"
 MLDatasets = "eb30cadb-4394-5ae3-aed4-317e484a6458"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
