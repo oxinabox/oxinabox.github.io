@@ -1,15 +1,14 @@
 ---
 layout: default
 ---
-
-
 ## In Person: 
-I am stationed in the Signals and Information Processing Lab, on the 3rd floor of the EE Building (**Room 3.06** ), at the UWA Crawley Campus.
-Make sure to send me an email before turning up. I'm usually somewhere on-campus during business hours, but often not in the lab.
-
+I am in Cambridge, in the UK.
+Feel free to email me if you want to meet-up.
+I can normally find time.
 
 ## Email
-[lyndon[dot]white[at]research[dot]uwa[dot]edu[dot]au](mailto:lyndon[dot]white[at]research[dot]uwa[dot]edu[dot]au)
+ - [lyndon[dot]white[at]invenialabs[dot]co[dot]uk](mailto:lyndon[dot]white[at]invenialabs[dot]co[dot]uk)
+ - [lyndon[dot]white[at]ucc[dot]asn[dot]au](mailto:lyndon[dot]white[at]ucc[dot]asn[dot]au)
 
 Email is by far the most reliable way to contact me. Better than phone.
 
