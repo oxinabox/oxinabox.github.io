@@ -1,3 +1,21 @@
+- title: "Meta-Optimization of Optimal Power Flow"
+  author: Mahdi Jamei, Letif Mones, Alex Robson, Lyndon White, James Requeima, and Cozmin Ududec
+  venue: 36th International Conference on Machine Learning (ICML): Climate Change Workshop'
+  year: 2019
+  link: "https://www.climatechange.ai/CameraReady/43/CameraReadySubmission/icml_invenia_cameraready.pdf"
+
+- title: "LCEval: Learned Composite Metric for Caption Evaluation"
+  author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
+  venue: 'International Journal of Computer Vision'
+  year: 2019
+  link: "https://www.researchgate.net/profile/Naeha_Sharif2/publication/334760575_LCEval_Learned_Composite_Metric_for_Caption_Evaluation/links/5d429677a6fdcc370a715269/LCEval-Learned-Composite-Metric-for-Caption-Evaluation.pdf"
+
+- title: "On the surprising capacity of linear combinations of embeddings for natural language processing. [Thesis]"
+  author: Lyndon White
+  venue: Doctorial Thesis, The University of Western Australia
+  year: 2019
+  link: "https://research-repository.uwa.edu.au/en/publications/on-the-surprising-capacity-of-linear-combinations-of-embeddings-f"
+
 - title: "TensorFlow.jl: An Idiomatic Julia Front End for TensorFlow"
   author: Jonathan Malmaud and Lyndon White
   venue: "Journal of Open Source Software (JOSS)"
@@ -12,23 +30,23 @@
 
 - title: "Neural Representations of Natural Language"
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
-  venue: 'Springer: Studies in Computational Intelligence'
+  venue: 'Springer: Studies in Computational Intelligence (Book)'
   year: 2018
   link: "https://www.springer.com/us/book/9789811300615"
-    
+
 - title: "NovelPerspective: Identifying Point of View Characters"
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
   venue: '56th Annual Meeting of the Association for Computational Linguistics (ACL), System Demonstrations'
   year: 2018
   key: White2018NovelPerspective
   supl: tools#novelperspective
-  
+
 - title: "NNEval: Neural Network based Evaluation Metric"
   author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
   venue: '15th European Conference on Computer Vision'
   year: 2018
   key: Sharif2018NNEval
-  
+
 - title: "Learning-based Composite Metrics for Improved Caption Evaluation"
   author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
   venue: 'Association for Computational Linguistics (ACL), Student Research Workshop'
@@ -63,7 +81,7 @@
   year: 2015
   key: White2015SentVecMeaning
   supl: resources/paraphrase_grouped_corpora/
-  
+
 - title: "Transistor Sizing Using Particle Swarm Optimisation"
   author: Lyndon White, Lyndon While, Ben Deeks, and Farid Boussaid
   venue: Proceedings of the 2015 IEEE Symposium Series on Computational Intelligence
