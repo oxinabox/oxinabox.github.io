@@ -1,14 +1,14 @@
+---
 title: Continuous Delivery For Julia Packages
 tags: julia
+layout: default
 ---
-
 TL;DR; Every Pull Request should increment the version number in the Project.toml,
 and then you should register the release immediately after merging.
 Why do this? Because people are making PRs to your repo because they want that change.
 Don't make them wait for you to tag a release.
 Also for all the normal advantages of continuous delivery.
-<!--see more-->
-
+<!--more-->
 
 When Julia-1.0 and Pkg3 came out over a year ago,
 and the more recent (but still many months ago)
@@ -42,8 +42,8 @@ All you need to do is enable the repos on your account with your favorite CI ser
 Existing packages can find and copy the configs easy enough.
 
 Also something needs to deploy your docs after you make a release.
-And Documentor.jl has instructions for setting up TravisCI for that.
-And PkgTemplates, as I mentioned, will set most of that up for you, barring the deploy keys.
+[Documenter.jl has great instructions for setting up TravisCI](https://juliadocs.github.io/Documenter.jl/stable/man/hosting/) for that.
+Further PkgTemplates, as I mentioned, will set most of that up for you, barring the deploy keys.
 
 ### Work broken into small chunks
 This is the standard way to work in open source.
@@ -55,19 +55,24 @@ It is a good way to work, even on personal projects.
 
 
 ## So on to how to do this:
-When someone (including you as the maintainer) make PR to your repo,
+When someone (including yourself) makes a PR to your repo,
 you have them include in the PR the appropriate change to the version number,
 for if it is patch, a new feature, or a new breaking feature.
 (Or if you are still in 0.x.y just for if it is nonbreaking or breaking)
 
 Then immediately after merging the PR, [tag a release.](https://github.com/JuliaRegistries/Registrator.jl#how-to-use)
-Hopefully, soon after that release merged into General.
+Hopefully, soon after that release merged into General,
+and then [TagBot](https://github.com/apps/julia-tagbot) will make a matching github release with automatic release notes listing changes (or you could do that manually).
+
+Compares to deploying a application, releasing a library is pretty simple, no need to build and deploy installers etc.
+For proper continous deployment, one would have the release be automatically tagged when the PR is merged. Currently, that is fairly hard to setup, and I am not aware of anyone doing so.
+Til then manually triggering Registrator will have to do.
 
 
 ## What if I don't want to release right now?
 There are not many good reasons to hold off on a release after merging in a PR,
 but there are some.
-Main one I can think of is if that if you know a group of breaking PRs are coming in soon,
+One potential reason is if you know that a group of breaking PRs are coming in soon,
 and you don't want to tag a bunch of breaking releases, because it would mean your packages users would have more versions to work through in their own packages Compat sections.
 
 In this case the best thing to do is to change the version number to what it would be
@@ -94,21 +99,22 @@ The package manager will see the fixed (reverted) code as the better (higher) se
 
 ## Why do this?
 
-In enterprise Agile continuous delivery is a well-established practice that you can read a bunch about. So I am not going to talk about that here, you can google for it.
+In enterprise continuous delivery is a well-established Agile practice that you can read a bunch about. So I am not going to talk about that here, you can google for it.
 In open-source there are additional advantages: _you avoid annoying your contributors._
-There are few things as frustrating as someone opening an issue on one of my projects that is due to an upstream bug in one of my dependencies,
-me opening a PR on that package to fix it and getting the PR merged,
-and me thus considering the issue resolved moving on.
-Only to have a new identical issue opened a few weeks later,
-because no release has been tagged upstream in 3 months.
 
-Your contributors are making PRs because they want the feature/bugfix.
+There are few things as frustrating as the following tale.
+Someone opens an issue on one of my projects.
+I determine that it is caused by an unstream bug in a library I am using.
+I fix that bug, and have my patch merged.
+I think all is done and that it will no doubt solved for the end-user shortly.
+A month later someone else opens the same issue on my project.
+Because no release has been made on the library I fixed.
+I have to go back over to the library, open issues nagging them to release.
+Maybe even send a maintainer an direct message.
+Often the reason relates to them thinking another core maintainer wants to hold off (which might be true, for better or worse.)
+By sticking to a policy of continous delivery, this can be avoided.
+It is clear to everyone that when a PR gets made, a release is assumed to be shortly after.
+
+**Your contributors are making PRs because they want the feature/bugfix.
 You have already indicated you are happy with it by merging,
-why hold off releasing it to the world?
-
-
-
-
-
-
-
+why hold off releasing it to the world?**
