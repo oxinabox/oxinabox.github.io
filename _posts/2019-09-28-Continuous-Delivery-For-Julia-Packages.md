@@ -69,17 +69,35 @@ For proper continous deployment, one would have the release be automatically tag
 Til then manually triggering Registrator will have to do.
 
 
-## What if I don't want to release right now?
-There are not many good reasons to hold off on a release after merging in a PR,
-but there are some.
-One potential reason is if you know that a group of breaking PRs are coming in soon,
-and you don't want to tag a bunch of breaking releases, because it would mean your packages users would have more versions to work through in their own packages Compat sections.
+## What if I don't want to release right now? -DEV versions.
+There are not many good reasons to hold off on a release after merging in a PR, but there are some.
+One reason is if you already have a release pending waiting to be merged into the General Registry;
+thenm you really shouldn't open up another one without a good reason (like backporting on a different branch).
+Another potential reason (kind of the complement of that) is if you know that more PRs are coming in soon, especially if they are breaking (since that would mean your packages users would have more versions to work through in their own packages Compat sections.)
 
-In this case the best thing to do is to change the version number to what it would be
+### Add the `-DEV` suffix to your version.
+
+In this case the best thing to do is to change the version number to what it would be, 
 but add a `-DEV` suffix, e.g. `2.0.0-DEV`.
 Rather than leaving it at `1.7.2` which would be a lie, since it has had a breaking change.
 Also better than changing it to `2.0.0` and not making a release since that gets confusing since you need to workout which versions in the Project.toml are released and it is just a mess to think about.
 
+### How to change the version number if it is already `-DEV`.
+If the current version is already `2.0.0-DEV` and the PR adds a breaking feature, you don't want to be changing it to `3.0.0-DEV` and never release `2.0.0`. Correct is in that case to leave it as is.
+If however, it is at `2.0.1-DEV`, then correct is to change it to `3.0.0-DEV`,
+as this indicates the change that made it `-DEV` was a patch, and so adding breaking change is not permitted.
+But it is permitted to roll patch changes into major releases.
+
+This pattern holds: If there are nonzero version digits to the right of the approprate position for he change being made in this PR, then you need to increment (and thus zero those), otherwise you don't.
+So if the current version is  `x.y.z-DEV`:
+ - So for **patch** level changes, you do not need to change the version number
+ - for **minor** level changes: if `z != 0`, then you need to increment `y` (and zero `z`)
+ - for **major** level changes: if `y !=0` or `z != 0`, then you need to increment `x` (and zero `y`, and `z`)
+ The reason for this pattern is that making these changes to the dev version always zeros the lesser digits,
+ so you know that those digits are already zero-ed and it is still `-DEV`, that such a change has already been made and so your PR's new change will get rolled into that one.
+ 
+ 
+### Compat and `-DEV` versions:
 A nice feature for testing.
 While you can't register packages with a `-DEV` (or other prerelease markers),
 you can still install them via `pkg> dev MyPackage`, into a project.
