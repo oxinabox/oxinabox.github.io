@@ -53,7 +53,7 @@ Our path is defined by two sets, $$R$$, and $$A$$, and an operation $$\cdot$$.
  -  **(1)** It is required that $$\cdot$$ generates a free monoid $$\(R^\ast,\cdot\)$$ from $R$
    - We will call the identity element of this monoid $$I_R$$.
      - We will also call this the _relative path root_, and call $$A \cup\{I_R\}$$ the _roots_ of the path schema
-   - For convience we will follow the usual definition of $$R^+ = R \setminus {I_R\}$$
+   - For convience we will follow the usual definition of $$R^+ = R \setminus \{I_R\}$$
  - **(2)** It is also required that $$A$$ is disjoint from $$R$$
  - **(3)** It is required that $$\(R^\ast,\cdot\)$$ acts faithfully, on $$A$$ 
   - We call the closure of $$A$$ under $$R^\ast$$,  $$A^\ast$$.
