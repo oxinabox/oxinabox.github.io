@@ -1,4 +1,4 @@
-# Some early observations on DexLang
+# A NonHaskell programmers introduction to early DexLang
 
 The blog post is a break from my usual fare of JuliaLang to talk about something new: DexLang.
 `<sarcasm>`
@@ -14,8 +14,10 @@ This post is at least half my running notes as I reason about what things are.
 So kind of a tutorial.
 Also some thoughts on DexLang, and features.
 
-It is probably important to note I've never really done Haskell;
-and while F# was once my favorite language, I've not done serious functional programming in well over 5 years.
+It is important to note I've never really done Haskell.
+I've done a few tutorials years ago, but never really used it.
+I did a fair bit o F# at uni and liked it a lot used it for a few projects then, but again that was years ago.
+So I am no real functional programmer, let that be clear.
 
 
 ### Commands:
@@ -26,13 +28,53 @@ Right now they also work in scripts, but I suspect that is not a feature.
 They don't seem to be first class, but just a way to get the REPL to do a thing.
 Seems they can only appear before expressions and then they print something straight out.
 
-Here is a list of all of them right now, from the [source](https://github.com/google-research/dex-lang/blob/92a916859befc746fa050e55fb71b733d04d21ea/src/lib/Syntax.hs#L141-L145):
+A list of all of them right now, can be found in the [source](https://github.com/google-research/dex-lang/blob/92a916859befc746fa050e55fb71b733d04d21ea/src/lib/Syntax.hs#L141-L145).
+I quite like the Dex source code.
 
-The majority of them are functionality to dump the levels of parsing, lowering, compilation etc.
+The main ones are introduced in the tutorial:
+Type information:
+```haskell
+("t", GetType),
+("p", EvalExpr Printed),
+ ```
+
+`:p` is eval and print.
+So it is `show` in julia.
+I am not sure what `:p` does, that just exectuting a line in the REPL doesn't:
+```haskell
+>=> 1.0 + 1.0
+2.0
+>=> :p 1.0 + 1.0
+2.0
+```
+
+`:t` tells you the type of the result, so `typeof` in julia.
+```
+>=> :t 1.0 + 1.0
+Real
+```
+
+
+There are also some for benchmarking:
+```haskell
+("time", TimeIt),
+("flops", Flops), 
+```
+
+
+And some for plotting, which I will not discuss further as I can only get Dex to run on a headless VM right now.
+```haskell
+("plot", EvalExpr Scatter),
+("plotmat", EvalExpr Heatmap),
+```
+
+
+But the majority of them are functionality to dump the levels of parsing, lowering, compilation etc.
 Which makes sense these are very useful in general, but especially early in the language's development.
 That seems to be the following set, which is pretty nice:
 ```haskell
-("parse", ShowParse)
+("parse", ShowParse),
+("typed", ShowTyped),
 ("deshadowed", ShowDeshadowed),
 ("normalized", ShowNormalized), 
 ("imp", ShowImp),
@@ -41,22 +83,3 @@ That seems to be the following set, which is pretty nice:
 ("llvm", ShowLLVM),
 ```
 
-The others:
-Type information:
-```haskell
-("t", GetType),
-("typed", ShowTyped),
- ```
-
-Benchmarking:
-```haskell
-("time", TimeIt),s
-("flops", Flops), 
-```
-
-IO and plotting:
-```haskell
-("p", EvalExpr Printed),
-("plot", EvalExpr Scatter),
-("plotmat", EvalExpr Heatmap),
-```
