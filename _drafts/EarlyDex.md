@@ -73,13 +73,15 @@ But the majority of them are functionality to dump the levels of parsing, loweri
 Which makes sense these are very useful in general, but especially early in the language's development.
 That seems to be the following set, which is pretty nice:
 ```haskell
-("parse", ShowParse),
-("typed", ShowTyped),
+("parse", ShowParse),  -- like `quote` in JuliaLang
+("typed", ShowTyped),  -- like `@code_typed` in JuliaLang
 ("deshadowed", ShowDeshadowed),
 ("normalized", ShowNormalized), 
 ("imp", ShowImp),
 ("simp", ShowSimp),
-("asm", ShowAsm),
-("llvm", ShowLLVM),
+("asm", ShowAsm),     -- kind of like `@code_native` in julialang
+("llvm", ShowLLVM),   -- kind of like `@code_llvm` in julialang
 ```
 
+## How Do I create a function?
+At present the tutorial shows a bunch of declared funct
