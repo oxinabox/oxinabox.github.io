@@ -43,8 +43,9 @@ That also set the stage for my `static_hasmethod` which allows for compile time 
 That code currently lives in [Tricks.jl](https://github.com/oxinabox/Tricks.jl/blob/1695b6c42709e134167027154c8e8ebe43b7e86a/src/Tricks.jl), it may not be the best way to do it, but I think it always works (hard to prove).
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/lTR6IPjDPlo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<br>
 
-## DiffEqFlux: Neural Differential Equations
+### DiffEqFlux: Neural Differential Equations
 It is an utter privilege to get to collaborate with Chris Rackauckas, Mike Innes, Yingbo Ma, Jesse Bettencourt, and Vaibhav Dixit.
 Chris and I have been playing with various mixes of Machine Learning and Differential Equations for a few years.
 This is where some of those ideas and a bunch more ended up.
