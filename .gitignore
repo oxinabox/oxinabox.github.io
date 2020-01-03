@@ -3,3 +3,9 @@ publications/jabref.xml
 **.ropeproject
 _site
 Gemfile.lock
+
+.DS_Store
+
+notebook_posts/.ipynb_checkpoints/
+
+_drafts/PyDataCambridgeMeetup2019/.ipynb_checkpoints/
