@@ -1,34 +1,16 @@
-# JuliaLang: The Ingredients for a Composable Programming Language
 
-Lyndon White
-Research Software Engineer
-Invenia Labs
+### Why multiple dispatch
 
----
-
-Some questions:
-
- - How often is code written by grad students reusable by others?
- - How often 
-
----
-
- - Julia types don't prove correctness.
- - There are no statements made up front about what methods are valid for a given type.
- - Full static type-checking is impossible
- - but you get duck-typing
-
----
 
 Consider on might have a type from the **Ducks** library
 
 ```
 struct Duck end
 
-walk(self::Duck) = waddle(self)
-talk(self::Duck) = println("Quack")
+walk(self) = waddle(self)
+talk(self) = println("Quack")
 
-raise_young(self::Duck, child::Duck) = lead_to_water(self, child)
+raise_young(self, child) = lead_to_water(self, child)
 ```
 
 and I have a program, that I have written, that uses that library to simulate a farm:
@@ -51,17 +33,20 @@ This works great with the `Duck`.
 
 Now I want to extend it, to also work on `Swan`s.
 
-
 ```
 struct Swan end
+```
+Now we try and use it:
+`simulate_farm([Swan(), Swan(), Swan()], [Swan(), Swan()])`
+
 
 walk(self::Swan) = waddle(self)
 talk(self::Swan) = println("Hiss")
 
 raise_young(self::Swan, child::Swan) = carry(self, child)
 ```
-And that works great.
-`simulate_farm([Swan(), Swan(), Swan()], [Swan(), Swan()])`
+
+
 Since even though the code was written for `Duck`s,
 a `Swan` **duck-types** as a `Duck`.
 It `walk`s like a `Duck`, it basically `talk`s like a duck, etc.
@@ -179,3 +164,8 @@ And that is before other things you might like to to to a Matrix.
 Like run it on a GPU, or track its operations for AutoDiff purposes,
 or give its dimensions names.
 There are a number of very large array processing libraries out there that now have been reimplemented or hard-forked to just add this features.
+
+
+---
+
+
