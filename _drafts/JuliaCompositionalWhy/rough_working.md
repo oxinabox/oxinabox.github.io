@@ -1,69 +1,3 @@
-
-### Why multiple dispatch
-
-
-Consider on might have a type from the **Ducks** library
-
-```
-struct Duck end
-
-walk(self) = waddle(self)
-talk(self) = println("Quack")
-
-raise_young(self, child) = lead_to_water(self, child)
-```
-
-and I have a program, that I have written, that uses that library to simulate a farm:
-```
-function simulate_farm(adult_animals, baby_animals)
-    for animal in adult_animals
-        walk(animal)
-        talk(animal)
-    end
-
-    parent = first(adult_animals)
-    for child in baby_animals
-        raise_young(parent, child)
-    end
-end
-```
-
-This works great with the `Duck`.
-`simulate_farm([Duck(), Duck(), Duck()], [Duck(), Duck()])`
-
-Now I want to extend it, to also work on `Swan`s.
-
-```
-struct Swan end
-```
-Now we try and use it:
-`simulate_farm([Swan(), Swan(), Swan()], [Swan(), Swan()])`
-
-
-walk(self::Swan) = waddle(self)
-talk(self::Swan) = println("Hiss")
-
-raise_young(self::Swan, child::Swan) = carry(self, child)
-```
-
-
-Since even though the code was written for `Duck`s,
-a `Swan` **duck-types** as a `Duck`.
-It `walk`s like a `Duck`, it basically `talk`s like a duck, etc.
-
-Now, I want to have a mixed farm:
-
-`simulate_farm([Duck(), Duck(), Duck()], [Duck(), Swan()])`
-
-All seems well at first: some _Quacks_ and some _Hisses_.
-But then, an Error!
-There is no definition for `raise_young(parent::Duck, child::Swan)`
-There is no way for the compiler to know what to do.
-There is no meaningful way to duck-type these together.
-We can't specify a useful way to convert a `Swan` to a `Duck` or a `Duck` to a `Swan`.
-
-It is well-known that when a swan is left to be raised by ducks it just gets abandoned.
-
 So one traditional (single dispatch) solution might be to update the `Duck`.
 
 ```
@@ -133,36 +67,6 @@ raise_young(parent::Swan, child::Duck) = kill(child)
 The need to chose a method based on multiple arguments shows up all the time in scientific computing.
 I suspect it shows up more generally, but we've learned to ignore it.
 
-Consider Matrix multiplication.
-We have
- - `*(::Dense, ::Dense)`: multiply rows by columns and sum. Takes $O(n^3)$ time
- - `*(::Dense, ::Diagonal)`/`*(::Diagonal, ::Dense)`: column-wise/row-wise scaling. $O(n^2)$ time.
- - `*(::OneHot, ::Dense)` / `*(::Dense, ::OneHot)`: column-wise/row-wise slicing. $O(n)$ time.
- - `*(::Identity, ::Dense)` / `*(::Dense, ::Identity)`: no change. $O(1)$ time.
-
-Converting things to `Dense` in this case gives you the write answer, but much slower.
-Converting `Dense` to structured sparse, just gives you the wrong answer.
-
-If you look at a list of BLAS, LAPACK, etc. methods you will see just this,
-but encoded not in the types of the input but in the function name.
-E.g.
- - `SGEMM` - matrix matrix multiply
- - `SSYMM` - symmetric matrix matrix multiply
- - ...
- - `ZHBMV` - double complex - hermitian banded matrix vector multiply 
-
-And turns out people keep wanting to make more and more matrix types.
- - Banded Matrixes
- - Block Matrixes
- - Block Banded Matrixes
- - Block Banded Block Banded Matrixs
-    - where all the blocks are themselves block banded.
-
-So its not a reasonable thing for a numerical language to say that they've enumerated all the matrix types you might ever need.
-
-And that is before other things you might like to to to a Matrix.
-Like run it on a GPU, or track its operations for AutoDiff purposes,
-or give its dimensions names.
 There are a number of very large array processing libraries out there that now have been reimplemented or hard-forked to just add this features.
 
 
