@@ -12966,7 +12966,7 @@ E.g.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>And that is before other things you might like to to to a Matri, which you'd like to encode in its type:</p>
+<p>And that is before other things you might like to to to a Matrix, which you'd like to encode in its type:</p>
 <ul>
 <li>Running on a GPU</li>
 <li>Tracking Operations for AutoDiff</li>
@@ -13018,21 +13018,60 @@ Which can add a lot of information.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Consider-Matrix-multiplication.">Consider Matrix multiplication.<a class="anchor-link" href="#Consider-Matrix-multiplication.">&#182;</a></h3><p>We have</p>
+
+</div>
+</div>
+</div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <ul>
 <li><code>*(::Dense, ::Dense)</code>:<ul>
 <li>multiply rows by columns and sum.</li>
 <li>Takes $O(n^3)$ time</li>
 </ul>
 </li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
 <li><code>*(::Dense, ::Diagonal)</code> or <code>*(::Diagonal, ::Dense)</code>: <ul>
 <li>column-wise/row-wise scaling. </li>
 <li>$O(n^2)$ time.</li>
 </ul>
 </li>
-<li><code>*(::OneHot, ::Dense)</code> or <code>*(::Dense, ::OneHot)</code>: column-wise/row-wise slicing. <ul>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
+<li><code>*(::OneHot, ::Dense)</code> or <code>*(::Dense, ::OneHot)</code>:<ul>
+<li>column-wise/row-wise slicing. </li>
 <li>$O(n)$ time.</li>
 </ul>
 </li>
+</ul>
+
+</div>
+</div>
+</div></div><div class="fragment">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<ul>
 <li><code>*(::Identity, ::Dense)</code> or <code>*(::Dense, ::Identity)</code>: <ul>
 <li>no change. </li>
 <li>$O(1)$ time.</li>
@@ -13042,7 +13081,7 @@ Which can add a lot of information.</p>
 
 </div>
 </div>
-</div></section><section>
+</div></div></section><section>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
