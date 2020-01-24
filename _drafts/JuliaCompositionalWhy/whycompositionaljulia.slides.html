@@ -11937,7 +11937,7 @@ Invenia Labs</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Why-is-it-this-way?">Why is it this way?<a class="anchor-link" href="#Why-is-it-this-way?">&#182;</a></h3><p>I am going to tell you some things that may sound counter-intuitive.</p>
+<h3 id="Why-Julia-is-it-this-way?">Why Julia is it this way?<a class="anchor-link" href="#Why-Julia-is-it-this-way?">&#182;</a></h3><p>I am going to tell you some things that may sound counter-intuitive.</p>
 <p>I am going suggest, that julia code is so reusable,
 are because the language has not just good features, but <strong>weak and missing features.</strong></p>
 
@@ -11948,20 +11948,7 @@ are because the language has not just good features, but <strong>weak and missin
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Not just missing features like:</p>
-<ul>
-<li>Don't allow <code>eval</code> into local scope -- it destroys the ability to run an optimizer.</li>
-<li>Don't allow people to redefine precidence of operators, its makes your code unreadable</li>
-</ul>
-
-</div>
-</div>
-</div></section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>But missing features like:</p>
+<p>Missing features like:</p>
 <ul>
 <li>Weak conventions about namespace polution</li>
 <li>Never got round to making it easy to use local modules, outside of packages</li>
@@ -11981,26 +11968,6 @@ are because the language has not just good features, but <strong>weak and missin
 <li>Very easy to create packages</li>
 <li>Duck-typing, and multiple dispatch, together.</li>
 </ul>
-
-</div>
-</div>
-</div></div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Here is a key question:</p>
-<h3 id="How-often-is-code-written-by-grad-students-reusable-by-others?">How often is code written by grad students reusable by others?<a class="anchor-link" href="#How-often-is-code-written-by-grad-students-reusable-by-others?">&#182;</a></h3>
-</div>
-</div>
-</div><div class="fragment">
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>I'ld say in general pretty rare.
-In julia though its the majority of all packages.</p>
-<p>Made as a side-effect of things needed for their research.</p>
 
 </div>
 </div>
@@ -12081,10 +12048,10 @@ Since it can't work out which to use.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="This-encourages-people-to-work-together">This encourages people to work together<a class="anchor-link" href="#This-encourages-people-to-work-together">&#182;</a></h3><p>Name collisions makes package authors to come together and create base package (like <code>StatsBase</code>) and agree on what the functions mean.</p>
-<p>They don't have to, since the user can still solve it, but it encourages it.
+<p>They don't have to, since the user can still solve it, but it encourages it.<br>
 Thus you get package authors thinking about other packages that might be used with theirs.</p>
-<p>One can even overload functions from multiple namespaces if you want;
-e.g. all of <code>MLJBase.predict</code>, <code>StatsBase.predict</code>, <code>SkLearn.predict</code>.
+<p>One can even overload functions from multiple namespaces if you want;<br>
+e.g. all of <code>MLJBase.predict</code>, <code>StatsBase.predict</code>, <code>SkLearn.predict</code>.<br>
 Which might all have slightly different interfaces targetting different use cases.</p>
 
 </div>
@@ -12145,8 +12112,7 @@ from your current directory.</p>
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Testing-Julia-code-is-important.">Testing Julia code is important.<a class="anchor-link" href="#Testing-Julia-code-is-important.">&#182;</a></h3><p>JIT compiler: even compilation errors don't arive til run-time.</p>
 <p>Dynamic language: type system says nothing about correctness.</p>
-<p>You will note that many of those were to do with testing.<br>
-Testing julia code is important.</p>
+<p>Testing julia code is important.</p>
 <p>So its good to have CI etc all setup</p>
 
 </div>
