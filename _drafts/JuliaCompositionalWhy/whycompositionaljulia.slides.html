@@ -12746,6 +12746,15 @@ but they don't talk like ducks.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="We-will-now-take-a-short-break">We will now take a short break<a class="anchor-link" href="#We-will-now-take-a-short-break">&#182;</a></h1><p><img src="./swanbreak2.jpg" height="600"/></p>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="But-does-this-happen-in-the-wild?">But does this happen in the wild?<a class="anchor-link" href="#But-does-this-happen-in-the-wild?">&#182;</a></h2><p>Turns out it does.</p>
 <p>The need to extend operations to act on new combinations of types shows up all the time in scientific computing.<br>
 I suspect it shows up more generally, but we've learned to ignore it.</p>
@@ -12780,10 +12789,10 @@ E.g.</p>
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[75]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">BlockArray</span><span class="p">(</span><span class="mf">0.5</span><span class="o">.&lt;</span><span class="n">sprand</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">rows</span><span class="p">),</span><span class="n">sum</span><span class="p">(</span><span class="n">cols</span><span class="p">),</span><span class="mf">0.9</span><span class="p">),</span> <span class="n">rows</span><span class="p">,</span><span class="n">cols</span><span class="p">)</span>
+<div class=" highlight hl-julia"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">BlockArray</span><span class="p">(</span><span class="mf">0.5</span><span class="o">.&lt;</span><span class="n">sprand</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="o">*</span><span class="mi">4</span><span class="p">,</span><span class="mf">0.9</span><span class="p">),</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -12796,26 +12805,27 @@ E.g.</p>
 
 <div class="output_area">
 
-<div class="prompt output_prompt">Out[53]:</div>
+<div class="prompt output_prompt">Out[75]:</div>
 
 
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>4×4-blocked 10×10 BlockArray{Bool,2,Array{SparseMatrixCSC{Bool,Int64},2},Tuple{BlockedUnitRange{Array{Int64,1}},BlockedUnitRange{Array{Int64,1}}}}:
- 0  │  1  0  │  0  0  1  │  0  1  1  1
- ───┼────────┼───────────┼────────────
- 0  │  1  0  │  0  1  1  │  1  1  0  0
- 0  │  0  0  │  0  0  0  │  0  0  0  0
- ───┼────────┼───────────┼────────────
- 1  │  0  1  │  0  0  1  │  1  1  1  0
- 1  │  0  0  │  0  1  1  │  1  0  0  0
- 1  │  1  0  │  1  1  0  │  1  1  0  1
- ───┼────────┼───────────┼────────────
- 0  │  1  0  │  0  1  1  │  1  0  0  0
- 0  │  1  0  │  0  1  1  │  0  0  1  0
- 0  │  1  1  │  0  1  0  │  0  0  0  0
- 1  │  0  1  │  0  0  1  │  0  0  0  0</pre>
+<pre>3×3-blocked 12×12 BlockArray{Bool,2,Array{SparseMatrixCSC{Bool,Int64},2},Tuple{BlockedUnitRange{Array{Int64,1}},BlockedUnitRange{Array{Int64,1}}}}:
+ 1  0  0  0  │  0  1  0  0  │  1  0  0  0
+ 0  1  1  1  │  1  1  1  1  │  1  1  0  0
+ 0  0  1  0  │  1  0  0  0  │  1  0  0  1
+ 0  0  0  0  │  0  0  1  0  │  1  0  0  0
+ ────────────┼──────────────┼────────────
+ 1  0  0  0  │  1  1  0  0  │  1  1  0  1
+ 0  1  1  1  │  1  1  1  0  │  0  1  0  0
+ 0  1  0  1  │  1  0  0  0  │  0  1  1  0
+ 1  0  0  0  │  0  0  1  1  │  1  1  0  0
+ ────────────┼──────────────┼────────────
+ 0  0  1  0  │  1  1  0  0  │  0  0  1  0
+ 1  0  0  0  │  0  0  0  0  │  0  1  1  0
+ 0  1  0  0  │  1  0  0  0  │  1  0  1  1
+ 1  1  0  1  │  0  1  1  1  │  0  1  1  1</pre>
 </div>
 
 </div>
