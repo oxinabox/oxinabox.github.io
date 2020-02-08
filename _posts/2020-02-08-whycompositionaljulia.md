@@ -34,7 +34,7 @@ I recommend that video, it goes into more details one some of the multiple dispa
  - If you have a Differential Equation solver, and a Neural Network library, then you should just be able to have neural ODEs (**[DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl) / [Flux.jl](https://github.com/FluxML/Flux.jl)**)
  - If you have a package to add names to the dimensions of an array, and one to put arays on the GPU, then you shouldn't have to write code to have named arrays on the GPU (**[NamedDims.jl](https://github.com/invenia/NamedDims.jl) / [CUArrays.jl](https://github.com/JuliaGPU/CuArrays.jl)**)
 
-### Why Julia is it this way?
+### Why is Julia this way?
 
 The theory I prose heremay sound counter-intuitive
 I suggest, that julia code is so reusable,
