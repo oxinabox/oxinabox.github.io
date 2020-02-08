@@ -157,7 +157,11 @@ If code-paths are not covered in tests their is almost nothing in the language i
 
 So its important to have Continuous Integration and other tooling all setup
 
-### Making package making trival gets more packages made
+### Trivial Package Creation is important
+
+Many people who create julia packages are not traditional software developers; e.g. a large portion are academic researchers.
+People who don't think of themselves as "Developers" are less enclined to take the step to turn their code into a package.
+
 
 Recall that many Julia package authors are Grad students who are trying to get their next paper complete.
 Lots of scientific code never gets released, and lots of the code that does never gets made usable for others.
@@ -170,19 +174,32 @@ Its not a silver bullet but its one more push in the right direction.
 
 **Assume it walks like a duck and talks like a duck, and if it doesn't fix that.**
 
+Julia combination of duck-typing with multiple dispatch is quite neat.
+It lets us have support for any object that meets the implict interface expected by a function ([duck-typing](https://en.wikipedia.org/wiki/Duck_typing));
+while also having a chance to handle it as a special-case if it doesn't (multiple dispatch).
+In a fully extensible way.
+
+This pairs to the weakness of Julia in its lack of a static type system.
+A static type system's benifits comes from ensuring interfaces are met at compile time.
+This largely makes in-compatible with duck-typing.
+
+
+
+The example in this section will serve to illustrate how duck-typing and multiple dispatch give the expressivity that is escential for composability.
+
 ---
 
 #### Aside: Open Classes
 Another closely related factor is **Open Classes.**
 But I'm not going to talk about that today, I recommend finding other resource to read on it.
 Such as [Eli Bendersky's blog post on the expression problem](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions#is-multiple-dispatch-necessary-to-cleanly-solve-the-expression-problem)
-You need to allow new methods to be added to existing classes, in the first place.
-Some languages (e.g. Java) require that methods literally be places inside the same file as the class.
+You need to allow new methods to be added to existing classes.
+Some languages (e.g. Java) require that methods literally be placed inside the same file as the class.
 This means there is no way to add methods in another code-base, even unrelated ones.
 
 ---
 
-### We would like to use some coode from a library
+### We would like to use some code from a library
 Consider I might have a type from the **Ducks** library.
 
 **Input:**
@@ -617,10 +634,19 @@ Otherwise, one needs to implement array support into one's scalars, to have reas
 People need to invent new languages.
 Its a good time to be inventing new languages.
 It's good for the world.
-Its good for me because I like cool new things.
+It's good for me because I like cool new things.
 
 I’ld just really like those new languages to please have:
- - multiple dispatch
- - open classes, so you can add methods to things.
- - array types that are parametric on their scalar types, at the type level
+ - multiple dispatch, to:
+     - allow for extension via what ever special case is needed (E.g. a Duck will lead a baby duck to water, but will abandon a baby swan)
+     - Including allowing domain knowedge to be added (Like the matrix multiplication examples)
+ - Open classes:
+     - so you can create new methods in your package for types/functions declared in another package
+ - Array types that are parametric on their scalar types, at the type level
+     -  So that array-code and scalar-code do not need to be entangled for performance.
  - A package management solution built-in, that everyone uses.
+     - because it makes for consistent tooling and a multiplicative effect on software standard.
+     - Like everyone in the julia community writing tests and using CI.
+ - Not jumping straight onto 1 namespace per file, isolate everything, bandwagon.
+     - Namespace clashes are not that bad
+     - Its worth considering what the value of namespaces is: not just _"Namespaces are one honking great idea -- let's do more of those!"_
