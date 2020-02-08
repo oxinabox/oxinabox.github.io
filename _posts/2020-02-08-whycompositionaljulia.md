@@ -13,7 +13,7 @@ This is generally taken on a high level to be true of all programming languages 
 However, experienced software engineers often note that its surprisingly difficult in practice to take something from one project and use it in another without tweaking.
 But in the Julia Ecosystem, which was written mostly by Grad students, this seems to mostly work.
 This post explores some theories on why;
-and some lose recommendations to future language designers.
+and some loose recommendations to future language designers.
 <!--more-->
 
 
@@ -36,9 +36,8 @@ I recommend that video, it goes into more details one some of the multiple dispa
 
 ### Why is Julia this way?
 
-The theory I prose heremay sound counter-intuitive
-I suggest, that julia code is so reusable,
-are because the language has not just good features, but **weak and missing features.**
+My theory, is that julia code is so reusable,
+not just because the language has some great features, but also because of the particular features that are **weak or missing.**
 
 Missing features like:
  - Weak conventions about namespace polution
@@ -435,12 +434,12 @@ end
  - This could mean adding a lot of code for them to maintain
  - Does not scale, what if other people wanted to add Chickens, Geese etc.
 
-##### Varient: Monkey-patch
- - If the language supports monkey patching, could do it that way
+##### Variant: Monkey-patch
+ - If the language supports [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch), could do it that way
  - but it means copying their code into my library, will run in to issues like not being able to update.
  - Scaled to other people adding new types even worse, since no longer a central canonical source to copy
 
-##### Varient: could fork their code
+##### Variant: could fork their code
  - That is giving up on code reuse.
 
 ### Option 2: Inherit from the Duck
@@ -467,7 +466,7 @@ end
 ##### Still does not scale:
 If someone else implements `DuckWithChickenSupport`, and I want to use both there code and mine, what do?
  - Inherit from both? `DuckWithChickenAndSwanSupport`
- - This is the classic multiple inheritance Diamond problem.
+ - This is the classic multiple inheritance [Diamond Problem](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem).
  - It's hard. Even in languages supporting multiple inheritance, they may not support it in a useful way for this without me writing special cases for many things.
 
 There *are* engineering solutions around all this.
