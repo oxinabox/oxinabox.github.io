@@ -535,7 +535,7 @@ simulate_farm([Duck(), Duck(), Swan()], [Swan(), Swan()])
 
 ## Are there real-world use cases for Multiple Dispatch ?
 
-Turns out it does.
+Turns out there are.
 
 The need to extend operations to act on new combinations of types shows up all the time in scientific computing.
 I suspect it shows up more generally, but we've learned to ignore it.
