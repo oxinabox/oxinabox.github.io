@@ -6,12 +6,12 @@ tags:
     - jupyter-notebook
 ---
 
-One of the most remarkable things about the Julia programming language,
+One of the most remarkable things about the julia programming language,
 is how well the packages compose.
 You can almost always reuse someone elses types or methods in your own software without issues.
 This is generally taken on a high level to be true of all programming languages because that is what a library is.
 However, experienced software engineers often note that its surprisingly difficult in practice to take something from one project and use it in another without tweaking.
-But in the Julia Ecosystem, which was written mostly by Grad students, this seems to mostly work.
+But in the julia ecosystem this seems to mostly work.
 This post explores some theories on why;
 and some loose recommendations to future language designers.
 <!--more-->
@@ -26,7 +26,7 @@ Parts of this post are inspired by [Stefan Karpinski's "The Unreasonable Effecti
 I recommend that video, it goes into more details one some of the multiple dispatch points, and the subtle (but important) difference between julia's  dispatch and C++'s virtual methods.
 
 
-## What do I mean by composable ?
+## What do I mean by composable?
 
 ### Examples:
 
@@ -34,7 +34,7 @@ I recommend that video, it goes into more details one some of the multiple dispa
  - If you have a Differential Equation solver, and a Neural Network library, then you should just be able to have neural ODEs (**[DifferentialEquations.jl](https://github.com/JuliaDiffEq/DifferentialEquations.jl) / [Flux.jl](https://github.com/FluxML/Flux.jl)**)
  - If you have a package to add names to the dimensions of an array, and one to put arays on the GPU, then you shouldn't have to write code to have named arrays on the GPU (**[NamedDims.jl](https://github.com/invenia/NamedDims.jl) / [CUArrays.jl](https://github.com/JuliaGPU/CuArrays.jl)**)
 
-### Why is Julia this way?
+### Why is julia this way?
 
 My theory, is that julia code is so reusable,
 not just because the language has some great features, but also because of the particular features that are **weak or missing.**
@@ -56,15 +56,15 @@ Common advise when loading code form another module in most languagage communiti
 only import what you need.
 e.g `using Foo: a, b c`
 
-Common practice in Julia is to do:
+Common practice in julia is to do:
 `using Foo`,
 which imports everything everything that the author of `Foo` marked to be **exported**.
 
 You don't have to, but it's common.
 
-But what happens if one has package:
- - `Bar` exporting `predict(::BarModel, data)`,
- - and another `Foo` exporting `predict(::FooModel, data)`
+But what happens if one has a pair of packages:
+ - `Foo` exporting `predict(::FooModel, data)`
+ - and `Bar` exporting `predict(::BarModel, data)`,
 
 and one does:
 ```julia
@@ -89,7 +89,7 @@ evaluate(Foo.predict(mfoo), test_data)
 ```
 
 ### But the package authors can solve this:
-There is no name collision if both names *are* overloaded the from the same namespace.
+There is no name collision if both names overloaded are the from the *same namespace*.
 
 If both `Foo` and `Bar` are overloading `StatsBase.predict` everything works.
 
@@ -107,12 +107,12 @@ evaluate(predict(mfoo), test_data)
 
 ### This encourages people to work together
 
-Name collisions makes package authors to come together and create base package (like `StatsBase`) and agree on what the functions mean.
+Name collisions make package authors come together and create base packages (like `StatsBase`) and agree on what the functions mean.
 
-They don't have to, since the user can still solve it, but it encourages it.
-Thus you get package authors thinking about other packages that might be used with theirs.
+They don't have to, since the user can still solve it, but it encourages the practice.
+Thus we have package authors thinking about how other packages might be used with theirs.
 
-One can even overload functions from multiple namespaces if you want;
+Package authors can even overload functions from multiple namespaces if you want;
 e.g. all of `MLJBase.predict`, `StatsBase.predict`, `SkLearn.predict`.
 Which might all have slightly different interfaces targetting different use cases.
 
@@ -124,7 +124,7 @@ and you can load that module e.g. via
 `import Filename`
 from your current directory.
 
-You can make this work in Julia also, but it is surprisingly fiddly.
+You can make this work in julia also, but it is surprisingly fiddly.
 
 What is easy however, is to create and use a package.
 
@@ -134,7 +134,7 @@ What is easy however, is to create and use a package.
  - The feeling you are doing good software engineering
  - Easier to transition later to a package
 
-### What does making a Julia package give you?
+### What does making a julia package give you?
  - All the above plus
  - Standard directory structure, `src`, `test` etc
  - Managed dependencies, both what they are, and what versions
@@ -148,27 +148,27 @@ The [recommended way](https://github.com/invenia/PkgTemplates.jl/) to create pac
  - Documentation setup
  - License set
 
-### Testing Julia code is important.
-Julia uses a JIT compiler, so  even compilation errors don't arive til run-time.
+### Testing julia code is important.
+Julia uses a JIT compiler, so  even compilation errors don't arrive until run-time.
 As a dynamic language the type system says very little about correctness.
 
 Testing julia code is important.
-If code-paths are not covered in tests their is almost nothing in the language itself to protect them from having any kind of error.
+If code-paths are not covered in tests there is almost nothing in the language itself to protect them from having any kind of error.
 
-So its important to have Continuous Integration and other tooling all setup
+So it's important to have Continuous Integration and other such tooling set up.
 
-### Trivial Package Creation is important
+### Trivial package creation is important
 
 Many people who create julia packages are not traditional software developers; e.g. a large portion are academic researchers.
 People who don't think of themselves as "Developers" are less enclined to take the step to turn their code into a package.
 
 
-Recall that many Julia package authors are Grad students who are trying to get their next paper complete.
+Recall that many julia package authors are graduate students who are trying to get their next paper complete.
 Lots of scientific code never gets released, and lots of the code that does never gets made usable for others.
-But if it is easier to make a package, than it is to not, then it does.
-And once it is a package people start thinking more like package authors, and considering how it will be used.
+But if they start out writing a package (rather than a local module that just works for their script) then it is already several steps closes to being released.
+Once it is a package people start thinking more like package authors, and considering how it will be used.
 
-Its not a silver bullet but its one more push in the right direction.
+It's not a silver bullet but it is one more push in the right direction.
 
 ## Multiple Dispatch + Duck-typing
 
@@ -179,7 +179,7 @@ It lets us have support for any object that meets the implict interface expected
 while also having a chance to handle it as a special-case if it doesn't (multiple dispatch).
 In a fully extensible way.
 
-This pairs to the weakness of Julia in its lack of a static type system.
+This pairs to the weakness of julia in its lack of a static type system.
 A static type system's benifits comes from ensuring interfaces are met at compile time.
 This largely makes in-compatible with duck-typing.
 
@@ -192,7 +192,7 @@ The example in this section will serve to illustrate how duck-typing and multipl
 #### Aside: Open Classes
 Another closely related factor is **Open Classes.**
 But I'm not going to talk about that today, I recommend finding other resource to read on it.
-Such as [Eli Bendersky's blog post on the expression problem](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions#is-multiple-dispatch-necessary-to-cleanly-solve-the-expression-problem)
+Such as [Eli Bendersky's blog post on the expression problem](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions#is-multiple-dispatch-necessary-to-cleanly-solve-the-expression-problem).
 You need to allow new methods to be added to existing classes.
 Some languages (e.g. Java) require that methods literally be placed inside the same file as the class.
 This means there is no way to add methods in another code-base, even unrelated ones.
@@ -448,13 +448,13 @@ end
 
 #### Rewriting the Duck has problems
  - Have to edit someone elses library, to add support for *my* type.
- - This could mean adding a lot of code for them to maintain
+ - This could mean adding a lot of code for them to maintain.
  - Does not scale, what if other people wanted to add Chickens, Geese etc.
 
 ##### Variant: Monkey-patch
- - If the language supports [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch), could do it that way
+ - If the language supports [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch), could do it that way.
  - but it means copying their code into my library, will run in to issues like not being able to update.
- - Scaled to other people adding new types even worse, since no longer a central canonical source to copy
+ - Scaled to other people adding new types even worse, since no longer a central canonical source to copy.
 
 ##### Variant: could fork their code
  - That is giving up on code reuse.
@@ -481,15 +481,15 @@ end
  - If I am using other libraries that might return a `Duck` I have to deal with that also
 
 ##### Still does not scale:
-If someone else implements `DuckWithChickenSupport`, and I want to use both there code and mine, what do?
+If someone else implements `DuckWithChickenSupport`, and I want to use both their code and mine, what do I do?
+
  - Inherit from both? `DuckWithChickenAndSwanSupport`
  - This is the classic multiple inheritance [Diamond Problem](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem).
  - It's hard. Even in languages supporting multiple inheritance, they may not support it in a useful way for this without me writing special cases for many things.
 
 There *are* engineering solutions around all this.
-It is beyond the scope of this post to detail them.
-But in sort they are more complex to use than multiple dispatch.
 One can use various design patterns to emulate multiple dipatch.
+It is beyond the scope of this post to detail them.
 
 ### Option 3: Multiple Dispatch
 
@@ -527,7 +527,7 @@ simulate_farm([Duck(), Duck(), Swan()], [Swan(), Swan()])
 </div>
 
 
-## But does this happen in the wild?
+## Are there real-world use cases for Multiple Dispatch ?
 
 Turns out it does.
 
@@ -535,7 +535,7 @@ The need to extend operations to act on new combinations of types shows up all t
 I suspect it shows up more generally, but we've learned to ignore it.
 
 
-If you look at a list of BLAS, methods you will see just this, encoded in the function name
+If you look at a [list of BLAS methods](http://www.netlib.org/blas/#_level_3) you will see just this encoded in the function name
 E.g.
  - `SGEMM` - matrix matrix multiply
  - `SSYMM` - symmetric-matrix matrix multiply
@@ -575,13 +575,13 @@ So its not a reasonable thing for a numerical language to say that they've enume
 
 This is called specialization.
 
-### Basic functionalitionality of Julia's JIT:
+### Basic functionality of julia's JIT:
 
  - Specialize all methods on all types that they are called on as they are called
 
 This is pretty good: its a reasonable assumption that the types are going to an important case.
 
-### What does multiple dispatch add ontop of Julia's JIT?
+### What does multiple dispatch add ontop of julia's JIT?
 
 It lets a human tell it how that specialization should be done.
 Which can add a lot of information.
@@ -632,11 +632,11 @@ Otherwise, one needs to implement array support into one's scalars, to have reas
 ## It is good to invent new languages
 
 People need to invent new languages.
-Its a good time to be inventing new languages.
+It's a good time to be inventing new languages.
 It's good for the world.
 It's good for me because I like cool new things.
 
-I’ld just really like those new languages to please have:
+I’d just really like those new languages to please have:
  - multiple dispatch, to:
      - allow for extension via what ever special case is needed (E.g. a Duck will lead a baby duck to water, but will abandon a baby swan)
      - Including allowing domain knowedge to be added (Like the matrix multiplication examples)
