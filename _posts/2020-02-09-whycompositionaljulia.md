@@ -52,7 +52,7 @@ But that these are countered by, or allow for other features:
 
 ## Julia namespacing is used in a leaky way
 
-Common advise when loading code form another module in most languagage communities is:
+Common advice when loading code form another module in most languagage communities is:
 only import what you need.
 e.g `using Foo: a, b c`
 
