@@ -192,7 +192,7 @@ sub {
 body {
   padding: 0px 0px 20px 0px;
   margin: 0px;
-  font: 16px/1.1 "OpenSansRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 16px/1.4 "OpenSansRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #f0e7d5;
   font-weight: normal;
   background: #252525;
