@@ -8,7 +8,7 @@ tags:
 
 One of the most remarkable things about the julia programming language,
 is how well the packages compose.
-You can almost always reuse someone elses types or methods in your own software without issues.
+You can almost always reuse someone else's types or methods in your own software without issues.
 This is generally taken on a high level to be true of all programming languages because that is what a library is.
 However, experienced software engineers often note that its surprisingly difficult in practice to take something from one project and use it in another without tweaking.
 But in the julia ecosystem this seems to mostly work.
@@ -23,7 +23,7 @@ This blog post is a bit ad-hoc in its ordering and content because of its origin
 I trust the reader will forgived me.
 
 Parts of this post are inspired by [Stefan Karpinski's "The Unreasonable Effectiveness of Multiple Dispatch" talk at JuliaCon 2019](https://www.youtube.com/watch?v=kc9HwsxE1OY).
-I recommend that video, it goes into more details one some of the multiple dispatch points, and the subtle (but important) difference between julia's  dispatch and C++'s virtual methods.
+I recommend that video, it goes into more details on some of the multiple dispatch points, and the subtle (but important) difference between julia's  dispatch and C++'s virtual methods.
 
 
 ## What do I mean by composable?
@@ -89,7 +89,7 @@ evaluate(Foo.predict(mfoo), test_data)
 ```
 
 ### But the package authors can solve this:
-There is no name collision if both names overloaded are the from the *same namespace*.
+There is no name collision if both names overloaded are from the *same namespace*.
 
 If both `Foo` and `Bar` are overloading `StatsBase.predict` everything works.
 
@@ -160,7 +160,7 @@ So it's important to have Continuous Integration and other such tooling set up.
 ### Trivial package creation is important
 
 Many people who create julia packages are not traditional software developers; e.g. a large portion are academic researchers.
-People who don't think of themselves as "Developers" are less enclined to take the step to turn their code into a package.
+People who don't think of themselves as "Developers" are less inclined to take the step to turn their code into a package.
 
 
 Recall that many julia package authors are graduate students who are trying to get their next paper complete.
@@ -180,8 +180,9 @@ while also having a chance to handle it as a special-case if it doesn't (multipl
 In a fully extensible way.
 
 This pairs to the weakness of julia in its lack of a static type system.
-A static type system's benifits comes from ensuring interfaces are met at compile time.
+A static type system's benefits comes from ensuring interfaces are met at compile time.
 This largely makes in-compatible with duck-typing.
+(There are other interesting options in this space though, e.g. [Structural Typing](https://en.wikipedia.org/wiki/Structural_type_system).)
 
 
 
@@ -191,7 +192,7 @@ The example in this section will serve to illustrate how duck-typing and multipl
 
 #### Aside: Open Classes
 Another closely related factor is **Open Classes.**
-But I'm not going to talk about that today, I recommend finding other resource to read on it.
+But I'm not going to talk about that today, I recommend finding other resources on it.
 Such as [Eli Bendersky's blog post on the expression problem](https://eli.thegreenplace.net/2016/the-expression-problem-and-its-solutions#is-multiple-dispatch-necessary-to-cleanly-solve-the-expression-problem).
 You need to allow new methods to be added to existing classes.
 Some languages (e.g. Java) require that methods literally be placed inside the same file as the class.
@@ -447,7 +448,7 @@ end
 </div>
 
 #### Rewriting the Duck has problems
- - Have to edit someone elses library, to add support for *my* type.
+ - Have to edit someone else's library, to add support for *my* type.
  - This could mean adding a lot of code for them to maintain.
  - Does not scale, what if other people wanted to add Chickens, Geese etc.
 
@@ -458,6 +459,13 @@ end
 
 ##### Variant: could fork their code
  - That is giving up on code reuse.
+
+##### Design Patterns
+There *are* engineering solutions around this.
+Design patterns allow one to emulate features a language doesn't have.
+For example the `Duck` could allow for one to `register` behavour with a given baby animal,
+which is basically adhoc runtime multiple dispatch.
+But this would require the `Duck` to be rewritten this way.
 
 ### Option 2: Inherit from the Duck
 
@@ -479,6 +487,7 @@ end
 #### Inheriting from the Duck has problems:
  - Have to replace every `Duck` in my code-base with `DuckWithSwanSupport`
  - If I am using other libraries that might return a `Duck` I have to deal with that also
+ - Again there are design patterns that can help, like using [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection) to control how all `Ducks` are created. But now all libraries have to be rewritten to use it.
 
 ##### Still does not scale:
 If someone else implements `DuckWithChickenSupport`, and I want to use both their code and mine, what do I do?
@@ -487,9 +496,6 @@ If someone else implements `DuckWithChickenSupport`, and I want to use both thei
  - This is the classic multiple inheritance [Diamond Problem](https://en.wikipedia.org/wiki/Multiple_inheritance#The_diamond_problem).
  - It's hard. Even in languages supporting multiple inheritance, they may not support it in a useful way for this without me writing special cases for many things.
 
-There *are* engineering solutions around all this.
-One can use various design patterns to emulate multiple dipatch.
-It is beyond the scope of this post to detail them.
 
 ### Option 3: Multiple Dispatch
 
@@ -579,7 +585,7 @@ This is called specialization.
 
  - Specialize all methods on all types that they are called on as they are called
 
-This is pretty good: its a reasonable assumption that the types are going to an important case.
+This is pretty good: it is a reasonable assumption that the types are going to an important case.
 
 ### What does multiple dispatch add ontop of julia's JIT?
 
@@ -637,8 +643,8 @@ It's good for the world.
 It's good for me because I like cool new things.
 
 I’d just really like those new languages to please have:
- - multiple dispatch, to:
-     - allow for extension via what ever special case is needed (E.g. a Duck will lead a baby duck to water, but will abandon a baby swan)
+ - Multiple dispatch, to:
+     - allow for extension via whatever special case is needed in _seperate packages_. (E.g. The Duck will lead a baby duck to water, but will abandon a baby swan)
      - Including allowing domain knowedge to be added (Like the matrix multiplication examples)
  - Open classes:
      - so you can create new methods in your package for types/functions declared in another package
@@ -650,3 +656,8 @@ I’d just really like those new languages to please have:
  - Not jumping straight onto 1 namespace per file, isolate everything, bandwagon.
      - Namespace clashes are not that bad
      - Its worth considering what the value of namespaces is: not just _"Namespaces are one honking great idea -- let's do more of those!"_
+
+
+---
+
+Thanks to Cormullion,  Jens Adam, Casey Kneale, and Mathieu Besançon for proof reading.
