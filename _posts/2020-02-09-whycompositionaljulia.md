@@ -462,7 +462,7 @@ end
 ##### Design Patterns
 There *are* engineering solutions around this.
 Design patterns allow one to emulate features a language doesn't have.
-For example the `Duck` could allow for one to `register` behavour with a given baby animal,
+For example the `Duck` could allow for one to `register` behaviour with a given baby animal,
 which is basically adhoc runtime multiple dispatch.
 But this would require the `Duck` to be rewritten this way.
 
@@ -625,9 +625,9 @@ Without this, your array code, and your scalar code can not be disentangled.
 BLAS for example does not have this.
 It has a unique code for each combination of scalar and matrix type.
 
-With this seperation, one can add new scalar types:
+With this separation, one can add new scalar types:
  - Dual numbers
- - Measument Error tracking numbers
+ - Measurement Error tracking numbers
  - Symbolic Algebra numbers
 
 Without ever having to touch array code, except as a late-stage optimization.
@@ -643,7 +643,7 @@ It's good for me because I like cool new things.
 
 I’d just really like those new languages to please have:
  - Multiple dispatch, to:
-     - allow for extension via whatever special case is needed in _seperate packages_. (E.g. The Duck will lead a baby duck to water, but will abandon a baby swan)
+     - allow for extension via whatever special case is needed in _separate packages_. (E.g. The Duck will lead a baby duck to water, but will abandon a baby swan)
      - Include allowing domain knowledge to be added (Like the matrix multiplication examples)
  - Open classes:
      - so you can create new methods in your package for types/functions declared in another package
