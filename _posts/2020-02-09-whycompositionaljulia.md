@@ -36,12 +36,12 @@ I recommend that video, it goes into more details on some of the multiple dispat
 
 ### Why is julia this way?
 
-My theory, is that julia code is so reusable,
+My theory is that julia code is so reusable,
 not just because the language has some great features, but also because of the particular features that are **weak or missing.**
 
 Missing features like:
- - Weak conventions about namespace polution
- - Never got round to making it easy to use local modules, outside of packages
+ - Weak conventions about namespace pollution
+ - Never got around to making it easy to use local modules, outside of packages
  - A type system that can't be used to check correctness
 
 But that these are countered by, or allow for other features:
@@ -52,13 +52,13 @@ But that these are countered by, or allow for other features:
 
 ## Julia namespacing is used in a leaky way
 
-Common advice when loading code form another module in most languagage communities is:
+Common advice when loading code from another module in most language communities is:
 only import what you need.
 e.g `using Foo: a, b c`
 
 Common practice in julia is to do:
 `using Foo`,
-which imports everything everything that the author of `Foo` marked to be **exported**.
+which imports everything that the author of `Foo` marked to be **exported**.
 
 You don't have to, but it's common.
 
@@ -78,8 +78,7 @@ evaluate(predict(mfoo), test_data)
 ```
 
 If you have multiple `using`s trying to bring the same name into scope,
-then julia throws an error.
-Since it can't work out which to use.
+then julia throws an error, since it can't work out which to use.
 
 As a user you can tell it what to use.
 
@@ -166,7 +165,7 @@ People who don't think of themselves as "Developers" are less inclined to take t
 Recall that many julia package authors are graduate students who are trying to get their next paper complete.
 Lots of scientific code never gets released, and lots of the code that does never gets made usable for others.
 But if they start out writing a package (rather than a local module that just works for their script) then it is already several steps closes to being released.
-Once it is a package people start thinking more like package authors, and considering how it will be used.
+Once it is a package people start thinking more like package authors, and start to consider how it will be used.
 
 It's not a silver bullet but it is one more push in the right direction.
 
@@ -174,7 +173,7 @@ It's not a silver bullet but it is one more push in the right direction.
 
 **Assume it walks like a duck and talks like a duck, and if it doesn't fix that.**
 
-Julia combination of duck-typing with multiple dispatch is quite neat.
+Julia's combination of duck-typing with multiple dispatch is quite neat.
 It lets us have support for any object that meets the implict interface expected by a function ([duck-typing](https://en.wikipedia.org/wiki/Duck_typing));
 while also having a chance to handle it as a special-case if it doesn't (multiple dispatch).
 In a fully extensible way.
@@ -424,7 +423,7 @@ Thats not right again.
 
 What happened?
 
-We had a Duck, raising a baby Swan, and it lead it to water.
+We had a Duck raising a baby Swan, and it lead the baby Swan to water.
 
 If you know about raising poultry, then you will know:
 _Ducks given baby Swans to raise, will just abandon them._
@@ -454,7 +453,7 @@ end
 
 ##### Variant: Monkey-patch
  - If the language supports [monkey patching](https://en.wikipedia.org/wiki/Monkey_patch), could do it that way.
- - but it means copying their code into my library, will run in to issues like not being able to update.
+ - but it means copying their code into my library, will run into issues like not being able to update.
  - Scaled to other people adding new types even worse, since no longer a central canonical source to copy.
 
 ##### Variant: could fork their code
@@ -555,7 +554,7 @@ And turns out people keep wanting to make more and more matrix types.
  - Block Banded Matrix (where the band is made up of blocks)
  - Banded Block Banded Matrix (where the band is made up of blocks that are themselved banded).
 
-That is before other things you might like to to to a Matrix, which you'd like to encode in its type:
+That is before other things you might like to do to a Matrix, which you'd like to encode in its type:
  - Running on a GPU
  - Tracking Operations for AutoDiff
  - Naming dimensions, for easy lookup
@@ -587,7 +586,7 @@ This is called specialization.
 
 This is pretty good: it is a reasonable assumption that the types are going to an important case.
 
-### What does multiple dispatch add ontop of julia's JIT?
+### What does multiple dispatch add on top of julia's JIT?
 
 It lets a human tell it how that specialization should be done.
 Which can add a lot of information.
@@ -645,7 +644,7 @@ It's good for me because I like cool new things.
 I’d just really like those new languages to please have:
  - Multiple dispatch, to:
      - allow for extension via whatever special case is needed in _seperate packages_. (E.g. The Duck will lead a baby duck to water, but will abandon a baby swan)
-     - Including allowing domain knowedge to be added (Like the matrix multiplication examples)
+     - Include allowing domain knowledge to be added (Like the matrix multiplication examples)
  - Open classes:
      - so you can create new methods in your package for types/functions declared in another package
  - Array types that are parametric on their scalar types, at the type level
