@@ -17,7 +17,7 @@ and some loose recommendations to future language designers.
 <!--more-->
 
 
-This blog post is based on a talk I was invited to give at the 2020 [F(by) conference](fby.dev).
+This blog post is based on a talk I was invited to give at the 2020 [F(by) conference](http://fby.dev).
 Hopefully videos from that will be up soon, and I will link it here.
 This blog post is a bit ad-hoc in its ordering and content because of its origin as a talk.
 I trust the reader will forgive me.
