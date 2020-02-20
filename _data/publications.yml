@@ -1,3 +1,9 @@
+- title: "WordTokenizers.jl: Basic tools for tokenizing natural language in Julia. "
+  author: Ayush Kaushal, Lyndon White, Mike Innes, and Rohit Kumar
+  venue: 'Journal of Open Source Software (JOSS)'
+  year: 2020
+  link: https://joss.theoj.org/papers/10.21105/joss.01956
+
 - title: "Meta-Optimization of Optimal Power Flow"
   author: Mahdi Jamei, Letif Mones, Alex Robson, Lyndon White, James Requeima, and Cozmin Ududec
   venue: '36th International Conference on Machine Learning (ICML): Climate Change Workshop'
