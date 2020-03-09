@@ -21,6 +21,8 @@ This blog post is based on a talk I was invited to give at the 2020 [F(by) confe
 This blog post is a bit ad-hoc in its ordering and content because of its origin as a talk.
 I trust the reader will forgive me.
 
+The video is below, you can watch the talk, or read the post or both.
+They are basically the same content, some questions I got at the end are answered in the post at the appropriate places.
 <iframe width="560" height="315" src="https://www.youtube.com/embed/W6MagCe2XZI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
