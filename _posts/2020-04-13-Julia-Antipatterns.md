@@ -23,9 +23,8 @@ It will discuss:
 
 This shows up in packages defining APIs that others should implement.
 Where one wants to declare and document functions that implementors of the API should overload.
-In this antipattern, one declares an abstract type, and a function that takes that abstract type as an argument.
-Usually, as the the first abstract following something like fashion from Python etc, as taking the object as the first argument.
-This function would throw an error saying that the function was not implemented for this type.
+In this antipattern, one declares an abstract type, and a function that takes that abstract type as an argument (usually the first argument).
+The function declared just throws an error saying that the function was not implemented for this type.
 
 The logic being if someone only implements half the API, the user would get this "Helpful" error message.
 
@@ -86,7 +85,8 @@ The error does not at all help us see what is wrong.
 Astute eyed readers will see what is wrong:
 `GuessingModel()` was incorrectly implemented to only work for `AbstractMatrix`, but it was called with a `Vector`,
  so it fell back to the generic method for `AbstractModel`.
-But that error message what not informative, and if we hit that deep inside a program we would have no idea what is going on, because it doesn't print the types of all the arguments.
+But that error message was not very informative (and arguably not even correct).
+If we hit that deep inside a program we would have no idea what is going on, because it doesn't print the types of all the arguments.
 
 ### What to do instead?
 Just don't implement the thing you don't want to implement.
@@ -389,13 +389,13 @@ However, they are not a tool for all occasions.
 I recall my undergrad data structured lecturer saying just that when we got to the last few weeks of the unit and were covering hashmap which has this great time complexity.
 As the time, having just spent most of a semester covering various lists and trees etc, I was like _"Of course not, who would do such a thing?"_.
 Now, I suspect I know.
-I think its mostly people who didn't have the fortune of a formal computer science education (e.g. most scientists and engineers) and/or never thought to benchmark just how large the constant behind that O(1) time is.
-But this antipattern is not really concerned with people using `Dict`s rather than some other data structure.
-Its about the use of `Dict` rather than `NamedTuple`.
+I think it is mostly people who didn't have the fortune of a formal computer science education (e.g. most scientists and engineers) and/or never thought to benchmark just how large the constant behind that O(1) time is.
+However, this antipattern is not really concerned with people using `Dict`s rather than some other data structure.
+It is about the use of `Dict` rather than `NamedTuple`.
 
 I see a fair bit of use of `Dict{Symbol}` or `Dict{String}`, which is just holding variables because one wants to group them together.
 Things like configuration settings, or model hyper-parameters.
-Until Julia 0.7 `Dict` was arguably the best object in `Base` if one wasn't willing to declare a `struct`.
+Until Julia 0.7 `Dict` was arguably the best object in `Base` for this if one wasn't willing to declare a `struct`.
 There are two problems with that.
 The introduction of mutable state, and the performance.
 
@@ -798,9 +798,11 @@ apply_inner(Float32, [[0.2, 0.9], [1.2, 1.3, 1.6]])
       apply_inner(!Matched::Function, ::Any) at In[74]:1
 
 
-A workaround to that is to use `Base.Callable` which is a `Union{Type, Function}` so does functions and constructors.
-However, this will still miss-out on other callable objects, like `DiffEqBase.ODESolution` and `Flux.Chain`.
-(As `Base.Callable` is not exported, it is also probably not part of the intended public API of Julia.)
+One might think that instead of `Function` that one could use `Base.Callable` which is a `Union{Type, Function}` so does functions and constructors.
+However, this is just a lesser version of the same antipattern.
+It will still miss-out on other callable objects, like `DiffEqBase.ODESolution` and `Flux.Chain`.
+The correct way to handle the is to not constrain the callable argument.
+Just like for iterators, there is no need to preempt the `MethodError` that will be thrown when you try and call a non-callable object.
 
 ### Others
 There are a few others I have seen, that don't warrant a fully example.
@@ -824,4 +826,4 @@ Some loosely related comments on best-practices
 
 
 ---
-Thanks to many people in the Julia community for feedback on this post, especially Mateusz Baran, and Tom Kwong.
+Thanks to many people in the Julia community for feedback on this post, especially Mateusz Baran, Felix Cremer, Mathieu Besançon and Tom Kwong.
