@@ -266,11 +266,7 @@ It has several disadvantages in terms of:
  - Understandability when used: all functions basically act the same, where as macros can vary a lot, e.g. some arguments might have to be literals, some arguments might replicate function calls if passed in others might not etc. In most cases, as a user I prefer to call a function than a macro.
 
 ### With that said sometimes there are exceptions
-If something really is very performance critical and one or more of the following applies: 
- - The compiler is failing to constant fold, and you can't make it.
-there is considerable information available at parse time(e.g. literals),
-that the compiler seems to be failing to take advantage of
-then you could try a macro (or a generated function).
+If something really is very performance critical and there is considerable information available at parse time (e.g. literals) that the compiler is failing to take advantage of (e.g. by not constant folding them way), then you could try a macro (or a generated function).
 But make absolutely sure to benchmark it before and after.
 
 **Input:**
@@ -287,19 +283,10 @@ compute_poly(x, coeffs) = sum(a * x^(i-1) for (i, a) in enumerate(coeffs))
 <div class="jupyter-cell">
 
 ```
-compute_poly (generic function with 2 methods)
-```
-
-</div>
-
-**Input:**
-
-<div class="jupyter-input jupyter-cell">
-
-```julia
-compute_poly(x, coeffs) = sum(a * x^(i-1) for (i, a) in enumerate(coeffs))
+compute_poly (generic function with 1 methods)
 ```
 </div>
+
 
 **Input:**
 
@@ -336,7 +323,7 @@ compute_poly(x, coeffs) = sum(a * x^(i-1) for (i, a) in enumerate(coeffs))
 ```julia
 macro compute_poly(x, coeffs_tuple)
     # a*x^i
-    Meta.isexpr(coeffs_tuple, :tupel) || ArgumentError("@compute_poly only accepts a tuple literal as second argument")
+    Meta.isexpr(coeffs_tuple, :tuple) || ArgumentError("@compute_poly only accepts a tuple literal as second argument")
     coeffs = coeffs_tuple.args
     terms = map(enumerate(coeffs)) do (i, a)
         a = coeffs[i]
@@ -348,6 +335,7 @@ macro compute_poly(x, coeffs_tuple)
         end
     end
     if all(x isa Number for x in terms)
+        # Whole thing can run at compile time
         return sum(terms)
     else
         return Expr(:call, :+, terms...)
@@ -559,7 +547,7 @@ One other reason I can imagine is misunderstanding [this part of the documentati
 I hope that misunderstanding is not a common reason.
 
 The belief that adding type constraints makes code faster, comes from not understanding how the JIT compiler works.
-Julia specializes every function on the types of all arguments.
+The standard action of the Julia JIT is to specializes every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
 This means it generates different machine code that is more optimally suited to the particular types.
 This includes things like removing branches that can't be met by this type, static dispatches, as well as actually better CPU instructions than a normal dynmaic language might use.
 One can see this change by comparing `@code_typed ((x)->2x)(1.0)` vs `@code_typed ((x)->2x)(0x1)`.
@@ -815,17 +803,25 @@ However, this will still miss-out on other callable objects, like `DiffEqBase.OD
 (As `Base.Callable` is not exported, it is also probably not part of the intended public API of Julia.)
 
 ### Others
-There are a few others I have seen. I
+There are a few others I have seen, that don't warrant a fully example.
 Generally one should not dispatch on:
  - `DenseArray` it is **not** the complement of sparse array. There are lots of subtypes of `AbstractArray`, most of which are not obviously sparse, nor are they subtypes of `DenseArray`. In particular wrapper array types that can wrap dense or sparse do not subtype it, e.g. `Symmetric`
  - `AbstractFloat`, can almost always be relaxed to `Real`
- - `DataType`: this will exclude the type of `Union`s and `UnionAll`s, so use `Type` instead, unless that is the goal.
+ - `DataType`: this will exclude the type of `Union`s and `UnionAll`s, so unless that is the goal, use `Type` instead.
 
 ## Conclusion
 
 These are some things to avoid when writing Julia code.
-THere are others I haven't included.
-Like anything in the [Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/), using a [Style Guide](https://github.com/invenia/BlueStyle), [performing package releases after every non-breaking PR]({{site.url}}2019/09/28/Continuous-Delivery-For-Julia-Packages.html).
+THere are others I haven't included -- there are plenty of ways to write less than ideal code.
 I may write a follow up to this in the future covering more things like _use packages, not submodules_.
 Or perhaps one on code-smells, like the use of `if x is T`.
 Hopefully, this post was useful to some to help chose better patterns.
+
+Some loosely related comments on best-practices
+ - Do read the [Julia Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/)
+ - Follow a Style Guide: I follow [BlueStyle](https://github.com/invenia/BlueStyle) (while I don't agree with every choice consistency more important)
+ - Do practice [continuous delivery]({{site.url}}2019/09/28/Continuous-Delivery-For-Julia-Packages.html) with your packages, at very least perform a releases after every non-breaking PR is merged.
+
+
+---
+Thanks to many people in the Julia community for feedback on this post, especially Mateusz Baran, and Tom Kwong.
