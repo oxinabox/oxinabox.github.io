@@ -547,7 +547,7 @@ One other reason I can imagine is misunderstanding [this part of the documentati
 I hope that misunderstanding is not a common reason.
 
 The belief that adding type constraints makes code faster, comes from not understanding how the JIT compiler works.
-The standard action of the Julia JIT is to specializes every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
+The standard action ([with some exceptions](https://docs.julialang.org/en/latest/manual/performance-tips/#Be-aware-of-when-Julia-avoids-specializing-1)) of the Julia JIT is to specializes every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
 This means it generates different machine code that is more optimally suited to the particular types.
 This includes things like removing branches that can't be met by this type, static dispatches, as well as actually better CPU instructions than a normal dynmaic language might use.
 One can see this change by comparing `@code_typed ((x)->2x)(1.0)` vs `@code_typed ((x)->2x)(0x1)`.
