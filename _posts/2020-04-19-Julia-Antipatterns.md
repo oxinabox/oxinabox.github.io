@@ -709,7 +709,15 @@ And its is generally pretty weird to have the need for a different implementatio
 
 {% highlight julia %}
 using BenchmarkTools
-terrible_norm(x::AbstractVector{<:Real}) = only(reshape(x, 1, :) * x)
+function indmin(x::AbstractVector{<:Real})
+    ind=1
+    for ii in eachindex(x)
+        if x[ii] < x[ind]
+           ind = ii
+        end
+    end
+    return ind
+end
 {% endhighlight %}
 </div>
 
@@ -718,7 +726,7 @@ terrible_norm(x::AbstractVector{<:Real}) = only(reshape(x, 1, :) * x)
 <div class="jupyter-cell">
 
 {% highlight plaintext %}
-terrible_norm (generic function with 1 method)
+indmin (generic function with 1 method)
 {% endhighlight %}
 
 </div>
@@ -728,7 +736,7 @@ terrible_norm (generic function with 1 method)
 <div class="jupyter-input jupyter-cell">
 
 {% highlight julia %}
-terrible_norm(1:10)
+indmin(1:10)
 {% endhighlight %}
 </div>
 
@@ -753,15 +761,15 @@ but you filtered them out somehow, the array will still be typed `Union{Missing,
 
 {% highlight julia %}
 data = [1, 2, 3, missing]
-terrible_norm(@view(data[1:3]))
+indmin(@view(data[1:3]))
 {% endhighlight %}
 </div>
 
 **Output:**
 
-    MethodError: no method matching terrible_norm(::SubArray{Union{Missing, Int64},1,Array{Union{Missing, Int64},1},Tuple{UnitRange{Int64}},true})
+    MethodError: no method matching indmin(::SubArray{Union{Missing, Int64},1,Array{Union{Missing, Int64},1},Tuple{UnitRange{Int64}},true})
     Closest candidates are:
-      terrible_norm(!Matched::AbstractArray{#s6,1} where #s6<:Real) at In[36]:2
+      indmin(!Matched::AbstractArray{#s6,1} where #s6<:Real) at In[36]:2
 
 Or from source that *could* contain non-Real values, but that actually doesn't
 
@@ -774,7 +782,7 @@ let
         push!(x, ii)
     end
     
-    terrible_norm(x)
+    indmin(x)
 end
 
 {% endhighlight %}
@@ -782,15 +790,15 @@ end
 
 **Output:**
 
-    MethodError: no method matching terrible_norm(::Array{Any, 1})
+    MethodError: no method matching indmin(::Array{Any, 1})
     Closest candidates are:
-      terrible_norm(!Matched::AbstractArray{#s6,1} where #s6<:Real) at In[36]:2
+      indmin(!Matched::AbstractArray{#s6,1} where #s6<:Real) at In[36]:2
 
 #### What to do instead?
 
 Put in only the constraints you need.
 If your function does require that the elements are `Real` then you will rapidly end up calling some function that is not defined on the element type you give it, and will `MethodError` then.
-In this case it is `terrible_norm(data::Array)`. Especially if you already have a fully general `terrible_norm(data)` for iterator.
+In this case it is `indmin(data::Array)`. Especially if you already have a fully general `indmin(data)` for iterator.
 
 
 ### Dispatching on  `Function`
