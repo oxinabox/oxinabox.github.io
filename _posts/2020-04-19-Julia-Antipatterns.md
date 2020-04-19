@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "Julia-Antipatterns"
+title: "JuliaLang Antipatterns"
 tags:
     - julia
     - jupyter-notebook
@@ -41,7 +41,7 @@ The logic being if someone only implements half the API, the user would get this
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 abstract type AbstractModel end
 
 """
@@ -63,25 +63,26 @@ struct GuessingModel <: AbstractModel
 end
 
 probability_estimate(guesser::GuessingModel, observation::AbstractMatrix) = rand()
-```
+{% endhighlight %}
+
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 probability_estimate (generic function with 2 methods)
-```
+{% endhighlight %}
 </div>
 
 **Input:**
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 probability_estimate(GuessingModel(), [1,2,3])
-```
+{% endhighlight %}
 </div>
 
 **Output:**
@@ -110,7 +111,7 @@ As shown. (using `probability_estimate2` to show how it should be done correctly
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 """
     probability_estimate2(model, observation::Vector)::Real
 
@@ -119,16 +120,16 @@ For a given `model`, returns the likelihood of the `observation` occurring.
 function probability_estimate2 end
 
 probability_estimate2(guesser::GuessingModel, observation::AbstractMatrix) = rand()
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 probability_estimate2 (generic function with 1 method)
-```
+{% endhighlight %}
 
 </div>
 
@@ -136,9 +137,9 @@ probability_estimate2 (generic function with 1 method)
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 probability_estimate2(GuessingModel(), [1,2,3])
-```
+{% endhighlight %}
 </div>
 
 **Output:**
@@ -160,7 +161,7 @@ This can take the place of a formal interface (which Julia doesn't have), in ens
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 using Test
 function model_testsuite(model)
     @testset "Model API Test Suite for $(typeof(model))" begin
@@ -175,14 +176,14 @@ function model_testsuite(model)
 end
 
 model_testsuite(GuessingModel())
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 probability_estimate: Error During Test at In[11]:5
   Got exception outside of a @test
   ...
@@ -190,9 +191,11 @@ Test Summary:                          | Error  Total
 Model API Test Suite for GuessingModel |     1      1
   probability_estimate                 |     1      1
 
-```
+{% endhighlight %}
+</div>
 
 ## Use of macros for performance
+
 The primary purpose of macros is not performance, it is to allow syntax transformations.
 For example, `@view xs[4:end]` gets transformed into `view(xs, 4:lastindex(xs))`: this translation of `end` could not be done by a function.
 
@@ -204,7 +207,8 @@ For example this [Stack-overflow Question](https://stackoverflow.com/a/57943397/
 
 Steven G. Johnson gave a keynote on this at [JuliaCon 2019](https://youtu.be/mSgXWpvQEHE).
 
-[![Slide From Steven G. Johnson's talk]({{site.url}}/posts_assets/julia-antipatterns/donottryandoutsmartjeff.png)](https://youtu.be/mSgXWpvQEHE?t=578)
+<a href="https://youtu.be/mSgXWpvQEHE?t=578"><img src="{{site.url}}/posts_assets/julia-antipatterns/donottryandoutsmartjeff.png" alt="Slide From Steven G. Johnson's talk" style="width:100%;"></a>
+
 
 The most egregious examples of this is simple numeric manipulation, that takes advantage of nothing known at compile time.
 
@@ -212,31 +216,31 @@ The most egregious examples of this is simple numeric manipulation, that takes a
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 using BenchmarkTools
 macro area(r)
     return esc(:(2π * ($r)^2))
 end
 @btime @area(2)
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   0.032 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 25.132741228718345
-```
+{% endhighlight %}
 
 </div>
 
@@ -252,28 +256,28 @@ It is often not necessary, as in the following example:
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 area(r) = 2π * r^2
 @btime area(2)
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   0.030 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 25.132741228718345
-```
+{% endhighlight %}
 
 </div>
 
@@ -291,18 +295,18 @@ But make absolutely sure to benchmark it before and after.
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 compute_poly(x, coeffs) = sum(a * x^(i-1) for (i, a) in enumerate(coeffs))
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 compute_poly (generic function with 1 methods)
-```
+{% endhighlight %}
 </div>
 
 
@@ -310,27 +314,27 @@ compute_poly (generic function with 1 methods)
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 @btime compute_poly(1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17))
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   49.146 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 153
-```
+{% endhighlight %}
 
 </div>
 
@@ -338,7 +342,7 @@ compute_poly (generic function with 1 methods)
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 macro compute_poly(x, coeffs_tuple)
     # a*x^i
     Meta.isexpr(coeffs_tuple, :tuple) || ArgumentError("@compute_poly only accepts a tuple literal as second argument")
@@ -359,16 +363,16 @@ macro compute_poly(x, coeffs_tuple)
         return Expr(:call, :+, terms...)
     end
 end
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 @compute_poly (macro with 1 method)
-```
+{% endhighlight %}
 
 </div>
 
@@ -376,27 +380,27 @@ end
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 @btime @compute_poly(1, (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17))
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   0.034 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 153
-```
+{% endhighlight %}
 
 </div>
 
@@ -431,42 +435,42 @@ But the case we see in this antipattern are mostly `Dict{Symbol}` or `Dict{Strin
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 dict = Dict([:a=>1, :b=>2, :c=>3, :d=>4, :e=>5])
 @btime $(dict)[:d];
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   8.456 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 **Input:**
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 str_dict = Dict(string(k)=> v for (k,v) in dict)  # convert all the keys to strings
 @btime $(str_dict)["d"];
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   18.077 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 One alternative is [OrderedCollection's](https://github.com/JuliaCollections/OrderedCollections.jl/) `LittleDict`.
@@ -478,22 +482,22 @@ It can thus be faster than the `Dict` for small collections.
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 using OrderedCollections
 little_dict = LittleDict(dict)
 @btime $(little_dict)[:d];
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   4.793 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 It also comes in a immutable form via `freeze` (or by constructing it with `Tuple`s)
@@ -502,21 +506,21 @@ It also comes in a immutable form via `freeze` (or by constructing it with `Tupl
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 frozen_little_dict = freeze(LittleDict(dict))
 @btime $(frozen_little_dict)[:d];
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   4.547 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 ### What to do instead?
@@ -535,21 +539,21 @@ It is resolved at compile time and the result is compiled directly into the comp
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 named_tuple = (; dict...)  # create a NamedTuple with the same content as the dict
 @btime $(named_tuple)[:d];
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-stream jupyter-cell">
 
-```
+{% highlight plaintext %}
 
   0.032 ns (0 allocations: 0 bytes)
 
-```
+{% endhighlight %}
 </div>
 
 If one is thinking _"I have some constants and I want to group them"_ then look no further than the `NamedTuple`.
@@ -625,7 +629,7 @@ But thats not actually a problem as the `MethodError` will occur when you try to
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 function my_average(xs::AbstractVector)
     len=0
     total = zero(eltype(xs))
@@ -635,16 +639,16 @@ function my_average(xs::AbstractVector)
     end
     return total/len
 end
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 my_average (generic function with 1 method)
-```
+{% endhighlight %}
 
 </div>
 
@@ -655,9 +659,9 @@ And converting them into `AbstractVector` via `collect(itr)` would allocate unne
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 my_average((1, 3, 4))
-```
+{% endhighlight %}
 </div>
 
 **Output:**
@@ -670,10 +674,10 @@ my_average((1, 3, 4))
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 data = [1, 2, 3, missing, 5, 4, 3, 2, 1]
 my_average(skipmissing(data))
-```
+{% endhighlight %}
 </div>
 
 **Output:**
@@ -703,19 +707,19 @@ And its is generally pretty weird to have the need for a different implementatio
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 using BenchmarkTools
 terrible_norm(x::AbstractVector{<:Real}) = only(reshape(x, 1, :) * x)
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 terrible_norm (generic function with 1 method)
-```
+{% endhighlight %}
 
 </div>
 
@@ -723,18 +727,18 @@ terrible_norm (generic function with 1 method)
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 terrible_norm(1:10)
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 385
-```
+{% endhighlight %}
 
 </div>
 
@@ -747,10 +751,10 @@ but you filtered them out somehow, the array will still be typed `Union{Missing,
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 data = [1, 2, 3, missing]
 terrible_norm(@view(data[1:3]))
-```
+{% endhighlight %}
 </div>
 
 **Output:**
@@ -763,7 +767,7 @@ Or from source that *could* contain non-Real values, but that actually doesn't
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 let
     x = []
     for ii in 1:10
@@ -773,7 +777,7 @@ let
     terrible_norm(x)
 end
 
-```
+{% endhighlight %}
 </div>
 
 **Output:**
@@ -795,18 +799,18 @@ In this case it is `terrible_norm(data::Array)`. Especially if you already have 
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 apply_inner(func::Function, xss) = [[func(x) for x in xs] for xs in xss]
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 apply_inner (generic function with 1 method)
-```
+{% endhighlight %}
 
 </div>
 
@@ -814,20 +818,20 @@ apply_inner (generic function with 1 method)
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 apply_inner(round, [[0.2, 0.9], [1.2, 1.3, 1.6]])
-```
+{% endhighlight %}
 </div>
 
 **Output:**
 
 <div class="jupyter-cell">
 
-```
+{% highlight plaintext %}
 2-element Array{Array{Float64,1},1}:
  [0.0, 1.0]
  [1.0, 1.0, 2.0]
-```
+{% endhighlight %}
 
 </div>
 
@@ -838,9 +842,9 @@ Which include constructors.
 
 <div class="jupyter-input jupyter-cell">
 
-```julia
+{% highlight julia %}
 apply_inner(Float32, [[0.2, 0.9], [1.2, 1.3, 1.6]])
-```
+{% endhighlight %}
 </div>
 
 **Output:**
