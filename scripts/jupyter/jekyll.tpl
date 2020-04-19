@@ -18,9 +18,9 @@ tags:
 
 {% block input %}
 <div class="jupyter-input jupyter-cell">
-```julia
+{{ '{% highlight julia %}' }}
 {{ cell.source }}
-```
+{{ '{% endhighlight %}' }}
 </div>
 {% endblock input %}
 
@@ -31,9 +31,9 @@ tags:
 
 {% block stream %}
 <div class="jupyter-stream jupyter-cell">
-```
+{{ '{% highlight plaintext %}' }}
 {{ output.text | strip_ansi}}
-```
+{{ '{% endhighlight %}' }}
 </div>
 {% endblock stream %}
 
@@ -44,9 +44,9 @@ tags:
 {% if type in ['text/plain'] %}
 #}
 
-```
+{{ '{% highlight plaintext %}' }}
 {{ output.data['text/plain'] | strip_ansi}}
-```
+{{ '{% endhighlight %}' }}
 
 {# Later renable this
 {% else %}
