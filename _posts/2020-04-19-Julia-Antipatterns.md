@@ -20,7 +20,7 @@ It will discuss:
  - Reasons people do this
 
 Some people will disagree with me on these things.
-That is ok, they are allowed to be wrong (😂 I jest.
+That is ok, they are allowed to be wrong (😂 I jest).
 To quote the introduction to Press, Teukolsky, Vetting and Flannery's "Numerical Recipes":
 
 _We do, therefore, offer you our practical judgements wherever we can.
@@ -873,14 +873,14 @@ Generally one should not dispatch on:
 
 These are some things to avoid when writing Julia code.
 THere are others I haven't included -- there are plenty of ways to write less than ideal code.
-I may write a follow up to this in the future covering more things like _use packages, not submodules_ (some of the advantages are mentioned in [this earlier post]({{site.url}}2020/02/09/whycompositionaljulia.html#its-easier-to-create-a-package-than-a-local-module)).
+I may write a follow up to this in the future covering more things like _use packages, not submodules_ (some of the advantages are mentioned in [this earlier post]({{site.url}}/2020/02/09/whycompositionaljulia.html#its-easier-to-create-a-package-than-a-local-module)).
 Or perhaps one on code-smells, like the use of `if x isa T` (which may hint at a place to use multiple dispatch instead).
 Hopefully, this post was useful to help chose better patterns.
 
 Some loosely related comments on best-practices:
  - Do read the [Julia Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/)
  - Follow a Style Guide: I follow [BlueStyle](https://github.com/invenia/BlueStyle) (while I don't agree with every choice, consistency more important)
- - Do practice [continuous delivery]({{site.url}}2019/09/28/Continuous-Delivery-For-Julia-Packages.html) with your packages, at the very least perform a release after every non-breaking PR is merged.
+ - Do practice [continuous delivery]({{site.url}}/2019/09/28/Continuous-Delivery-For-Julia-Packages.html) with your packages, at the very least perform a release after every non-breaking PR is merged.
 
 
 ---
