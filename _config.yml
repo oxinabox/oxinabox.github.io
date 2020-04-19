@@ -1,17 +1,20 @@
 url: https://white.ucc.asn.au
 enforce_ssl: white.ucc.asn.au
 
+highlighter: rouge
+
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,txt"
 markdown: kramdown
 kramdown:
   input: GFM
+  hard_wrap: false
   syntax_highlighter: rouge
 
 exclude:
   - "*.ipynb"
 
 
-gems:
+plugins:
   - jekyll-redirect-from
   - jekyll-feed
     

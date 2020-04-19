@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-jupyter-nbconvert  --to markdown "$1" --config jekyll_config.py --template=jekyll.tpl --Application.log_level='DEBUG'
+jupyter nbconvert  --to markdown "$1" --config jekyll_config.py --template=jekyll.tpl --Application.log_level='DEBUG'
 
 
 outputname=$(basename "$1" .ipynb)
