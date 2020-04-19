@@ -19,6 +19,15 @@ It will discuss:
  - What to do instead
  - Reasons people do this
 
+Some people will disagree with me on these things.
+That is ok, they are allowed to be wrong (😂 I jest.
+To quote the introduction to Press, Teukolsky, Vetting and Flannery's "Numerical Recipes":
+
+_We do, therefore, offer you our practical judgements wherever we can.
+As you gain experience, you will form your own opinion of how reliable our advice is.
+Be assured that it is not perfect!_
+
+
 ## NotImplemented Exceptions
 
 This shows up in packages defining APIs that others should implement.
@@ -92,7 +101,7 @@ If we hit that deep inside a program we would have no idea what is going on, bec
 Just don't implement the thing you don't want to implement.
 A `MethodError` indicates this quite well and as shown gives a more informative error message than you will write.
 
-A often missed feature is that you can declare a function without providing any methods.
+An often overlooked feature is that you can declare a function without providing any methods.
 This is the ideal way to add documentation for a function that you expect to be overloaded.
 This is done via `function probability_estimate end`.
 As shown. (using `probability_estimate2` to show how it should be done correctly)
@@ -138,6 +147,8 @@ probability_estimate2(GuessingModel(), [1,2,3])
     Closest candidates are:
       probability_estimate2(::GuessingModel, !Matched::Array{T,2} where T) at In[9]:8
 
+The `!Matched`, indicates which argument in the candidate did not match.
+In the REPL, this would be shown in red, to make it clear.
 
 ### Aside: Test Suites, for interface testing.
 Not the topic of this blog post, but as an aside:
@@ -231,6 +242,12 @@ end
 
 This has no advantage over a simple function.
 
+### What to do instead?
+
+Rather than writing a macro, write a function.
+If necessary, use the [`@inline`](https://docs.julialang.org/en/v1/base/base/#Base.@inline) decorator macro to encourage the function to be inlined.
+It is often not necessary, as in the following example:
+
 **Input:**
 
 <div class="jupyter-input jupyter-cell">
@@ -260,10 +277,11 @@ area(r) = 2π * r^2
 
 </div>
 
-It has several disadvantages in terms of:
- - Familiarity and readability: most people have been using Julia for a fair while (years even) before they write their first macro.
- - Extensibility: It is very easy to add most dispatches (In our `area` example it is a small refactoring away from taking a `Shape`). For Macros the only things one can dispatch on is AST components: literals, Symbols or expressions.
+A function has several advantages over a macro:
+ - Familiarity and readability: most people have been using Julia for a fair while (years even) before they write their first macro; but write a function on there first day.
+ - Extensibility: It is very easy to add more dispatches (In our `area` example it is a small refactoring away from taking a `Shape`). For macros the only things one can dispatch on is AST components: literals, Symbols or expressions.
  - Understandability when used: all functions basically act the same, where as macros can vary a lot, e.g. some arguments might have to be literals, some arguments might replicate function calls if passed in others might not etc. In most cases, as a user I prefer to call a function than a macro.
+
 
 ### With that said sometimes there are exceptions
 If something really is very performance critical and there is considerable information available at parse time (e.g. literals) that the compiler is failing to take advantage of (e.g. by not constant folding them way), then you could try a macro (or a generated function).
@@ -386,18 +404,13 @@ end
 
 `Dict`s  or hashmaps are a fantastic data structure, with expected O(1) set and get.
 However, they are not a tool for all occasions.
-I recall my undergrad data structured lecturer saying just that when we got to the last few weeks of the unit and were covering hashmap which has this great time complexity.
-As the time, having just spent most of a semester covering various lists and trees etc, I was like _"Of course not, who would do such a thing?"_.
-Now, I suspect I know.
-I think it is mostly people who didn't have the fortune of a formal computer science education (e.g. most scientists and engineers) and/or never thought to benchmark just how large the constant behind that O(1) time is.
-However, this antipattern is not really concerned with people using `Dict`s rather than some other data structure.
-It is about the use of `Dict` rather than `NamedTuple`.
-
-I see a fair bit of use of `Dict{Symbol}` or `Dict{String}`, which is just holding variables because one wants to group them together.
+Leaving a side their pros and cons as a data structure and fitness for a given application, I most often seen them overused as a simple container.
+I see a fair bit of use of `Dict{Symbol}` or `Dict{String}`, which is just holding a fixed set of variables because one wants to group them together.
 Things like configuration settings, or model hyper-parameters.
 Until Julia 0.7 `Dict` was arguably the best object in `Base` for this if one wasn't willing to declare a `struct`.
 There are two problems with that.
 The introduction of mutable state, and the performance.
+
 
 Mutable state is bad for a few reasons.
 One of the things mainstream languages have imported from functional languages is the preference to avoid state where possible.
@@ -408,8 +421,8 @@ if they are in a `Dict` I have to trust that no one made a mistake and overrode 
 Using an immutable data structure avoids that.
 
 Here is example for a `Dict`.
-It highlights that while the time taken to get a value is expected O(1), i.e. constant-time,
-that constant is not tiny as it needs to compute the `hash`.
+It highlights that while the time taken to get a value is expected O(1), i.e. constant-time, that constant is not tiny.
+The constant-time hidden with-in the O(1) s it needs to compute the `hash`.
 `hash` for `Symbol` is fairly fast, for `String` is a  bit larger.
 For more complicated objects it can be quiet large, often larger than `isequal` as designing a good `hash` function is hard.
 But the case we see in this antipattern are mostly `Dict{Symbol}` or `Dict{String}`
@@ -458,6 +471,8 @@ str_dict = Dict(string(k)=> v for (k,v) in dict)  # convert all the keys to stri
 
 One alternative is [OrderedCollection's](https://github.com/JuliaCollections/OrderedCollections.jl/) `LittleDict`.
 This is a naive pair of lists based dictionary, with expected time `O(n)` but with a much lower cost per actual element as it doesn't need to `hash` anything.
+It can thus be faster than the `Dict` for small collections.
+(It's a decent choice if you have a small number of keys and they are not hard-coded literals)
 
 **Input:**
 
@@ -504,8 +519,17 @@ frozen_little_dict = freeze(LittleDict(dict))
 ```
 </div>
 
-But the real winner here is the `NamedTuple`.
-Which performs [constant-folding](https://en.wikipedia.org/wiki/Constant_folding) to remove the indexing operation entirely, and just put the result directly into the AST during compilation.
+### What to do instead?
+
+The real solution for how to represent a fixed collection of variables this is the `NamedTuple`.
+This is its whole purpose.
+It has other nice features like being able to right `nt.d` as an alternative to `nt[:d]`,
+and the way it splats like a tuple which is good for unpacking it.
+But most importantly it is the answer to our two problems: mutability and performance.
+It is immutable, and better performance is not possible.
+
+Indexing into a named tuple benefits from [constant-folding](https://en.wikipedia.org/wiki/Constant_folding) to remove the indexing operation entirely.
+It is resolved at compile time and the result is compiled directly into the compiled output.
 
 **Input:**
 
@@ -532,46 +556,61 @@ If one is thinking _"I have some constants and I want to group them"_ then look 
 It is the right answer.
 `Dict` is best when you don't know all the keys when you write the code, and/or if values need to be updated.
 
-## Over constraining argument types
+## Over-constraining argument types
 
+I will begin with a bold claim:
 Type constraints in Julia are **only** for dispatch.
 If you don't have multiple methods for a function, you don't need any type-constraints.
 If you must add type-constraints (for dispatch) do so as loosely as possible.
+I will justify this claim in the following sections.
 
-### Reasons people do this:
-I think this comes from three main places.
-The belief it would make the code faster (false), safer (mostly false), or easier to understand (true)
+Note: while type constraints are only for dispatch, that does not mean the can't be used for other things.
+And in fact can be used for other things successfully even.
+But it doesn't change that the purpose of type-constraints is for dispatch: after all I can use a hammer as a paper-weight, but a hammer is still hammering nails.
+
+
+### Reasons people do this (and why they are wrong):
+I think the over-constraining of argument types comes from three main places.
+The belief it would make the code faster (false), safer (mostly false), or easier to understand (true, but...).
 The first two come from different languages which do not act like Julia.
 The last point on ease of understanding is absolutely true, but not worth it most of the time.
-One other reason I can imagine is misunderstanding [this part of the documentation](https://docs.julialang.org/en/v1/manual/performance-tips/), which applies to `struct` fields, not arguments.
-I hope that misunderstanding is not a common reason.
+There are better ways.
 
-The belief that adding type constraints makes code faster, comes from not understanding how the JIT compiler works.
-The standard action ([with some exceptions](https://docs.julialang.org/en/latest/manual/performance-tips/#Be-aware-of-when-Julia-avoids-specializing-1)) of the Julia JIT is to specializes every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
+The belief that adding type-constraints makes code faster, comes from a misunderstanding of Julia's compiler works.
+Julia's JIT compiler makes the code fast regardless of the type-constraints ([with a few limited exceptions](https://docs.julialang.org/en/latest/manual/performance-tips/#Be-aware-of-when-Julia-avoids-specializing-1)).
+Specialization is how some other languages use type-annotations  for performance, but Julia applies that technique all the time (and just in time).
+The standard action  of the Julia JIT is to specializes every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
 This means it generates different machine code that is more optimally suited to the particular types.
 This includes things like removing branches that can't be met by this type, static dispatches, as well as actually better CPU instructions than a normal dynmaic language might use.
 One can see this change by comparing `@code_typed ((x)->2x)(1.0)` vs `@code_typed ((x)->2x)(0x1)`.
 Some languages, for example [Cython](https://cython.readthedocs.io/en/latest/src/quickstart/cythonize.html#faster-code-via-static-typing), *do* become much faster with type-annotations, as they do not have a JIT specializing every function on input type when it occurs.
 They do their code generation ahead of time so either have to handle all cases (if not specified) or can optimize for a particular (if specified).
-In Julia the code generated for a function will be just as fast with or without type constraints.
+In Julia the code generated for a function will be just as fast with or without type-constraints.
+Another possible reason, not related to other languages, for this is misunderstanding [this part of the documentation](https://docs.julialang.org/en/v1/manual/performance-tips/), which applies to `struct` fields, not arguments.
+I hope that misunderstanding is not a common reason.
 
-The belief that adding type constraints makes code safer, comes from the idea of [type-safety](https://en.wikipedia.org/wiki/Type_safety).
+The belief that adding type-constraints makes code safer, comes from the idea of [type-safety](https://en.wikipedia.org/wiki/Type_safety).
 A great advantages of statically-typed ahead-of-time compiled languages is the ability at compile time to catch and report programmer errors using the type system and looking for violated constraint.
 Julia is not one of these languages, it is not statically typed so reasoning about types can only ever be partial, and Julia is not ahead to time compiled, so any errors could not be reported until the code is executing anyway.
 Julia also don't have the formal notion of an interface or contract assert in the first place.
 This lack does have a nice advantage in how duck-typing can allow for simpler constitutionality -- by assuming it works and implementing only the parts that don't.
 See my earlier [post on this](https://white.ucc.asn.au/2020/02/09/whycompositionaljulia.html#multiple-dispatch--duck-typing).
 _Errors will be thrown eventually_, when you do something unsupported.
+Occasionally, an earlier `MethodError` might be clearer to the end-user than one from deeper in the code, but at the cost of giving up on duck-typing? It is rarely worth it.
+(Note: not safer (since no compile time error), but clearer.)
+If you do do it, at very least make sure you get it at the right amount of looseness so you accept everything you can.
+See following examples for things in particular to get right.
 
-The reason one I do think holds some water, is for understandability.
+The last reason, which I do think holds some water, is for understandability.
 Putting in type-constraints on function arguments makes them easier to understand.
-This is true, it is much clear what: `apply_inner(f::Function, c::Vector{<:Vector})` does, vs `apply_inner(f, c)` does.
-But we have other tools to make this clear.
+Adding type-constraints can clarify code, consider `apply_inner(f::Function, c::Vector{<:Vector})` vs `apply_inner(f, c)` does.
+However, we have other tools to make this clear.
 For a start better names, e.g. `apply_inner(func, list_of_lists)`.
 As well as documentation: we can and should, put a docstring on most functions.
 But I do concede sometimes on this, especially when following the norms of a particular code-base.
-I will on occasion add a type-constraint because I feel like it does clarify things a lot though.
-At the end of the day, they can always be removed when someone opens an issue about it.
+I will on occasion add a type-constraint because I feel like it does clarify things a lot though (it can always be removed later).
+Mostly, though i try to stick to keeping it lose and using other tools to make my code clear.
+Other tools, like docstings and comments, don't run into the issues mentioned in the following examples.
 
 ### Examples
 
@@ -642,6 +681,12 @@ my_average(skipmissing(data))
     MethodError: no method matching my_average(::Base.SkipMissing{Array{Union{Missing, Int64},1}})
     Closest candidates are:
       my_average(!Matched::AbstractArray{T,1} where T) at In[6]:2
+
+#### What to do instead?
+Don't constrain the argument at all.
+That will allow it to accept iterators.
+In this case in particular, it can be very much worth it to make functions that can work with iterators.
+Sometimes this may mean adding a second method, a hand-optimized one that works on arrays, and a more general one (without constraints) for iterators.
 
 ### Dispatching on  `AbstractVector{<:Real}` rather than `AbstractVector`
 
@@ -737,6 +782,13 @@ end
     Closest candidates are:
       terrible_norm(!Matched::AbstractArray{#s6,1} where #s6<:Real) at In[36]:2
 
+#### What to do instead?
+
+Put in only the constraints you need.
+If your function does require that the elements are `Real` then you will rapidly end up calling some function that is not defined on the element type you give it, and will `MethodError` then.
+In this case it is `terrible_norm(data::Array)`. Especially if you already have a fully general `terrible_norm(data)` for iterator.
+
+
 ### Dispatching on  `Function`
 
 **Input:**
@@ -801,6 +853,8 @@ apply_inner(Float32, [[0.2, 0.9], [1.2, 1.3, 1.6]])
 One might think that instead of `Function` that one could use `Base.Callable` which is a `Union{Type, Function}` so does functions and constructors.
 However, this is just a lesser version of the same antipattern.
 It will still miss-out on other callable objects, like `DiffEqBase.ODESolution` and `Flux.Chain`.
+
+#### What to do instead?
 The correct way to handle the is to not constrain the callable argument.
 Just like for iterators, there is no need to preempt the `MethodError` that will be thrown when you try and call a non-callable object.
 
@@ -815,14 +869,14 @@ Generally one should not dispatch on:
 
 These are some things to avoid when writing Julia code.
 THere are others I haven't included -- there are plenty of ways to write less than ideal code.
-I may write a follow up to this in the future covering more things like _use packages, not submodules_.
-Or perhaps one on code-smells, like the use of `if x is T`.
-Hopefully, this post was useful to some to help chose better patterns.
+I may write a follow up to this in the future covering more things like _use packages, not submodules_ (some of the advantages are mentioned in [this earlier post]({{site.url}}2020/02/09/whycompositionaljulia.html#its-easier-to-create-a-package-than-a-local-module)).
+Or perhaps one on code-smells, like the use of `if x isa T` (which may hint at a place to use multiple dispatch instead).
+Hopefully, this post was useful to help chose better patterns.
 
-Some loosely related comments on best-practices
+Some loosely related comments on best-practices:
  - Do read the [Julia Performance Tips](https://docs.julialang.org/en/v1/manual/performance-tips/)
- - Follow a Style Guide: I follow [BlueStyle](https://github.com/invenia/BlueStyle) (while I don't agree with every choice consistency more important)
- - Do practice [continuous delivery]({{site.url}}2019/09/28/Continuous-Delivery-For-Julia-Packages.html) with your packages, at very least perform a releases after every non-breaking PR is merged.
+ - Follow a Style Guide: I follow [BlueStyle](https://github.com/invenia/BlueStyle) (while I don't agree with every choice, consistency more important)
+ - Do practice [continuous delivery]({{site.url}}2019/09/28/Continuous-Delivery-For-Julia-Packages.html) with your packages, at the very least perform a release after every non-breaking PR is merged.
 
 
 ---
