@@ -527,7 +527,7 @@ frozen_little_dict = freeze(LittleDict(dict))
 
 The real solution for how to represent a fixed collection of variables this is the `NamedTuple`.
 This is its whole purpose.
-It has other nice features like being able to right `nt.d` as an alternative to `nt[:d]`,
+It has other nice features like being able to write `nt.d` as an alternative to `nt[:d]`,
 and the way it splats like a tuple which is good for unpacking it.
 But most importantly it is the answer to our two problems: mutability and performance.
 It is immutable, and better performance is not possible.
@@ -583,7 +583,7 @@ There are better ways.
 The belief that adding type-constraints makes code faster, comes from a misunderstanding of Julia's compiler works.
 Julia's JIT compiler makes the code fast regardless of the type-constraints ([with a few limited exceptions](https://docs.julialang.org/en/latest/manual/performance-tips/#Be-aware-of-when-Julia-avoids-specializing-1)).
 Specialization is how some other languages use type-annotations  for performance, but Julia applies that technique all the time (and just in time).
-The standard action  of the Julia JIT is to specializes every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
+The standard action  of the Julia JIT is to specialize every function on the types of all arguments (not the type-constraints of the method, the types of the argument).
 This means it generates different machine code that is more optimally suited to the particular types.
 This includes things like removing branches that can't be met by this type, static dispatches, as well as actually better CPU instructions than a normal dynmaic language might use.
 One can see this change by comparing `@code_typed ((x)->2x)(1.0)` vs `@code_typed ((x)->2x)(0x1)`.
