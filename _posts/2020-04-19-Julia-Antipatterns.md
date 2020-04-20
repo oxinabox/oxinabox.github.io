@@ -590,7 +590,7 @@ One can see this change by comparing `@code_typed ((x)->2x)(1.0)` vs `@code_type
 Some languages, for example [Cython](https://cython.readthedocs.io/en/latest/src/quickstart/cythonize.html#faster-code-via-static-typing), *do* become much faster with type-annotations, as they do not have a JIT specializing every function on input type when it occurs.
 They do their code generation ahead of time so either have to handle all cases (if not specified) or can optimize for a particular (if specified).
 In Julia the code generated for a function will be just as fast with or without type-constraints.
-Another possible reason, not related to other languages, for this is misunderstanding [this part of the documentation](https://docs.julialang.org/en/v1/manual/performance-tips/), which applies to `struct` fields, not arguments.
+Another possible reason, not related to other languages, for this is misunderstanding [this part of the documentation](https://docs.julialang.org/en/v1/manual/performance-tips/#Avoid-fields-with-abstract-type-1), which applies to `struct` fields, not arguments.
 I hope that misunderstanding is not a common reason.
 
 The belief that adding type-constraints makes code safer, comes from the idea of [type-safety](https://en.wikipedia.org/wiki/Type_safety).
