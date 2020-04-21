@@ -525,7 +525,7 @@ frozen_little_dict = freeze(LittleDict(dict))
 
 ### What to do instead?
 
-The real solution for how to represent a fixed collection of variables this is the `NamedTuple`.
+The real solution for how to represent a fixed collection of variables like this is the `NamedTuple`.
 This is its whole purpose.
 It has other nice features like being able to write `nt.d` as an alternative to `nt[:d]`,
 and the way it splats like a tuple which is good for unpacking it.
@@ -570,7 +570,7 @@ I will justify this claim in the following sections.
 
 Note: while type constraints are only for dispatch, that does not mean the can't be used for other things.
 And in fact can be used for other things successfully even.
-But it doesn't change that the purpose of type-constraints is for dispatch: after all I can use a hammer as a paper-weight, but a hammer is still hammering nails.
+But it doesn't change that the purpose of type-constraints is for dispatch: after all I can use a hammer as a paper-weight, but the purpose of a hammer is still hammering nails.
 
 
 ### Reasons people do this (and why they are wrong):
