@@ -408,7 +408,7 @@ end
 
 `Dict`s  or hashmaps are a fantastic data structure, with expected O(1) set and get.
 However, they are not a tool for all occasions.
-Leaving a side their pros and cons as a data structure and fitness for a given application, I most often seen them overused as a simple container.
+Leaving aside their pros and cons as a data structure and fitness for a given application, I most often see them overused as a simple container.
 I see a fair bit of use of `Dict{Symbol}` or `Dict{String}`, which is just holding a fixed set of variables because one wants to group them together.
 Things like configuration settings, or model hyper-parameters.
 Until Julia 0.7 `Dict` was arguably the best object in `Base` for this if one wasn't willing to declare a `struct`.
