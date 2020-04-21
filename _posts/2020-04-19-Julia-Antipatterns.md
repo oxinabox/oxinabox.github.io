@@ -694,11 +694,7 @@ Sometimes this may mean adding a second method, a hand-optimized one that works 
 
 ### Dispatching on  `AbstractVector{<:Real}` rather than `AbstractVector`
 
-*\*old man here, sitting in a rocking chair\**
-*Back in my day we didn't have none of this fancy triangular dispatch, and we were just fine.*
-
-But seriously, the ability to dispatch on the the fact that your type parameter was some subtype of an abstract type, was not introduced into the language until Julia 0.6; and before then people got on just fine.
-You actually need this very rarely, because if types are used only for dispatch, you must have both
+You only need this very rarely, because if types are used only for dispatch, you must have both
 `AbstractVector{<:Real}` and some other alternative like `AbstractVector{<:AbstractString}` or plain `AbstractVector` also being dispatched on.
 And its is generally pretty weird to have the need for a different implementation depending on the element type.
 (It happens, but you basically need to be implementing performance optimizations)
