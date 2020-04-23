@@ -194,11 +194,14 @@ Model API Test Suite for GuessingModel |     1      1
 {% endhighlight %}
 </div>
 
-## Use of macros for performance
+## Writing macros for performance
+
+(Note before: this is *not* about using macros like `@inbounds`, `@simd`, `@fastmath`. This antipattern is about writing your own macros rather than writing a function.) 
 
 The primary purpose of macros is not performance, it is to allow syntax transformations.
 For example, `@view xs[4:end]` gets transformed into `view(xs, 4:lastindex(xs))`: this translation of `end` could not be done by a function.
 
+However, sometimes people use macros thinking they are faster than functions.
 I think this one mostly comes from people who either learned C in the 90s,
 or who were taught C by people who learned it in the 90s and haven't caught up with current state of compilers.
 Back in the 90s the way to make sure a function was inlined was to write a macro instead of a function
