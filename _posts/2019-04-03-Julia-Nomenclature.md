@@ -916,7 +916,37 @@ samples
 
 </div>
 
+## Views vs Copies
+In julia indexing slices from arrays produces a copy.
+`ys = xs[1:3, :]`  will allocate a new array with the first 3 rows of `xs` copied into it.
+Modifying `ys` will not modify `xs`.
+Further `ys` is certain to work fast from suitable CPU operations because of its striding.
+However, allocating memory itself is quiet slow.
+
+In contrast one can take a view into the existing array: with [`@view`](https://docs.julialang.org/en/v1/base/arrays/#Base.@view) or the function [`view`](https://docs.julialang.org/en/v1/base/arrays/#Base.view).
+`ys = @view xs[1:3, :]`  will make a `SubArray` which acts like an array that contains only the first 3 rows of `xs`.
+But creating it will not allocate (in julia 1.5 literally not at all, prior to that it will allocate a handful of bytes for a pointer.)
+Further, mutating the content of `ys` will mutate the content of `xs`.
+It may or may not be able to hit very fast operations, depending on the striding pattern.
+It will probably be pretty good none-the-less, since allocation is very slow.
+
+Note this is a difference from numpy where it is always views, and you opt-out by calling `copy(x[...])`,
+and from MATLAB where it is always copying, its been long enough that that i don't remember how to opt into views.
+
+The concept of views vs copies is more general than just arrays.
+[`Substring`s](https://docs.julialang.org/en/v1/base/strings/#Base.SubString) are views into strings.
+
+They also apply to DataFrames.
+Indexing into DataFrames is fairly intuitive, though when you [write it down it looks complex](http://juliadata.github.io/DataFrames.jl/stable/lib/indexing/).
+`@view` and indexing works as per with Arrays, where normal indexing creates a new dataframe (or vector if just 1 column index) with a copy of the selected region, and `@view` makes a `SubDataFrame`.
+But there is the additional interesting case, that accessing a dataframe column either by `getproperty` (as in `df.name`) or via `!` indexing (as in `df[!, :name]`) creates what is conceptually a view into that column of the DataFrame.
+Even though it is `AbstractVector` typed (rather than `SubVector` typed), it acts like a view, in that creating it is nonallocating, and mutating it mutates the original dataframe.
+Implementation wise it is actually direct access to the DataFrame's internal column storage, but semantically it is a view into that column of the dataframe.
+
+
+
 ## Tim Holy Traits
 Traits as something that naturally falls out of functions that can be performed on types at compile time,
 and on having multiple dispatch.
-See [previous post for details.](https://white.ucc.asn.au/2018/10/03/Dispatch,-Traits-and-Metaprogramming-Over-Reflection.html#part-2-aslist-including-using-traits).
+See [previous post for details](https://white.ucc.asn.au/2018/10/03/Dispatch,-Traits-and-Metaprogramming-Over-Reflection.html#part-2-aslist-including-using-traits).
+and [better future post](https://invenia.github.io/blog/2019/11/06/julialang-features-part-2/).
