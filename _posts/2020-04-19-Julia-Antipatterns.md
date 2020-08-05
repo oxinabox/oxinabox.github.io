@@ -601,7 +601,7 @@ A great advantages of statically-typed ahead-of-time compiled languages is the a
 Julia is not one of these languages, it is not statically typed so reasoning about types can only ever be partial, and Julia is not ahead to time compiled, so any errors could not be reported until the code is executing anyway.
 Julia also don't have the formal notion of an interface or contract assert in the first place.
 This lack does have a nice advantage in how duck-typing can allow for simpler constitutionality -- by assuming it works and implementing only the parts that don't.
-See my earlier [post on this](https://white.ucc.asn.au/2020/02/09/whycompositionaljulia.html#multiple-dispatch--duck-typing).
+See my earlier [post on this]({{site.url}}/2020/02/09/whycompositionaljulia.html#multiple-dispatch--duck-typing).
 _Errors will be thrown eventually_, when you do something unsupported.
 Occasionally, an earlier `MethodError` might be clearer to the end-user than one from deeper in the code, but at the cost of giving up on duck-typing? It is rarely worth it.
 (Note: not safer (since no compile time error), but clearer.)

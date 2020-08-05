@@ -11,7 +11,7 @@ but for this demonstration we will be assuming that that is not possible,
 because you need to Channel it into some serial process.
 But it doesn't have to be the case.
 Anyway, we use this to further introduce `Channel`s and `RemoteChannel`s.
-I have [blogged about `Channel`s before](https://white.ucc.asn.au/2017/11/18/Lazy-Sequences-in-Julia.html),
+I have [blogged about `Channel`s before]({{site.url}}/2017/11/18/Lazy-Sequences-in-Julia.html),
 you make wish to skim that first.
 That article focused on single producer single consumer.
 This post will focus on multiple producers, single consumer.
@@ -149,7 +149,7 @@ end
 </div>
 
 We define a loading function that takes file-name to load and a channel to output  to.
-Like in the [earlier post](https://white.ucc.asn.au/2017/11/18/Lazy-Sequences-in-Julia.html),
+Like in the [earlier post]({{site.url}}/2017/11/18/Lazy-Sequences-in-Julia.html),
 we are going to create a channel,
 and load some of the data into it.
 This dataset is huge, so using a channel to lazily load it is important.
