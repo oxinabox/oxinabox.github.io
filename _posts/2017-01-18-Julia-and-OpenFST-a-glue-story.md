@@ -41,7 +41,7 @@ You can, of course, do more advances stuff, but we won't go into that.
 
 
 This post focuses on [OpenFST](http://www.openfst.org/).
-I wrote an [introduction to OpenFST](http://white.ucc.asn.au/Kaldi-Notes/fst-example/) a few years back, as part of some notes on Kaldi.
+I wrote an [introduction to OpenFST]({{site.url}}/Kaldi-Notes/fst-example/) a few years back, as part of some notes on Kaldi.
 If your are not familar with OpenFST, you might like to skim through that first before reading this.
 The basic deal is that it is a tool for [Finite State Transducers](https://en.wikipedia.org/wiki/Finite-state_transducer).
 Like in those notes some of the examples are borrowed from [Mark Hasegawa-Johnson's 2009 lecture notes](http://www.isle.illinois.edu/sst/courses/minicourses/2009/lecture6.pdf).

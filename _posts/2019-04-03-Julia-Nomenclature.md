@@ -948,5 +948,5 @@ Implementation wise it is actually direct access to the DataFrame's internal col
 ## Tim Holy Traits
 Traits as something that naturally falls out of functions that can be performed on types at compile time,
 and on having multiple dispatch.
-See [previous post for details](https://white.ucc.asn.au/2018/10/03/Dispatch,-Traits-and-Metaprogramming-Over-Reflection.html#part-2-aslist-including-using-traits).
+See [previous post for details]({{site.url}}/2018/10/03/Dispatch,-Traits-and-Metaprogramming-Over-Reflection.html#part-2-aslist-including-using-traits).
 and [better future post](https://invenia.github.io/blog/2019/11/06/julialang-features-part-2/).
