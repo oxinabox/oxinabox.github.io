@@ -14,7 +14,7 @@ This blog post serves as an accompanyment to the introduction to machine learnin
 Currently under the working title "Neural Network Representations for Natural Language Processing")
 <!--more-->
 
-I do have an [earlier blog covering some similar topics](http://white.ucc.asn.au/2017/01/24/JuliaML-and-TensorFlow-Tuitorial.html).
+I do have an [earlier blog covering some similar topics]({{site.url}}/2017/01/24/JuliaML-and-TensorFlow-Tuitorial.html).
 However, I exect the code in this one to be a lot more sensible,
 since I am now much more familar with TensorFlow.jl, having now written a significant chunk of it.
 Also MLDataUtils.jl is in different state to what it was.
@@ -2463,7 +2463,7 @@ heatmap(scatter_image(test_images, 4_000))
 savefig("mnist_scatter.pdf")
 {% endhighlight %}
 
-A high-resolution PDF with more numbers shown can be downloaded from [here](http://white.ucc.asn.au/images/mnist_scatter.pdf)
+A high-resolution PDF with more numbers shown can be downloaded from [here]({{site.url}}/images/mnist_scatter.pdf)
 
 
 So the position of each digit shown on the scatter-plot is given by the level of activation of the coding layer neurons.

@@ -133,7 +133,7 @@ Any[all_features; all_labels']
 
 
 
-Normally I would do this data munging using MLDataUtils.jl, which I have [blogged about before](http://white.ucc.asn.au/2017/01/24/JuliaML-and-TensorFlow-Tuitorial.html) (though it might be nice to few more posts about it, it is a great package, and I don't know that I've fully covered its capacities).
+Normally I would do this data munging using MLDataUtils.jl, which I have [blogged about before]({{site.url}}/2017/01/24/JuliaML-and-TensorFlow-Tuitorial.html) (though it might be nice to few more posts about it, it is a great package, and I don't know that I've fully covered its capacities).
 
 But since I am already about to introduce 6 packages, I thought I would minimize talking about other ones.
 

@@ -23,7 +23,7 @@ see my recent [stackoverflow post on parallelizing sorting](https://stackoverflo
 
 <!--more-->
 
-In a [previous post](http://white.ucc.asn.au/2017/11/18/Lazy-Sequences-in-Julia.html#primes),
+In a [previous post]({{site.url}}/2017/11/18/Lazy-Sequences-in-Julia.html#primes),
 I used prime generation as an example to motivate the use of coroutines as generators.
 Now coroutines are neither parallelism, nor fast.
 Lets see how fast we can go if we want to crank it up using  `Base.Threading`.
