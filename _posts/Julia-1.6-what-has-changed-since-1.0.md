@@ -72,7 +72,30 @@ Consecutive lists of version numbers were compressed to continuous ranges.
 In 1.6 these ranges are split only if there is a version that exist between them that is not compatible.
 In contrast in 1.0, they were split if there was a potential version that could exist that is not compatible (even if that version doesn't currently exist); in practice this mean they split every time the right most nonzero was incremented.
 
+## Standard Library
 
+### You can now print and interpolate `nothing` into strings.
+
+This is one of mine [#32148](https://github.com/JuliaLang/julia/pull/32148)., and I find it is such a usability enhancement.
+So many small frustrations in Julia 1.0 relating to interpolate a variable containing `nothing` into a string.
+Often occurring when you are adding a quick `println` to debug something not being the value you expected; or when building a string for some other error message.
+Arguably both of those are better done via other means (`@show`, and values stored in fields in the error type); but we don't always do what is best.
+Sometimes it is expedient to just interpolate things into strings without worrying about what type they are.
+
+
+### A bunch of curried functions
+Julia seems to have ended up with a convention of providing curried methods of functions if that would be useful as the first argument for `filter`.
+e.g. `filter(isequal(2), [1,2,3,2,1])`, is the same is `filter(x->isequal(x, 2), [1,2,3,2,1]`).
+In particular these are boolean comparison like functions:
+with two arguments, where the thing being compared against is the second.
+Julia 1.0 had `isequal`, `==` and `in`.
+Since then we have added:
+`<`,`<=`,`>`, `>=`, `!=`, `startswith`, `endswith`, and `contains`.
+(I added the last 3 😁)
+
+
+Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0.
+We added it back expressly to have the curried form, and to match `startswith` and `endswith`.
 
 ## A ton of new and improved standard library functions:
 
@@ -93,6 +116,16 @@ Kind of stilly we didn't have that, and had been being me at least since 0.6.
 
 On things that had been bugging me, I had wanted [`eachslice` and it's special cases: `eachrow` & `eachcol`](https://github.com/JuliaLang/julia/issues/29749) since julia 0.3 when I first started using it.
 These are super handy when you want to e.g. iterate through vectors of the rows of a matrix.
+
+
+`redirect_stderr` and `redirect_stdout` now work with `devnull`.
+So one can run some suppressing output easily as follows:
+```julia
+julia> redirect_stdout(devnull) do
+       println("You won't see this")
+       end
+```
+This is just handy, doing it without this is seriously annoying.
 
 
 
