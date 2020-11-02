@@ -74,6 +74,23 @@ In contrast in 1.0, they were split if there was a potential version that could 
 
 ## Standard Library
 
+### 5-arg `mul!`, aka in-place generalized multiplication and addition
+The 5 arg `mul!(C, A, B, α, β)` performs the operation equivalent to: `C .= A*B*α + C*β`, where `α`, `β` are scalars and `A`, `B` and `C` are compatible mixes of scalars, matrices and vectors.
+I am still the opinion that it should have been called `muladd!`, but this is the human friendly version of `BLAS.gemm!` (i.e. GEneralized Matrix Multiplication) and it's ilk.
+It promises to alway compute the in-place mul-add in the most efficient, correct, way for any `AbstractArray` subtype.
+In contrast, `BLAS.gemm` computes the same thing, but with a bunch of conditions.
+It must be a strided array containing only BLAS-scalars, and if one of the inputs is conjugated/transposed you need to input it in non-conjugated/transposed form, and then tell `BLAS.gemm!` via passing in `'C'` or `T` rather than `N`, *and* none of the arrays are allowed to be aliases (so `copy` them if they are before calling).
+5-arg `mul!` takes care of all that for you dispatching to `BLAS.gemm!` or other suitable methods once it has that all sorted.
+Further, the existing 3-arg `mul!(C, A, B)` is a special case of it:
+`mul!(C, A, B) = mul!(C, A, B, false, true)` (`true` and `false` being 1, and strong 0).
+So in general on can just implement the 5-arg form and be done with it.
+
+I personally didn't care about 5-arg `mul!` at all for a long time.
+Yet another in-place function in `LinearAlgebra` that I would never use often enough to remember what it did, and thus wouldn't use it.
+But I realized that it is a crucial function for my own area: automatic differentiation.
+`mul(C, A, B, true, true)` is the in-place accumulation rule for the reverse mode equivalent of the product rule.
+
+
 ### You can now print and interpolate `nothing` into strings.
 
 This is one of mine [#32148](https://github.com/JuliaLang/julia/pull/32148)., and I find it is such a usability enhancement.
