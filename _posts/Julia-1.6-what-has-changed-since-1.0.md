@@ -16,7 +16,7 @@ TODO: Insert links to the files in the release-1.6 branch.
 
 
 ## Threading
-Julia has full support for threading now (as of Julia 1.3).
+Julia has full support for threading now.
 Not just the limited `@threads for` loops, but full GoLang style threads.
 They are tightly integrated with the existing Task/Coroutine system.
 In effect threading works by unsetting the sticky flag on a task, so that it is allowed to run on any thread.
@@ -26,6 +26,11 @@ Interestingly, the `@threads for` macro still remains, and doesn't actually use 
 But the new threading stuff is fast, on the order of microseconds to send work off to another thread.
 Even for uses of `@threads for` the improves have some wins.
 `IO` is now thread-safe; `ReentrantLock` was added and is the kind of standard lock that you expect to exist, that has notifications on waiting work etc; and a big one: `@threads for` can now be nested without things silently being wrong.
+
+A lot of this actually landed in julia 1.2, but julia 1.3 was the release we think of as being for threading, as it gave us `Threads.@spawn`.
+
+Also in Julia 1.6 we now have `julia -t auto` to start julia with 1 thread per (logical) core.
+No more having to remember to set the `JULIA_NUM_THREADS` environment variable before starting it.
 
 
 ## Pkg stdlib and the General Registry
@@ -79,7 +84,7 @@ The 5 arg `mul!(C, A, B, α, β)` performs the operation equivalent to: `C .= A*
 I am still the opinion that it should have been called `muladd!`, but this is the human friendly version of `BLAS.gemm!` (i.e. GEneralized Matrix Multiplication) and it's ilk.
 It promises to alway compute the in-place mul-add in the most efficient, correct, way for any `AbstractArray` subtype.
 In contrast, `BLAS.gemm` computes the same thing, but with a bunch of conditions.
-It must be a strided array containing only BLAS-scalars, and if one of the inputs is conjugated/transposed you need to input it in non-conjugated/transposed form, and then tell `BLAS.gemm!` via passing in `'C'` or `T` rather than `N`, *and* none of the arrays are allowed to be aliases (so `copy` them if they are before calling).
+It must be a strided array containing only BLAS-scalars, and if one of the inputs is conjugated/transposed you need to input it in non-conjugated/transposed form, and then tell `BLAS.gemm!` via passing in `'C'` or `T` rather than `N`.
 5-arg `mul!` takes care of all that for you dispatching to `BLAS.gemm!` or other suitable methods once it has that all sorted.
 Further, the existing 3-arg `mul!(C, A, B)` is a special case of it:
 `mul!(C, A, B) = mul!(C, A, B, false, true)` (`true` and `false` being 1, and strong 0).
@@ -145,7 +150,9 @@ julia> redirect_stdout(devnull) do
 This is just handy, doing it without this is seriously annoying.
 
 
-
+## More "Why didn't it always work that way" than I can count
+Since 1.0's release there have been so many small improvements to functions that I didn't even know happened, because I assumed they always worked that way.
+Things like `startswith` supporting regex.
 
 
 
