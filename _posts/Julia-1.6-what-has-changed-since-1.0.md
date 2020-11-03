@@ -116,7 +116,7 @@ Since then we have added:
 (I added the last 3 😁)
 
 
-Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0.
+Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0 and now has been added back.
 We added it back expressly to have the curried form, and to match `startswith` and `endswith`.
 
 ## A ton of new and improved standard library functions:
@@ -148,6 +148,12 @@ julia> redirect_stdout(devnull) do
        end
 ```
 This is just handy, doing it without this is seriously annoying.
+
+`readdir` now accepts a `join=true|false` keyword argument so that it returns paths with the parent dir.
+This is good, almost every time I use `readdir` I used it as:
+`joinpath.(x, readdir(x))`.
+It is slightly cleaner (and faster) to be able to do `readdir(x; join=true)`.
+Also added was a `sort` argument, which I don't see the point of so much, since `sort(readdir(x))` seems cleaner than `readdir(x; sort=true)`; and because I rarely rely on processing files in order.
 
 
 ## More "Why didn't it always work that way" than I can count
