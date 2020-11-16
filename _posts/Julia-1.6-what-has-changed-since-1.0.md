@@ -42,10 +42,12 @@ TODO: Write bits for these:
  - Pkg Server: faster updating of registry and download of packages
  - Artifacts, BinaryBuilder, Yggdasil, almost no one uses `deps/build.jl` any more
  - Scratch, and Preferences
- - Tiered Resolution: in particular solving test dependencies of different compat.
  - `activate --temp`
- - test dependencies
+ - test dependencies. https://discourse.julialang.org/t/activating-test-dependencies/48121/7?u=oxinabox
  - passing arguments to Pkg.test
+
+### Resolver willing to downgrade packages to install new ones (Tiered Resolution)
+
 
 ### Precompilation
 
@@ -66,16 +68,35 @@ Further the spiffy animated output shows you what is precompiling at a given tim
 <script id="asciicast-a26toW3opklSEtaRAeXzpcW8W" src="https://asciinema.org/a/a26toW3opklSEtaRAeXzpcW8W.js" async></script>
 
 ### Improved conflict messages
-This is one of my own small contributions.
+This is one of my own contributions.
 Julia 1.0 conflict messages are a terrifying wall of text.
 
 <img href="{{site.url}}/Julia-1.0-1.6-changes/julia1.0-conflict.png">Julia 1.0 conflict log</img>
 <img href="{{site.url}}/Julia-1.0-1.6-changes/julia1.6-conflict.png">Julia 1.6 conflict log</img>
+The two main changes are the use of colors, and compressing the version number ranges.
+No more giant red wall of numbers.
+
 
 Colors were added to make it easier to see which version numbers are referring to which package.
-Consecutive lists of version numbers were compressed to continuous ranges.
-In 1.6 these ranges are split only if there is a version that exist between them that is not compatible.
-In contrast in 1.0, they were split if there was a potential version that could exist that is not compatible (even if that version doesn't currently exist); in practice this mean they split every time the right most nonzero was incremented.
+There is a bit of a problem that it isn't easy to make sure the colors don't get reused, as there are not many in the 16 color list (especially when you skip a few like black, white and error red).
+Due to how Pkg constructs its error messages basically every package in the dependency graph gets some message prepared for it, but not displayed, so just assigning them a color in turn gets it to loop around so doesn't reduce change of colors being reused.
+There is away to fix that but it is a big change to add structured log messages that are colored only once they are displayed.
+We decided after much debate to assign things colors based on the hash of the package name and shortened UUID.
+This means things have consistent colors if you fix one and redo it a still have some remaining.
+I think this is going to be a subtle improvement on easy of use.
+As a cool hack, you can actually change the color list used.
+To get the much larger color list I wanted to use originally you can do:
+`append!(Pkg.Resolve.CONFLICT_COLORS,  [21:51; 55:119; 124:142; 160:184; 196:220])`
+
+
+The other change was consecutive lists of version numbers were compressed to continuous ranges.
+In 1.6 these ranges are split only if there is a version that exists between them that is not compatible.
+So normally just a single range, since compatibility is typically monotonic.
+In contrast in 1.0, they were split if there was a potential version that could exist that is not compatible (even if that version doesn't currently exist).
+This mean they split every time the right most nonzero was incremented.
+For something with a lot of pre-1.0 versions that is a lot of numbers.
+I think the new version is much cleaner and easier to read.
+
 
 ## Standard Library
 
@@ -112,7 +133,7 @@ In particular these are boolean comparison like functions:
 with two arguments, where the thing being compared against is the second.
 Julia 1.0 had `isequal`, `==` and `in`.
 Since then we have added:
-`<`,`<=`,`>`, `>=`, `!=`, `startswith`, `endswith`, and `contains`.
+`isapprox`, `<`,`<=`,`>`, `>=`, `!=`, `startswith`, `endswith`, and `contains`.
 (I added the last 3 😁)
 
 
@@ -134,7 +155,7 @@ That one surprised me, I though being able to access a dict of local variables w
 But the compiler folk know better than I do.
 
 [`splitpath`](https://github.com/JuliaLang/julia/issues/28156) as added, its the opposite of `joinpath`.
-Kind of stilly we didn't have that, and had been being me at least since 0.6.
+Kind of silly we didn't have that, and had been being me at least since 0.6.
 
 On things that had been bugging me, I had wanted [`eachslice` and it's special cases: `eachrow` & `eachcol`](https://github.com/JuliaLang/julia/issues/29749) since julia 0.3 when I first started using it.
 These are super handy when you want to e.g. iterate through vectors of the rows of a matrix.
@@ -153,13 +174,13 @@ This is just handy, doing it without this is seriously annoying.
 This is good, almost every time I use `readdir` I used it as:
 `joinpath.(x, readdir(x))`.
 It is slightly cleaner (and faster) to be able to do `readdir(x; join=true)`.
+I think for Julia 2.0 we should consider making it the default.
 Also added was a `sort` argument, which I don't see the point of so much, since `sort(readdir(x))` seems cleaner than `readdir(x; sort=true)`; and because I rarely rely on processing files in order.
 
 
 ## More "Why didn't it always work that way" than I can count
 Since 1.0's release there have been so many small improvements to functions that I didn't even know happened, because I assumed they always worked that way.
 Things like `startswith` supporting regex.
-
 
 
 
