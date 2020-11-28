@@ -37,6 +37,7 @@ No more having to remember to set the `JULIA_NUM_THREADS` environment variable b
 Writing this section is a bit hard as there is no NEWS.md nor HISTORY.md for the Pkg stdlib; and the general registry is more policy than software.
 
 TODO: Write bits for these:
+
  - Full transition off METADATA
  - Automatic merging
  - Pkg Server: faster updating of registry and download of packages
@@ -48,6 +49,31 @@ TODO: Write bits for these:
 
 ### Resolver willing to downgrade packages to install new ones (Tiered Resolution)
 
+Until the [tiered resolver](https://github.com/JuliaLang/Pkg.jl/pull/1330) was added Julia would not change the version of any currently installed package in order to install a new one.
+For example consider
+
+ - **Foo.jl**
+	 - v1
+	 - v2
+ - **Bar**
+	 - v1 compatible with Foo v1
+	 - v2 compatible with Foo v2
+ - **Qux.jl**
+	 - v1: compatible only with Foo v1
+
+If you did `pkg"add Foo Bar Qux"` you would end up with **Foo** v1, **Bar** v1, and **Qux** v1.
+But if you did first: `pkg"add Foo Bar"` (which would install  **Foo** v2, and **Bar** v2),
+and then did `pkg"add Qux"`,
+then on Julia 1.0 you would get an error, as it would refuse to downgrade **Foo** and **Bar** to v1, as is required to allow **Qux** to be installed.
+This meant effectly the package manager is stateful, which turns out is really counter intuitive.
+The way to resolve this in practice was to delete the `Manifest.toml` and do it again as a single action.
+This was a significant problem for [test time dependencies](https://github.com/JuliaLang/Pkg.jl/issues/1352), which if you had a test time dependencies with a indirect dependencies shared with a main dependency of the package, but that was only compatible with an older version of the indirect depenency, you would be unable to run tests as resolving the test time depenency would fail.
+
+With the new tiered resolved it will try a number of tiers of relaxing existing versions.
+It still wants to avoid changing the versions of currently installed packages if possible, but if that is required then it will do so.
+It will in turn first attempt to install without any currently installed package being changed, then will try relaximng the constraint to allow changing the version of indirect dependencies, then to allowing changing the versions of direct dependencies.
+This ends up far more intuitive: if there is a compatible set of package versions then they will be found.
+Regardless of if new packages are added all at once or one at a time.
 
 ### Precompilation
 
@@ -57,8 +83,9 @@ That is not the compilation that runs the first time a function is used in a ses
 For a start, the precompilation cache no longer goes stale every time you swap environments.
 This was a massive pain in julia 1.0, especially if you worked on more than one thing at a time.
 This was fixed in 1.3 to have multiple caches, for different environments.
+It's easy to forget this one, but it is actually one of the biggest usability enhancements since 1.0.
 
-More dramatically, in 1.6 is the parallelism of precompilation.
+More dramatically, and less easy to overlook, is the parallelism of precompilation added in 1.6.
 Precompiling a package requires precompiling all its dependencies first.
 This is now done in parallel, and is automatically triggered when you complete Pkg operations.
 In contrast, to happening in series the first time a package is loaded.
@@ -71,8 +98,9 @@ Further the spiffy animated output shows you what is precompiling at a given tim
 This is one of my own contributions.
 Julia 1.0 conflict messages are a terrifying wall of text.
 
-<img href="{{site.url}}/Julia-1.0-1.6-changes/julia1.0-conflict.png">Julia 1.0 conflict log</img>
-<img href="{{site.url}}/Julia-1.0-1.6-changes/julia1.6-conflict.png">Julia 1.6 conflict log</img>
+![Julia 1.0 conflict log]({{site.url}}/Julia-1.0-1.6-changes/julia1.0-conflict.png)  
+![Julia 1.6 conflict log]({{site.url}}/Julia-1.0-1.6-changes/julia1.6-conflict.png)
+
 The two main changes are the use of colors, and compressing the version number ranges.
 No more giant red wall of numbers.
 
