@@ -18,8 +18,8 @@ TODO: Insert links to the files in the release-1.6 branch.
 ## Threading
 Julia has full support for threading now.
 Not just the limited `@threads for` loops, but full GoLang style threads.
-They are tightly integrated with the existing Task/Coroutine system.
-In effect threading works by unsetting the sticky flag on a task, so that it is allowed to run on any thread.
+They are tightly integrated with the existing Async/Task/Coroutine system.
+In effect threading works by unsetting the sticky flag on a Task, so that it is allowed to run on any thread.
 This is normally done via the `Threads.@spawn` macro, rather than the `@async` macro.
 
 Interestingly, the `@threads for` macro still remains, and doesn't actually use much of the new machinery. It still uses the old way which is a bit tigher if the loop durations are almost identical.
@@ -31,6 +31,56 @@ A lot of this actually landed in julia 1.2, but julia 1.3 was the release we thi
 
 Also in Julia 1.6 we now have `julia -t auto` to start julia with 1 thread per (logical) core.
 No more having to remember to set the `JULIA_NUM_THREADS` environment variable before starting it.
+
+## NamedTuple/keyword arguments automatic naming
+This feature felt weird when I first read about it, but it has quickly grown on me.
+How often do you write some code that does some processing and calls some other method passing on some of its keyword arguments?
+For example
+```julia
+# Primary method all others redirect to this
+foo(x::Bar; a=1, b=2, c=3) = ...
+
+# Method for if x is given as components
+foo(x1, x2; a=10, b=20, c=30, comb=+) = foo(Bar(comp(x1, x2)); a=a, b=b, c=c)
+```
+This new feature allows one to avoid writing `(...; a=a, b=b, c=c)`, and instead write `(...; a, b, c)`.
+This does come with the requirement to seperate keyword arguments from positional arguments by `;`, but I have always done this, and the [BlueStyle guide requires it](https://github.com/invenia/BlueStyle#keyword-arguments).
+It feels like we are fully leveraging the distinction of keyword from positional arguments by allowing this.
+(In contrast, the distinction vs e.g. C# and Python that allow any positional argument to be passed by name, is to make the name of positional arguements not part of the public API, thus avoiding changing it being a breaking change.)
+
+The same syntax can be used to create `NamedTuple`.
+```julia
+julia> product = ["fries", "burger", "drink"];
+
+julia> price = [2, 4, 1];
+
+julia> (;product, price)
+(product = ["fries", "burger", "drink"], price = [2, 4, 1])
+```
+This is particularly cool for constructing `NamedTuple`s of `Vector`s, which is a valid [Tables.jl Table](https://tables.juliadata.org/stable/#Tables.columntable).
+
+## Performance
+### References to the Heap from the Stack
+This was promised in 2016 or 2017 as a feature for 1.0 (released 2018).
+But we actually didn't get it til 1.5 with [#33886](https://github.com/JuliaLang/julia/issues/33886).
+Basically, the process of allocating memory from the heap is fairly slow*, where as allocating memory on the stack is basically a non-op.
+Indeed Julia benchmarking tools don't count allocations on the stack as allocations at all.
+One can find extensive write ups of heap vs stack allocations and how it works in general (though some mix the C specific factors with the CPU details.)
+In julia all mutable objects live are allocated on the heap.
+Until recently, immutable objects that contained references to heap allocated objects also had to live on the heap.
+i.e. immutable objects with immutable fields (with immutable fields with...) could live on the stack.
+But with this change now all immutable object can live on the stack, even if some of their fields live on the heap.
+An important consequence of this is that wrapper types, such as the `SubArray` returned from `@view x[1:2]`, now have no overhead to create.
+I find that in practice this often adds up to a 10-30% speed-up in real world code.
+
+(* Its actually really fast, but it is the kind of thing that rapidly adds up.)
+
+### Invalidations
+
+## Front-end changes
+### Soft-scope in the REPL
+### Deprecations are not surpressed by default.
+
 
 
 ## Pkg stdlib and the General Registry
@@ -208,7 +258,7 @@ Also added was a `sort` argument, which I don't see the point of so much, since 
 
 ## More "Why didn't it always work that way" than I can count
 Since 1.0's release there have been so many small improvements to functions that I didn't even know happened, because I assumed they always worked that way.
-Things like `startswith` supporting regex.
+Things like `startswith` supporting regex, and (`parse`](https://github.com/JuliaLang/julia/pull/36199) working on `UUID`s.
 
 
 
