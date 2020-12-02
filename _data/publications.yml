@@ -1,3 +1,11 @@
+- title: "WEmbSim: A Simple yet Effective Metric for Image Captioning"
+  author: Naeha Sharif, Lyndon White, Mohammed Bennamoun, Wei Liu and Syed Afaq Ali Shah
+  venue: 'The International Conference on Digital Image Computing: Techniques and Applications (DICTA)'
+  award: DSTG Best Contribution to Science Award
+  year: 2020
+  link: "http://www.dicta2020.org/wp-content/uploads/2020/09/1_CameraReady.pdf"
+
+
 - title: "WordTokenizers.jl: Basic tools for tokenizing natural language in Julia. "
   author: Ayush Kaushal, Lyndon White, Mike Innes, and Rohit Kumar
   venue: 'Journal of Open Source Software (JOSS)'
@@ -11,7 +19,7 @@
   link: "https://www.climatechange.ai/CameraReady/43/CameraReadySubmission/icml_invenia_cameraready.pdf"
 
 - title: "LCEval: Learned Composite Metric for Caption Evaluation"
-  author: Naeha Sharif, Lyndon White, Mohammed Bennamoun and Syed Afaq Ali Shah
+  author: Naeha Sharif, Lyndon White, Mohammed Bennamoun, Wei Liu and Syed Afaq Ali Shah
   venue: 'International Journal of Computer Vision'
   year: 2019
   link: "https://www.researchgate.net/profile/Naeha_Sharif2/publication/334760575_LCEval_Learned_Composite_Metric_for_Caption_Evaluation/links/5d429677a6fdcc370a715269/LCEval-Learned-Composite-Metric-for-Caption-Evaluation.pdf"
