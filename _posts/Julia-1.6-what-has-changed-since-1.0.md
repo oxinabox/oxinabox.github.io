@@ -61,7 +61,7 @@ This is particularly cool for constructing `NamedTuple`s of `Vector`s, which is 
 
 ## Performance
 ### References to the Heap from the Stack
-This was promised in 2016 or 2017 as a feature for 1.0 (released 2018).
+This was promised in 2016 as a feature for 1.0 (released 2018).
 But we actually didn't get it til 1.5 with [#33886](https://github.com/JuliaLang/julia/issues/33886).
 Basically, the process of allocating memory from the heap is fairly slow*, where as allocating memory on the stack is basically a non-op.
 Indeed Julia benchmarking tools don't count allocations on the stack as allocations at all.
@@ -79,8 +79,17 @@ I find that in practice this often adds up to a 10-30% speed-up in real world co
 
 ## Front-end changes
 ### Soft-scope in the REPL
-### Deprecations are not surpressed by default.
+### Deprecations are muted by default.
 
+This was me in TODOTODOTODOTODOTODOTODOTODO
+The core of the reason is because it was actually breaking things.
+Irelivant deprecation warning spam from dependencies of dependencies was causing JuMP and LightGraphs to become too slow to be used.
+and because they were from dependencies of dependencies the maintainers of those packages couldn’t even fix them. Let alone the end users.
+
+Hopefully one day we could bring them back.
+What we want is that if the deprecation warning is caused by a function call made from the main module of your current active enviroment, then you should get it.
+I kind of know what we need to do to the logger to make that possible.
+But it is time i don’t have right now to d
 
 
 ## Pkg stdlib and the General Registry
@@ -148,7 +157,7 @@ Further the spiffy animated output shows you what is precompiling at a given tim
 This is one of my own contributions.
 Julia 1.0 conflict messages are a terrifying wall of text.
 
-![Julia 1.0 conflict log]({{site.url}}/Julia-1.0-1.6-changes/julia1.0-conflict.png)  
+![Julia 1.0 conflict log]({{site.url}}/Julia-1.0-1.6-changes/julia1.0-conflict.png)
 ![Julia 1.6 conflict log]({{site.url}}/Julia-1.0-1.6-changes/julia1.6-conflict.png)
 
 The two main changes are the use of colors, and compressing the version number ranges.
@@ -176,7 +185,7 @@ For something with a lot of pre-1.0 versions that is a lot of numbers.
 I think the new version is much cleaner and easier to read.
 
 
-## Standard Library
+## Base and Standard Libraries
 
 ### 5-arg `mul!`, aka in-place generalized multiplication and addition
 The 5 arg `mul!(C, A, B, α, β)` performs the operation equivalent to: `C .= A*B*α + C*β`, where `α`, `β` are scalars and `A`, `B` and `C` are compatible mixes of scalars, matrices and vectors.
@@ -203,6 +212,20 @@ Often occurring when you are adding a quick `println` to debug something not bei
 Arguably both of those are better done via other means (`@show`, and values stored in fields in the error type); but we don't always do what is best.
 Sometimes it is expedient to just interpolate things into strings without worrying about what type they are.
 
+### `Base.download` now using libcurl
+For a very long time the `download` function which retrieves things over HTTP, was implemented with an amazing hack.
+It conditionally shelled out to different programs.
+On windows it run a mildly scary powershell script.
+On Unixen it first tried to use `curl` then if that wasn't installed it tried to use `wget` and then if that wasn't installed it tried to use `fetch`.
+It's low-key amazing that this worked as well as it did -- very few complaints.
+But as of 1.6 [it now uses libcurl](https://github.com/JuliaLang/julia/pull/37340).
+Using libcurl everywhere gives consistency with proxy settings, and protocol support (beyond HTTP) across all platforms.
+
+It also has more extensive API via the new [Downloads.jl](https://github.com/JuliaLang/Downloads.jl) standard library.
+It can do things like progress logging, and it can retrieve headers.
+I have [tried getting headers via conditional different commandline download functions](https://github.com/oxinabox/DataDeps.jl/pull/22) before, it is low-key nightmare fuel; and I ended up swapping out the HTTP.jl for that.
+It wouldn't be too surprising if eventually we see libcurl swapped out for code extracted from HTTP.jl for a pure julia solution.
+HTTP.jl works wonderfully to this, but I suspect untangling the client from the server is just a bit annoying right now, particularly as it is still evolving its API.
 
 ### A bunch of curried functions
 Julia seems to have ended up with a convention of providing curried methods of functions if that would be useful as the first argument for `filter`.
@@ -218,7 +241,7 @@ Since then we have added:
 Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0 and now has been added back.
 We added it back expressly to have the curried form, and to match `startswith` and `endswith`.
 
-## A ton of new and improved standard library functions:
+### A ton of other new and improved standard library functions:
 
 [`@time`])(https://github.com/JuliaLang/julia/pull/37678) now reports how much time was spent on compilation.
 This is going to help prevent people knew the language from including compilation time in their benchmarks.
@@ -256,10 +279,6 @@ I think for Julia 2.0 we should consider making it the default.
 Also added was a `sort` argument, which I don't see the point of so much, since `sort(readdir(x))` seems cleaner than `readdir(x; sort=true)`; and because I rarely rely on processing files in order.
 
 
-## More "Why didn't it always work that way" than I can count
+### More "Why didn't it always work that way" than I can count
 Since 1.0's release there have been so many small improvements to functions that I didn't even know happened, because I assumed they always worked that way.
 Things like `startswith` supporting regex, and (`parse`](https://github.com/JuliaLang/julia/pull/36199) working on `UUID`s.
-
-
-
-
