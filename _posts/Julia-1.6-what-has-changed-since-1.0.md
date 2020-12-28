@@ -73,7 +73,7 @@ But with this change now all immutable object can live on the stack, even if som
 An important consequence of this is that wrapper types, such as the `SubArray` returned from `@view x[1:2]`, now have no overhead to create.
 I find that in practice this often adds up to a 10-30% speed-up in real world code.
 
-(* Its actually really fast, but it is the kind of thing that rapidly adds up.)
+(* Its actually really fast, but it is the kind of thing that rapidly adds up; and its slow vs operations that can happen without touching RAM.)
 
 ### Invalidations
 
@@ -81,30 +81,86 @@ I find that in practice this often adds up to a 10-30% speed-up in real world co
 ### Soft-scope in the REPL
 ### Deprecations are muted by default.
 
-This was me in TODOTODOTODOTODOTODOTODOTODO
+This was me in [this PR](https://github.com/JuliaLang/julia/pull/35362).
+It's not something I am super-happy about.
+Though I think it makes sense.
+Using deprecated methods is actually fine, as long as your dependencies follow SemVer, and you use `^` (i.e. default) bounding in your Project.toml's `[compat]`.
+Which everyone does, because its enforced by the auto-merge script in the General registry.
+
+Solving deprecations is a thing you should chose to do, actively.
+Not casually, when trying to do something else.
+In particular, when updating to support a new major release of one of your dependencies, you should run your (integration) tests to see if they succeed.
+If they don't succeed, then one removed support for the new version and run julia with deprecation warnings turned on (or set to error); to identify and fix them.
+Probably also you are checking the release notes, since you are intentionally updating.
+
 The core of the reason is because it was actually breaking things.
-Irelivant deprecation warning spam from dependencies of dependencies was causing JuMP and LightGraphs to become too slow to be used.
-and because they were from dependencies of dependencies the maintainers of those packages couldn’t even fix them. Let alone the end users.
+Irrelevant deprecation warning spam from dependencies of dependencies was causing JuMP and LightGraphs to become too slow to be used.
+Since they were from dependencies of dependencies the maintainers of those JuMP and LightGraphs couldn’t even fix them.
+Let alone the end users.
 
-Hopefully one day we could bring them back.
-What we want is that if the deprecation warning is caused by a function call made from the main module of your current active enviroment, then you should get it.
+Deprecation warnings are still turned on by default in tests.
+Which makes sense since the tests (unlike normal use), is being run by maintainers of the package itself, not its users.
+Though it still doesn't make a huge amount of sense to me, since spam from deprecation warnings floods out your actual errors that you want to see during testing.
+For this reason Invenia (my employer) has disabled deprecation warnings in the tests for all our closed source packages, and added a new test job that just does deprecation checking (set to error on deprecation and with the job allowed to fail, just so we have notice).
+
+Hopefully one day we can improve the tooling around deprecation warnings.
+An ideal behavour would be to only show deprecation warning if directly caused by a function call made from within the package module of your current active environment.
 I kind of know what we need to do to the logger to make that possible.
-But it is time i don’t have right now to d
+But it is not yet something I have had time to do.
 
+### Colored Stack-traces
+TODODODOTOTOTOTODODEOEDO TODO
 
 ## Pkg stdlib and the General Registry
 Writing this section is a bit hard as there is no NEWS.md nor HISTORY.md for the Pkg stdlib; and the general registry is more policy than software.
 
 TODO: Write bits for these:
 
- - Full transition off METADATA
- - Automatic merging
  - Pkg Server: faster updating of registry and download of packages
  - Artifacts, BinaryBuilder, Yggdasil, almost no one uses `deps/build.jl` any more
  - Scratch, and Preferences
  - `activate --temp`
  - test dependencies. https://discourse.julialang.org/t/activating-test-dependencies/48121/7?u=oxinabox
  - passing arguments to Pkg.test
+
+### Full Transition off METADATA.jl and REQUIRE files, and onto the General Registry
+Even though Julia 1.0 had Pkg3 and was supposed to use registries, for a long time the old Pkg2 [METADATA.jl](https://github.com/JuliaLang/METADATA.jl) pseudo-registry was used as the the canonical source of truth.
+Registering new releases was made against that, and then a script synchronized [General](https://github.com/JuliaRegistries/General) registry to match it.
+This was to allow time for packages to change over to supporting julia 1.0, while still also making releases that supported julia 0.6.
+It wasn't until about a year later that this state ended and the General registry became the one source of truth.
+
+This was kind of sucky, because a lot of the power of Pkg3 was blocked until then.
+In particular, since the registries compat was generated from the REQUIRE file, and the REQUIRE files had kind of [gross requirement specification](https://docs.julialang.org/en/v0.6/manual/packages/#Requirements-Specification-1), and everyone basically just lower bounded things, or didn't bound compat at all.
+Which made sense because with the only 1 global environment that Pkg2 had, you basically needed the whole ecosystem to be compatible, so restricting was bad.
+But Pkg3/Project.toml has the much better default [`^` bounded]](https://julialang.github.io/Pkg.jl/v1/compatibility/#Version-specifier-format-1) to accept only non-breaking changes by SemVer.
+(And per project environments, so things don't all have to be compatible -- just things used in a particular project (rather than every project you might ever do).
+
+#### Automatic Merging
+Initially after the change over all PRs to make a new release needed manual review, by one of the very small number of General registry maintainers.
+
+I am a big fan of [releasing after every non-breaking PR](https://www.oxinabox.net/2019/09/28/Continuous-Delivery-For-Julia-Packages.html).
+Why would you not want those bug-fixes and new features released?
+It is especially rude to contributors who will make a fix or a feature, but then you don't let them use it because you didn't tag a release.
+Plus it makes tracking down bugs easier, if it occurs on a precise version you know the PR that caused it.
+But with manual merging it feels bad, to tag 5 releases in a day.
+Now they we have automatic merging it is fine.
+At time of writing [ChainRules.jl](https://github.com/JuliaDiff/ChainRules.jl/) was up to 67 releases.
+
+The big advantage of automatic merging is that it comes with automatic enforcement of standards.
+In order to be automerge-able some good standards have to be followed.
+One of which is that that no unbounded compat specifiers (e..g `>=1.0`) are permitted; and that everything must have a compat specifier (since unspecified is same as `>=0.0.0`)
+That one is particularly great, since if one adds specifiers later that can't be met, then it can trigger downgrades back to the incredible old versions that didn't specify compat and that almost certainly are not compatible.
+
+To deal with that particular case retro-capping was done to retroactively add bounds to all things that didn't have them.
+Which was painful when it was done, since it rewrote compat in the registry, which made it disagree with the `Project.toml`, which is always confusing.
+Now that it is done, it is good.
+
+#### Requirement to have a `Project.toml`
+Finally the ability to `pkg> dev` packages that had only a REQUIRE and no `Project.toml` was removed in Julia 1.4.
+You can still `pkg> add` them, if they were registered during the transition period.
+But to edit the projects they must a `Project.toml` file, which is fine since all the tools to make registering releases also require you to have `Project.toml` now
+
+
 
 ### Resolver willing to downgrade packages to install new ones (Tiered Resolution)
 
