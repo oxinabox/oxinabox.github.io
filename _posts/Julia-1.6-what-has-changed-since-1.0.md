@@ -44,9 +44,9 @@ foo(x::Bar; a=1, b=2, c=3) = ...
 foo(x1, x2; a=10, b=20, c=30, comb=+) = foo(Bar(comp(x1, x2)); a=a, b=b, c=c)
 ```
 This new feature allows one to avoid writing `(...; a=a, b=b, c=c)`, and instead write `(...; a, b, c)`.
-This does come with the requirement to seperate keyword arguments from positional arguments by `;`, but I have always done this, and the [BlueStyle guide requires it](https://github.com/invenia/BlueStyle#keyword-arguments).
+This does come with the requirement to separate keyword arguments from positional arguments by `;`, but I have always done this, and the [BlueStyle guide requires it](https://github.com/invenia/BlueStyle#keyword-arguments).
 It feels like we are fully leveraging the distinction of keyword from positional arguments by allowing this.
-(In contrast, the distinction vs e.g. C# and Python that allow any positional argument to be passed by name, is to make the name of positional arguements not part of the public API, thus avoiding changing it being a breaking change.)
+In contrast, the distinction vs e.g. C# and Python that allow any positional argument to be passed by name, is to make the name of positional arguments not part of the public API, thus avoiding changing it being a breaking change.
 
 The same syntax can be used to create `NamedTuple`.
 ```julia
@@ -58,6 +58,10 @@ julia> (;product, price)
 (product = ["fries", "burger", "drink"], price = [2, 4, 1])
 ```
 This is particularly cool for constructing `NamedTuple`s of `Vector`s, which is a valid [Tables.jl Table](https://tables.juliadata.org/stable/#Tables.columntable).
+
+It is interesting to note that for the logging macros introduced in Julia 1.0, this is how they have always worked.
+E.g. `@info "message" foo bar` and `@info "message" foo=foo bar=bar` display the same.
+Which has always felt natural.
 
 ## Performance
 ### References to the Heap from the Stack
@@ -75,7 +79,56 @@ I find that in practice this often adds up to a 10-30% speed-up in real world co
 
 (* Its actually really fast, but it is the kind of thing that rapidly adds up; and its slow vs operations that can happen without touching RAM.)
 
+## Internals
 ### Invalidations
+
+Consider a function `foo` with a method `foo(::Number)`.
+If some other function calls it, for example `bar(x::Int) = 2*foo(x)`, the JIT will compile in an instruction for exactly the method instance to call (assuming type-inference work) -- a fast static dispatch, possibly even inlined.
+If the user then defines a new more specific method `foo(::Int)`, then the compiled code for `Bar`, need to be invalidated so it will call the new one.
+It needs to be recompiled -- which means anything that static dispatches to it needs to be recompiled and so forth.
+This is an invalidation.
+It's an important feature of the language.
+It is key to extensibility.
+It doesn't normally cause too many problems.
+Since generally basically everything is defined before anything is called, and thus before anything is compiled.
+
+A notable exception to this is Base an the other standard libraries.
+These are compiled into the so-called system image.
+Further-more, methods in these standard libraries are some of the most overloaded, thus most likely to have it triggered.
+
+A bunch of work has gone into dealing with invalidations better.
+Not just point-fixes to remove calls that were likely to be invalidated, but several changes to the compiler.
+One particular change was not triggering cascading invalidations for methods that couldn't actually be called do the being ambiguous.
+As a result a lot of user code doesn't trigger invalidations on 1.6, that did on 1.5.
+The end result of this is faster compilation after loading packages, since it doesn't have to recompile a ton of invalidated method instances.
+i.e. decreased time to first plot.
+
+
+A full discussion on the invalidations work can be found in [this blog-post](https://julialang.org/blog/2020/08/invalidations/).
+
+### Manually Created Back-edges for Lowered Code Generated Functions
+This is a very niche and not really at all user-facing feature.
+To understand why this matters, it's worth understanding how Cassette works.
+I wrote [blog-post on this a few years ago](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1#making-cassette).
+
+In quiet the opposite, Julia 1.3 allowed for the creation of more invalidations though allowing back-edges to be manually attached to the `CodeInfo` for `@generated` functions that return lowered code.
+Backedges are the connection from methods back to each method instance that calls them.
+This is what allows invalidations to work, as when a method is redefined, it needs to know what things to recompile.
+This change allowed those back-edges to be manually specified for `@generated` functions that were working at the lowered code level.
+Which is useful since this technique is primarily used for generating code based on the (lowered) code of existing methods.
+For example in [Zygote](https://github.com/FluxML/Zygote.jl), generating the gradient code, from the code of the primal method.
+So you want to be able to the regeneration of this code when that original method changes.
+
+
+Basically, end of the day is this allows code that uses [Cassette.jl](https://github.com/jrevels/Cassette.jl), and [IRTools.jl](https://github.com/MikeInnes/IRTools.jl) to not suffer from [#265](https://github.com/JuliaLang/julia/issues/265)-like problems.
+A particular case of this is for [Zygote](https://github.com/FluxML/Zygote.jl) where redefining a function called by the code that was being differentiated did not result in an updated gradient (unless `Zygote.refresh()`) was run.
+This was annoying for 
+
+Other things that this allows is two very weird packages that [Nathan Daly](https://github.com/NHDaly) and I came up with at the JuliaCon 2018 hackathon: [StagedFunctions.jl](https://github.com/NHDaly/StagedFunctions.jl) and [Tricks.jl](https://github.com/oxinabox/Tricks.jl/).
+[StagedFunctions.jl](https://github.com/NHDaly/StagedFunctions.jl) relaxes the restrictions on normal `@generated` functions so that they are also safe from [#265](https://github.com/JuliaLang/julia/issues/265)-like problems.
+[Tricks.jl](https://github.com/oxinabox/Tricks.jl/) uses this feature to make `hasmethod` etc resolve at compile-time, and then get updated if and when new methods are defined.
+Which can allow for defing traits like _"anything that defines a `iterate` method"_.
+
 
 ## Front-end changes
 ### Soft-scope in the REPL
