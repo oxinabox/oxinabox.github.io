@@ -8,7 +8,7 @@ tags:
 Julia 1.6 is slated to be the next long-term support release of the Julia programming language.
 It has been 2 years since the last LTS, and a lot has changed.
 This post is kind of a follow-up to my [Julia 1.0 release run-down]({{site.url}}//2018/06/01/Julia-Favourite-New-Things.html).
-But it's going to be even longer, as it is covering the last 5 releases since then.
+But it's going to be even longer, as it is covering the last 5 releases since then; and I am not skipping the major new features.
 I am writing this not to break down release by release,
 but to highlight features that had you only used Julia 1.0, you wouldn't have seen.
 Full details can be found in the NEWS.md, and HISTORY.md
@@ -132,6 +132,23 @@ Which can allow for defing traits like _"anything that defines a `iterate` metho
 
 ## Front-end changes
 ### Soft-scope in the REPL
+Julia 1.0 removed the notion of soft-scope from the language.
+I was very blasé about the change to for-loop bindings in my [1.0 release post](https://www.oxinabox.net/2018/06/01/Julia-Favourite-New-Things.html#for-loop-variable-binding-changes).
+Infact, I didn't even mention this particular change.
+It was [#19324](https://github.com/JuliaLang/julia/pull/19324) for reference
+
+This was undone in in Julia 1.5 with [#33864](https://github.com/JuliaLang/julia/pull/33864) for in the REPL only.
+Now in the REPL, assigning to a global variable within a for-loop actually assigns that variable, rather than shadowing it with a new variable in that scope.
+The same behavior outside the REPL, now gives a warning.
+
+Personally, this change never affected me because I never write for-loops at global scope that assign variables.
+Indeed basically all I code I write is inside functions.
+But I do see how this causes problems for some interactive work-flows, especially e.g. when demonstrating something.
+See the [main github issue](https://github.com/JuliaLang/julia/issues/28789) and the longest [Discourse thread](https://discourse.julialang.org/t/another-possible-solution-to-the-global-scope-debacle/15894), though there were many others.
+It took years of thinking to workout the solution, particularly because many of the more obvious solutions would be breaking in significant ways.
+
+
+
 ### Deprecations are muted by default.
 
 This was me in [this PR](https://github.com/JuliaLang/julia/pull/35362).
@@ -172,9 +189,43 @@ TODO: Write bits for these:
  - Pkg Server: faster updating of registry and download of packages
  - Artifacts, BinaryBuilder, Yggdasil, almost no one uses `deps/build.jl` any more
  - Scratch, and Preferences
- - `activate --temp`
- - test dependencies. https://discourse.julialang.org/t/activating-test-dependencies/48121/7?u=oxinabox
  - passing arguments to Pkg.test
+
+### Temporary Environments
+Julia 1.5 added `pkg> activate --temp` which will create and activate a temporary environment.
+This environment is deleted when Julia is exited.
+This is incredibly handy for:
+
+ - Reproducing an issue
+ - Answering questions on Stack-Overflow etc
+ - Checking the behavior of the last release of a package you currently have `dev`ed.
+ - Quickly trying out an idea
+
+Remembering that with Pkg3 installing a version of a package you have installed before is incredibly fast.
+Pkg doesn't download it again, it basically just points to the existing version on disk.
+So using `activate --temp` to quickly try something is indeed quick.
+
+A more hacky use of it is after loading (via `using`) a package that you have `dev`'ed, you can `activate --temp` and install some of your test-time dependencies to reproduce a test failure without adding them to the main dependencies in the `Project.toml`.
+Though there is a better way if you use `test/Project.toml`.
+
+### Test Dependencies in own Project.toml
+In [Julia 1.0 and 1.1, test specific dependencies are listed in the `[extras]` section](https://julialang.github.io/Pkg.jl/v1/creating-packages/#Test-specific-dependencies-in-Julia-1.0-and-1.1), and under `[targets] test=[...]`; with its compatibility listed in the main `[compat]`.
+It seemed like this might be in the future be extended for other things, perhaps documentation.
+But it was found for documentation in particular that a seperate Project.toml worked well.
+As long as you `dev ..` into its `Manifest.toml` so it uses the right version of the package it is documenting.
+
+The new `tests/Project.toml` extends that idea.
+One part of that extension is to remove the need to `dev ..`, and other part is to make available all the main dependencies.
+It actually works on a different mechanism to the docs.
+It relies on stacked environments, which is a feature julia has had since 1.0 via `LOAD_PATH`, but that is rarely used.
+
+
+One advantage of this is that you can activate that Project.toml, on top of the your existing environment by adding the test directory to your `LOAD_PATH`. 
+I wrote some more details on exactly how to do that on [Discourse](
+https://discourse.julialang.org/t/activating-test-dependencies/48121/7?u=oxinabox).
+It feels kind of hacky, because it is.
+At some point there might be a nicer user-interface for stacked environments like this.
+
 
 ### Full Transition off METADATA.jl and REQUIRE files, and onto the General Registry
 Even though Julia 1.0 had Pkg3 and was supposed to use registries, for a long time the old Pkg2 [METADATA.jl](https://github.com/JuliaLang/METADATA.jl) pseudo-registry was used as the the canonical source of truth.
@@ -348,7 +399,7 @@ Since then we have added:
 
 
 Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0 and now has been added back.
-We added it back expressly to have the curried form, and to match `startswith` and `endswith`.
+We added it back primarily so we could have the curried form, and to match `startswith` and `endswith`.
 
 ### A ton of other new and improved standard library functions:
 
@@ -390,4 +441,6 @@ Also added was a `sort` argument, which I don't see the point of so much, since 
 
 ### More "Why didn't it always work that way" than I can count
 Since 1.0's release there have been so many small improvements to functions that I didn't even know happened, because I assumed they always worked that way.
-Things like `startswith` supporting regex, and (`parse`](https://github.com/JuliaLang/julia/pull/36199) working on `UUID`s.
+Things like `startswith` supporting regex, (`parse`](https://github.com/JuliaLang/julia/pull/36199) working on `UUID`s,
+`accumulate`, `cumsum`, and `cumprod` supporting arbitrary iterators (https://github.com/JuliaLang/julia/pull/34656).
+Julia 1.6 is one hell of a more polished language.
