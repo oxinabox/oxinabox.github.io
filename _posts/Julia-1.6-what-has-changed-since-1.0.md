@@ -191,6 +191,15 @@ TODO: Write bits for these:
  - Scratch, and Preferences
  - passing arguments to Pkg.test
 
+### BinaryBuilder, Artifacts, Yggdasil and jll packages.
+
+This story was beginning to be told around julia 1.0 time,
+but it wasn't really complete nor built into Pkg until Julia 1.3.
+
+You can read the documentation on [Artifacts](https://julialang.github.io/Pkg.jl/v1/artifacts/), [BinaryBuilder](https://github.com/JuliaPackaging/BinaryBuilder.jl), and [Yggdasil](https://github.com/JuliaPackaging/Yggdrasil)
+ for full details
+TODODODODODODOD
+
 ### Temporary Environments
 Julia 1.5 added `pkg> activate --temp` which will create and activate a temporary environment.
 This environment is deleted when Julia is exited.
