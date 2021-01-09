@@ -22,7 +22,7 @@ They are tightly integrated with the existing Async/Task/Coroutine system.
 In effect threading works by unsetting the sticky flag on a Task, so that it is allowed to run on any thread.
 This is normally done via the `Threads.@spawn` macro, rather than the `@async` macro.
 
-Interestingly, the `@threads for` macro still remains, and doesn't actually use much of the new machinery. It still uses the old way which is a bit tigher if the loop durations are almost identical.
+Interestingly, the `@threads for` macro still remains, and doesn't actually use much of the new machinery. It still uses the old way which is a bit tighter if the loop durations are almost identical.
 But the new threading stuff is fast, on the order of microseconds to send work off to another thread.
 Even for uses of `@threads for` the improves have some wins.
 `IO` is now thread-safe; `ReentrantLock` was added and is the kind of standard lock that you expect to exist, that has notifications on waiting work etc; and a big one: `@threads for` can now be nested without things silently being wrong.
@@ -63,8 +63,7 @@ It is interesting to note that for the logging macros introduced in Julia 1.0, t
 E.g. `@info "message" foo bar` and `@info "message" foo=foo bar=bar` display the same.
 Which has always felt natural.
 
-## Performance
-### References to the Heap from the Stack
+## Performance: References to the Heap from the Stack
 This was promised in 2016 as a feature for 1.0 (released 2018).
 But we actually didn't get it til 1.5 with [#33886](https://github.com/JuliaLang/julia/issues/33886).
 Basically, the process of allocating memory from the heap is fairly slow*, where as allocating memory on the stack is basically a non-op.
@@ -79,7 +78,37 @@ I find that in practice this often adds up to a 10-30% speed-up in real world co
 
 (* Its actually really fast, but it is the kind of thing that rapidly adds up; and its slow vs operations that can happen without touching RAM.)
 
-## Internals
+## Time To First Plot
+People often complain about the "Time To First Plot" (TTFP) in julia.
+I personally have never minded it -- by the time iI am plotting something I have done minutes of thinking so 10 seconds of compilation is nothing.
+Plotting turns out is basically a really hard thing for a compiler.
+It is many many small methods, most of which are only called once.
+And unlike most julia code it doesn't actually benefit all that much from most of the work julia's JIT is normally doing to specialize things -- plotting itself isn't in the hot-loop.
+To a long-story short, plotting the postcard example for julia needing to compile things before it can run them.
+
+As a really hacky way to time this, the following timing.
+Timing it twice because need to capture the timing for printing afterwards (which is something very affected by invalidations see below).
+Also with precompilation already run
+(though see below, precompilation caches often would be deleted in 1.0; and conversely are way faster to create in 1.6 due to parallelization.)
+
+**Julia 1.0:**
+```julia
+julia> @time @time using Plots; plot(1:0.1:10, sin.(1:0.1:10))
+  7.168878 seconds (15.87 M allocations: 941.114 MiB, 7.36% gc time)
+  9.281561 seconds (25.74 M allocations: 1.393 GiB, 7.88% gc time)
+```
+**Julia 1.6:**
+```julia
+julia> @time @time using Plots; plot(1:0.1:10, sin.(1:0.1:10))
+  4.490434 seconds (8.24 M allocations: 583.285 MiB, 7.13% gc time, 32.80% compilation time)
+  4.533302 seconds (8.36 M allocations: 590.949 MiB, 7.06% gc time, 33.41% compilation time)
+```
+
+
+### Per Module Optimization Flags
+
+TODODOTOTOTOTODODODOD TODO
+
 ### Invalidations
 
 Consider a function `foo` with a method `foo(::Number)`.
@@ -103,10 +132,13 @@ As a result a lot of user code doesn't trigger invalidations on 1.6, that did on
 The end result of this is faster compilation after loading packages, since it doesn't have to recompile a ton of invalidated method instances.
 i.e. decreased time to first plot.
 
+In this has had huge effect on [Revise.jl](https://github.com/timholy/Revise.jl)
+which started to take a second or so to load when it gained the dependency on [JuliaInterpretter.jl](https://github.com/JuliaDebug/JuliaInterpreter.jl); which isn't much, but when you do it every time you start julia it is an annoying lack of snappyness.
+But thanks to this work, JuliaInterpretter, and thus Revise now load in a flash.
 
 A full discussion on the invalidations work can be found in [this blog-post](https://julialang.org/blog/2020/08/invalidations/).
 
-### Manually Created Back-edges for Lowered Code Generated Functions
+## Internals: Manually Created Back-edges for Lowered Code Generated Functions
 This is a very niche and not really at all user-facing feature.
 To understand why this matters, it's worth understanding how Cassette works.
 I wrote [blog-post on this a few years ago](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1#making-cassette).
@@ -178,8 +210,34 @@ An ideal behavour would be to only show deprecation warning if directly caused b
 I kind of know what we need to do to the logger to make that possible.
 But it is not yet something I have had time to do.
 
-### Colored Stack-traces
-TODODODOTOTOTOTODODEOEDO TODO
+
+### Code highlighting for `code_llvm` and `code_native`
+This was added in [#36634](https://github.com/JuliaLang/julia/issues/36634).
+This functionality was first implemented in the [ColoredLLCodes.jl](https://github.com/kimikage/ColoredLLCodes.jl), where it worked by monkey-patching the InteractiveUtils stdlib.
+That package does still work on julia 1.0.
+
+![Julia 1.0 code_llvm]({{site.url}}/Julia-1.0-1.6-changes/julia1.0-code-llvm.png)
+![Julia 1.6 code_llvm]({{site.url}}/Julia-1.0-1.6-changes/julia1.6-code-llvm.png)
+
+The REPL itself still doesn't have syntax highlighting for Julia code though.
+The [OhMyRepl.jl](https://github.com/KristofferC/OhMyREPL.jl) package does provide that, and works all versions of Julia.
+It is a lot more than a series of regex though, so I don't think we are going to see it built into julia too soon.
+Probably one day, though, as its big dependencies are also required if the parser wants to move to be written in julia.
+(Though I also don't expect that any time soon)
+
+### Clearer Stacktraces
+
+Just like colored `code_llvm` colored stack-traces also originated in a package that was doing some nasty monkey-patching: [ClearStacktrace.jl](https://github.com/jkrumbiegel/ClearStacktrace.jl).
+This was added into Base itself in [#36134](https://github.com/JuliaLang/julia/pull/36134)
+
+![Julia 1.0 stacktrace]({{site.url}}/Julia-1.0-1.6-changes/julia1.0-stacktrace.png)
+![Julia 1.6 stacktrace]({{site.url}}/Julia-1.0-1.6-changes/julia1.6-stacktrace.png)
+
+The first thing you probably notice is the colored package names, to make it more clear where the error is coming from.
+You also should notice the dimming of type-parameters to make complicated types easier to read.
+Also the addition of argument names, and showing keyword arguments bearing functions as they are written, rather than as a weird `#DataFrame#654` internal function.
+The whole thing just looks more modern and polished.
+
 
 ## Pkg stdlib and the General Registry
 Writing this section is a bit hard as there is no NEWS.md nor HISTORY.md for the Pkg stdlib; and the general registry is more policy than software.
