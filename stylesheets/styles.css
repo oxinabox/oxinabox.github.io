@@ -277,10 +277,6 @@ em, .em {
   padding: 0 20px;
 }
 
-section img {
-  max-width: 100%;
-}
-
 blockquote {
   border-left: 3px solid #ffcc00;
   margin: 0;
@@ -320,8 +316,10 @@ svg {
   padding: 16px;
 }
 
-img { /*Some images are not rendering background for some reason */
+img {
+  /*Some images are not rendering background for some reason */
   background-color: white;
+  max-width: 100%;
 }
 
 
