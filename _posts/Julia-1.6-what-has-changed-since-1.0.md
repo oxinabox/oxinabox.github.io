@@ -5,8 +5,29 @@ tags:
    - julia
 ---
 
-Julia 1.6 is slated to be the next long-term support release of the Julia programming language.
-It has been 2 years since the last LTS, and a lot has changed.
+Julia 1.0 came out well over 2 year ago.
+Since then a lot has changed; and a lot hasn't.
+Since Julia 1.0 was a commitment to no breaking changes;
+but that is not to say no new features have been added to the language.
+
+<!--more-->
+
+Julia 1.6 is the first feature release since 1.0.
+Prior to 1.0 all releases were feature releases; they came out when they were ready.
+Since then all releases (except 1.6) have been timed releases.
+The release candidate is cut from the main branch every 3 months; and they are released after an [extensive round of additional checking](https://github.com/JuliaLang/julia/pull/35846), which often takes weeks to months.
+Julia 1.6 was soft-slated to be the new long-term-support (LTS) version that would have bug-fixes backported to it for the next few years.
+The current LTS is julia 1.0, which has now had 5 patch releases made.
+Since it was going to be supported for a long-time people wanted to make sure everything good got in; thus it was a feature release.
+The core developers have demurred on if 1.6 will actually be selected to be the new LTS (even if it wasn't it won't assend to being LTS til it stops being the current Stable).
+
+My impression now is that they feel like it has too many cool new things; and that a few things didn't quite make it in even with the extended release cycle.
+So it's looking likely to me that 1.7 will actually be the LTS; but that it might also be a feature release -- possibly this time a much shorter release period than usual.
+In practice I think for a lot of package maintainer's 1.6 will be a LTS, in that that is the oldest version they will make sure to continue to support.
+There has been too many cool new things (as this post will detail) to stay back to only 1.0 features.
+Already a lot of packages have dropped support for julia versions older than 1.3.
+
+
 This post is kind of a follow-up to my [Julia 1.0 release run-down]({{site.url}}//2018/06/01/Julia-Favourite-New-Things.html).
 But it's going to be even longer, as it is covering the last 5 releases since then; and I am not skipping the major new features.
 I am writing this not to break down release by release,
@@ -14,23 +35,6 @@ but to highlight features that had you only used Julia 1.0, you wouldn't have se
 Full details can be found in the NEWS.md, and HISTORY.md
 TODO: Insert links to the files in the release-1.6 branch.
 
-
-## Threading
-Julia has full support for threading now.
-Not just the limited `@threads for` loops, but full GoLang style threads.
-They are tightly integrated with the existing Async/Task/Coroutine system.
-In effect threading works by unsetting the sticky flag on a Task, so that it is allowed to run on any thread.
-This is normally done via the `Threads.@spawn` macro, rather than the `@async` macro.
-
-Interestingly, the `@threads for` macro still remains, and doesn't actually use much of the new machinery. It still uses the old way which is a bit tighter if the loop durations are almost identical.
-But the new threading stuff is fast, on the order of microseconds to send work off to another thread.
-Even for uses of `@threads for` the improves have some wins.
-`IO` is now thread-safe; `ReentrantLock` was added and is the kind of standard lock that you expect to exist, that has notifications on waiting work etc; and a big one: `@threads for` can now be nested without things silently being wrong.
-
-A lot of this actually landed in julia 1.2, but julia 1.3 was the release we think of as being for threading, as it gave us `Threads.@spawn`.
-
-Also in Julia 1.6 we now have `julia -t auto` to start julia with 1 thread per (logical) core.
-No more having to remember to set the `JULIA_NUM_THREADS` environment variable before starting it.
 
 ## NamedTuple/keyword arguments automatic naming
 This feature felt weird when I first read about it, but it has quickly grown on me.
@@ -76,90 +80,7 @@ But with this change now all immutable object can live on the stack, even if som
 An important consequence of this is that wrapper types, such as the `SubArray` returned from `@view x[1:2]`, now have no overhead to create.
 I find that in practice this often adds up to a 10-30% speed-up in real world code.
 
-(* Its actually really fast, but it is the kind of thing that rapidly adds up; and its slow vs operations that can happen without touching RAM.)
-
-## Time To First Plot
-People often complain about the "Time To First Plot" (TTFP) in julia.
-I personally have never minded it -- by the time iI am plotting something I have done minutes of thinking so 10 seconds of compilation is nothing.
-Plotting turns out is basically a really hard thing for a compiler.
-It is many many small methods, most of which are only called once.
-And unlike most julia code it doesn't actually benefit all that much from most of the work julia's JIT is normally doing to specialize things -- plotting itself isn't in the hot-loop.
-To a long-story short, plotting the postcard example for julia needing to compile things before it can run them.
-
-As a really hacky way to time this, the following timing.
-Timing it twice because need to capture the timing for printing afterwards (which is something very affected by invalidations see below).
-Also with precompilation already run
-(though see below, precompilation caches often would be deleted in 1.0; and conversely are way faster to create in 1.6 due to parallelization.)
-
-**Julia 1.0:**
-```julia
-julia> @time @time using Plots; plot(1:0.1:10, sin.(1:0.1:10))
-  7.168878 seconds (15.87 M allocations: 941.114 MiB, 7.36% gc time)
-  9.281561 seconds (25.74 M allocations: 1.393 GiB, 7.88% gc time)
-```
-**Julia 1.6:**
-```julia
-julia> @time @time using Plots; plot(1:0.1:10, sin.(1:0.1:10))
-  4.490434 seconds (8.24 M allocations: 583.285 MiB, 7.13% gc time, 32.80% compilation time)
-  4.533302 seconds (8.36 M allocations: 590.949 MiB, 7.06% gc time, 33.41% compilation time)
-```
-
-
-### Per Module Optimization Flags
-
-TODODOTOTOTOTODODODOD TODO
-
-### Invalidations
-
-Consider a function `foo` with a method `foo(::Number)`.
-If some other function calls it, for example `bar(x::Int) = 2*foo(x)`, the JIT will compile in an instruction for exactly the method instance to call (assuming type-inference work) -- a fast static dispatch, possibly even inlined.
-If the user then defines a new more specific method `foo(::Int)`, then the compiled code for `Bar`, need to be invalidated so it will call the new one.
-It needs to be recompiled -- which means anything that static dispatches to it needs to be recompiled and so forth.
-This is an invalidation.
-It's an important feature of the language.
-It is key to extensibility.
-It doesn't normally cause too many problems.
-Since generally basically everything is defined before anything is called, and thus before anything is compiled.
-
-A notable exception to this is Base an the other standard libraries.
-These are compiled into the so-called system image.
-Further-more, methods in these standard libraries are some of the most overloaded, thus most likely to have it triggered.
-
-A bunch of work has gone into dealing with invalidations better.
-Not just point-fixes to remove calls that were likely to be invalidated, but several changes to the compiler.
-One particular change was not triggering cascading invalidations for methods that couldn't actually be called do the being ambiguous.
-As a result a lot of user code doesn't trigger invalidations on 1.6, that did on 1.5.
-The end result of this is faster compilation after loading packages, since it doesn't have to recompile a ton of invalidated method instances.
-i.e. decreased time to first plot.
-
-In this has had huge effect on [Revise.jl](https://github.com/timholy/Revise.jl)
-which started to take a second or so to load when it gained the dependency on [JuliaInterpretter.jl](https://github.com/JuliaDebug/JuliaInterpreter.jl); which isn't much, but when you do it every time you start julia it is an annoying lack of snappyness.
-But thanks to this work, JuliaInterpretter, and thus Revise now load in a flash.
-
-A full discussion on the invalidations work can be found in [this blog-post](https://julialang.org/blog/2020/08/invalidations/).
-
-## Internals: Manually Created Back-edges for Lowered Code Generated Functions
-This is a very niche and not really at all user-facing feature.
-To understand why this matters, it's worth understanding how Cassette works.
-I wrote [blog-post on this a few years ago](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1#making-cassette).
-
-In quiet the opposite, Julia 1.3 allowed for the creation of more invalidations though allowing back-edges to be manually attached to the `CodeInfo` for `@generated` functions that return lowered code.
-Backedges are the connection from methods back to each method instance that calls them.
-This is what allows invalidations to work, as when a method is redefined, it needs to know what things to recompile.
-This change allowed those back-edges to be manually specified for `@generated` functions that were working at the lowered code level.
-Which is useful since this technique is primarily used for generating code based on the (lowered) code of existing methods.
-For example in [Zygote](https://github.com/FluxML/Zygote.jl), generating the gradient code, from the code of the primal method.
-So you want to be able to the regeneration of this code when that original method changes.
-
-
-Basically, end of the day is this allows code that uses [Cassette.jl](https://github.com/jrevels/Cassette.jl), and [IRTools.jl](https://github.com/MikeInnes/IRTools.jl) to not suffer from [#265](https://github.com/JuliaLang/julia/issues/265)-like problems.
-A particular case of this is for [Zygote](https://github.com/FluxML/Zygote.jl) where redefining a function called by the code that was being differentiated did not result in an updated gradient (unless `Zygote.refresh()`) was run.
-This was annoying for 
-
-Other things that this allows is two very weird packages that [Nathan Daly](https://github.com/NHDaly) and I came up with at the JuliaCon 2018 hackathon: [StagedFunctions.jl](https://github.com/NHDaly/StagedFunctions.jl) and [Tricks.jl](https://github.com/oxinabox/Tricks.jl/).
-[StagedFunctions.jl](https://github.com/NHDaly/StagedFunctions.jl) relaxes the restrictions on normal `@generated` functions so that they are also safe from [#265](https://github.com/JuliaLang/julia/issues/265)-like problems.
-[Tricks.jl](https://github.com/oxinabox/Tricks.jl/) uses this feature to make `hasmethod` etc resolve at compile-time, and then get updated if and when new methods are defined.
-Which can allow for defing traits like _"anything that defines a `iterate` method"_.
+(* Its actually really fast, but it is the kind of thing that rapidly adds up; and it is slow vs operations that can happen without touching RAM.)
 
 
 ## Front-end changes
@@ -178,8 +99,6 @@ Indeed basically all I code I write is inside functions.
 But I do see how this causes problems for some interactive work-flows, especially e.g. when demonstrating something.
 See the [main github issue](https://github.com/JuliaLang/julia/issues/28789) and the longest [Discourse thread](https://discourse.julialang.org/t/another-possible-solution-to-the-global-scope-debacle/15894), though there were many others.
 It took years of thinking to workout the solution, particularly because many of the more obvious solutions would be breaking in significant ways.
-
-
 
 ### Deprecations are muted by default.
 
@@ -238,25 +157,52 @@ You also should notice the dimming of type-parameters to make complicated types 
 Also the addition of argument names, and showing keyword arguments bearing functions as they are written, rather than as a weird `#DataFrame#654` internal function.
 The whole thing just looks more modern and polished.
 
+### Time Traveling Debugger
+
+[Julia 1.5 added built in support](https://julialang.org/blog/2020/05/rr/) for [`rr`](https://rr-project.org/) (linux only for now).
+This is not useful so much for debugging julia code, but for debugging julia itself.
+If you get into one of the very rare situations where the language is doing something truly nonsense; you can send a bug report recorded via `rr`, and someone can debug *exactly* what is happening.
+Event to the extent of [diagnosing faulty RAM](https://julialang.org/blog/2020/09/rr-memory-magic/).
+`rr` is an impressively cool piece of tech; it boils down to the fact that linux's `fork` is incredibly cheap, because it take advantage of [copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write); so it basically `fork`s before every system call, and serializes what is going on; so you have a full track of everything that happened.
+The `rr` integration is really nice easy to use; I had someone who was part of our architecture and operations (i.e. who writes way more CloudFormation than Julia) team run it to submit a support request; and they had no real troubles.
 
 ## Pkg stdlib and the General Registry
 Writing this section is a bit hard as there is no NEWS.md nor HISTORY.md for the Pkg stdlib; and the general registry is more policy than software.
+However, some of the biggest changes have been in maturing out Pkg3, and its surrounds.
+
 
 TODO: Write bits for these:
 
  - Pkg Server: faster updating of registry and download of packages
- - Artifacts, BinaryBuilder, Yggdasil, almost no one uses `deps/build.jl` any more
  - Scratch, and Preferences
- - passing arguments to Pkg.test
+
 
 ### BinaryBuilder, Artifacts, Yggdasil and jll packages.
 
-This story was beginning to be told around julia 1.0 time,
+This story was beginning to be told around Julia 1.0 time,
 but it wasn't really complete nor built into Pkg until Julia 1.3.
+You can read the documentation on [Artifacts](https://julialang.github.io/Pkg.jl/v1/artifacts/), [BinaryBuilder](https://github.com/JuliaPackaging/BinaryBuilder.jl), and [Yggdasil](https://github.com/JuliaPackaging/Yggdrasil) for full details.
+This is the story about how julia works with binary dependencies.
+As of now, it works really well.
 
-You can read the documentation on [Artifacts](https://julialang.github.io/Pkg.jl/v1/artifacts/), [BinaryBuilder](https://github.com/JuliaPackaging/BinaryBuilder.jl), and [Yggdasil](https://github.com/JuliaPackaging/Yggdrasil)
- for full details
-TODODODODODODOD
+Sometimes people misunderstand the claims about julia solving the two language problem as saying everything should be rewritten in julia.
+Which is far from the truth, ain't noone got time for that.
+Julia has always had great foreign function interfacing (FFI); like that [`ccall`](https://docs.julialang.org/en/v1/manual/calling-c-and-fortran-code/) (as well as [PyCall](https://github.com/JuliaPy/PyCall.jl/), [RCall](https://github.com/JuliaInterop/RCall.jl), [JavaCall](https://github.com/JuliaInterop/JavaCall.jl), and a bunch of others, for non-c-style binaries.)
+While FFI makes it easy to call binaries, how about actually getting them on your machine?
+
+The standard pre-julia 1.0 was to run arbitrary code in the `deps/build.jl` file, which often used [BinDeps.jl](https://github.com/JuliaPackaging/BinDeps.jl/) to download compile things.
+Around 1.0 this changed to having the `deps/build.jl` call [BinaryProvider.jl](https://github.com/JuliaPackaging/BinaryProvider.jl/) download a compiled binary built with [BinaryBuilder.jl](https://github.com/JuliaPackaging/BinaryBuilder.jl), and store that alongside the package code.
+In Julia 1.3+, the Artifacts system basically broad the BinaryProvider part into the package manager.
+Now the package manager controls the downloads, store them in a controlled location more massive duplications, and allows for full compat control.
+No more running arbitrary code during installs.
+
+I feel it is worth really mentioning [BinaryBuilder](https://github.com/JuliaPackaging/BinaryBuilder.jl) here.
+While it has existed since before 1.0, it's really grown.
+It's a super smooth cross-compilation environment, that can used to build binaries for every platform julia runs on.
+This is an amazing tool, built on [containerization](https://en.wikipedia.org/wiki/OS-level_virtualization).
+It's the kind of build tool one dreamed on 10 years ago.
+It's far more general than julia, I know people have at least experimented with using it with nim.
+I hope more things start using it.
 
 ### Temporary Environments
 Julia 1.5 added `pkg> activate --temp` which will create and activate a temporary environment.
@@ -412,7 +358,108 @@ For something with a lot of pre-1.0 versions that is a lot of numbers.
 I think the new version is much cleaner and easier to read.
 
 
+## Time To First Plot
+People often complain about the "Time To First Plot" (TTFP) in julia.
+I personally have never minded it -- by the time iI am plotting something I have done minutes of thinking so 10 seconds of compilation is nothing.
+Plotting turns out is basically a really hard thing for a compiler.
+It is many many small methods, most of which are only called once.
+And unlike most julia code it doesn't actually benefit all that much from most of the work julia's JIT is normally doing to specialize things -- plotting itself isn't in the hot-loop.
+To a long-story short, plotting the postcard example for julia needing to compile things before it can run them.
+
+As a really hacky way to time this, the following timing.
+Timing it twice because need to capture the timing for printing afterwards (which is something very affected by invalidations see below).
+Also with precompilation already run
+(though see below, precompilation caches often would be deleted in 1.0; and conversely are way faster to create in 1.6 due to parallelization.)
+
+**Julia 1.0:**
+```julia
+julia> @time @time using Plots; plot(1:0.1:10, sin.(1:0.1:10))
+  7.168878 seconds (15.87 M allocations: 941.114 MiB, 7.36% gc time)
+  9.281561 seconds (25.74 M allocations: 1.393 GiB, 7.88% gc time)
+```
+**Julia 1.6:**
+```julia
+julia> @time @time using Plots; plot(1:0.1:10, sin.(1:0.1:10))
+  4.490434 seconds (8.24 M allocations: 583.285 MiB, 7.13% gc time, 32.80% compilation time)
+  4.533302 seconds (8.36 M allocations: 590.949 MiB, 7.06% gc time, 33.41% compilation time)
+```
+
+
+### Per Module Optimization Flags
+
+TODODOTOTOTOTODODODOD TODO
+
+### Invalidations
+
+Consider a function `foo` with a method `foo(::Number)`.
+If some other function calls it, for example `bar(x::Int) = 2*foo(x)`, the JIT will compile in an instruction for exactly the method instance to call (assuming type-inference work) -- a fast static dispatch, possibly even inlined.
+If the user then defines a new more specific method `foo(::Int)`, then the compiled code for `Bar`, need to be invalidated so it will call the new one.
+It needs to be recompiled -- which means anything that static dispatches to it needs to be recompiled and so forth.
+This is an invalidation.
+It's an important feature of the language.
+It is key to extensibility.
+It doesn't normally cause too many problems.
+Since generally basically everything is defined before anything is called, and thus before anything is compiled.
+
+A notable exception to this is Base an the other standard libraries.
+These are compiled into the so-called system image.
+Further-more, methods in these standard libraries are some of the most overloaded, thus most likely to have it triggered.
+
+A bunch of work has gone into dealing with invalidations better.
+Not just point-fixes to remove calls that were likely to be invalidated, but several changes to the compiler.
+One particular change was not triggering cascading invalidations for methods that couldn't actually be called do the being ambiguous.
+As a result a lot of user code doesn't trigger invalidations on 1.6, that did on 1.5.
+The end result of this is faster compilation after loading packages, since it doesn't have to recompile a ton of invalidated method instances.
+i.e. decreased time to first plot.
+
+In this has had huge effect on [Revise.jl](https://github.com/timholy/Revise.jl)
+which started to take a second or so to load when it gained the dependency on [JuliaInterpretter.jl](https://github.com/JuliaDebug/JuliaInterpreter.jl); which isn't much, but when you do it every time you start julia it is an annoying lack of snappyness.
+But thanks to this work, JuliaInterpretter, and thus Revise now load in a flash.
+
+A full discussion on the invalidations work can be found in [this blog-post](https://julialang.org/blog/2020/08/invalidations/).
+
+## Internals: Manually Created Back-edges for Lowered Code Generated Functions
+This is a very niche and not really at all user-facing feature.
+To understand why this matters, it's worth understanding how Cassette works.
+I wrote [blog-post on this a few years ago](https://invenia.github.io/blog/2019/10/30/julialang-features-part-1#making-cassette).
+
+In quiet the opposite, Julia 1.3 allowed for the creation of more invalidations though allowing back-edges to be manually attached to the `CodeInfo` for `@generated` functions that return lowered code.
+Backedges are the connection from methods back to each method instance that calls them.
+This is what allows invalidations to work, as when a method is redefined, it needs to know what things to recompile.
+This change allowed those back-edges to be manually specified for `@generated` functions that were working at the lowered code level.
+Which is useful since this technique is primarily used for generating code based on the (lowered) code of existing methods.
+For example in [Zygote](https://github.com/FluxML/Zygote.jl), generating the gradient code, from the code of the primal method.
+So you want to be able to the regeneration of this code when that original method changes.
+
+
+Basically, end of the day is this allows code that uses [Cassette.jl](https://github.com/jrevels/Cassette.jl), and [IRTools.jl](https://github.com/MikeInnes/IRTools.jl) to not suffer from [#265](https://github.com/JuliaLang/julia/issues/265)-like problems.
+A particular case of this is for [Zygote](https://github.com/FluxML/Zygote.jl) where redefining a function called by the code that was being differentiated did not result in an updated gradient (unless `Zygote.refresh()`) was run.
+This was annoying for 
+
+Other things that this allows is two very weird packages that [Nathan Daly](https://github.com/NHDaly) and I came up with at the JuliaCon 2018 hackathon: [StagedFunctions.jl](https://github.com/NHDaly/StagedFunctions.jl) and [Tricks.jl](https://github.com/oxinabox/Tricks.jl/).
+[StagedFunctions.jl](https://github.com/NHDaly/StagedFunctions.jl) relaxes the restrictions on normal `@generated` functions so that they are also safe from [#265](https://github.com/JuliaLang/julia/issues/265)-like problems.
+[Tricks.jl](https://github.com/oxinabox/Tricks.jl/) uses this feature to make `hasmethod` etc resolve at compile-time, and then get updated if and when new methods are defined.
+Which can allow for defing traits like _"anything that defines a `iterate` method"_.
+
+
 ## Base and Standard Libraries
+
+### Threading
+Julia has full support for threading now.
+Not just the limited `@threads for` loops, but full GoLang style threads.
+They are tightly integrated with the existing Async/Task/Coroutine system.
+In effect threading works by unsetting the sticky flag on a Task, so that it is allowed to run on any thread.
+This is normally done via the `Threads.@spawn` macro, rather than the `@async` macro.
+
+Interestingly, the `@threads for` macro still remains, and doesn't actually use much of the new machinery. It still uses the old way which is a bit tighter if the loop durations are almost identical.
+But the new threading stuff is fast, on the order of microseconds to send work off to another thread.
+Even for uses of `@threads for` the improves have some wins.
+`IO` is now thread-safe; `ReentrantLock` was added and is the kind of standard lock that you expect to exist, that has notifications on waiting work etc; and a big one: `@threads for` can now be nested without things silently being wrong.
+
+A lot of this actually landed in julia 1.2, but julia 1.3 was the release we think of as being for threading, as it gave us `Threads.@spawn`.
+
+Also in Julia 1.6 we now have `julia -t auto` to start julia with 1 thread per (logical) core.
+No more having to remember to set the `JULIA_NUM_THREADS` environment variable before starting it.
 
 ### 5-arg `mul!`, aka in-place generalized multiplication and addition
 The 5 arg `mul!(C, A, B, α, β)` performs the operation equivalent to: `C .= A*B*α + C*β`, where `α`, `β` are scalars and `A`, `B` and `C` are compatible mixes of scalars, matrices and vectors.
@@ -454,6 +501,27 @@ I have [tried getting headers via conditional different commandline download fun
 It wouldn't be too surprising if eventually we see libcurl swapped out for code extracted from HTTP.jl for a pure julia solution.
 HTTP.jl works wonderfully to this, but I suspect untangling the client from the server is just a bit annoying right now, particularly as it is still evolving its API.
 
+
+## Definable Error Hints
+[`Experimental.register_error_hint`](https://docs.julialang.org/en/v1.7-dev/base/base/#Base.Experimental.register_error_hint)
+allows packages to define extra information to be shown along with a particular type of error.
+A really cool use of it was proposed on [Discourse](https://discourse.julialang.org/t/enforce-interface-implementation/52872/15?u=oxinabox):
+you could add an error hint to `MethodError` that says to check that an interface has been implemented correctly.
+This has the advantage of pointing the user in what is most likely the right direction.
+But it doesn't have the problem of really confounding them if you are wrong, since the original `MethodError` information is still shown (See my earlier [blog-post on the `NotImplementedException` antipattern](https://www.oxinabox.net/2020/04/19/Julia-Antipatterns.html#notimplemented-exceptions)).
+
+Right now this is not used anywhere in the standard libraries.
+At first, I thought that made sense since they can just edit the original `show_error`.
+But now I think since it can be used for a subset of a particular type of exception it could well be useful for some of p`Base`'s interfaces](https://docs.julialang.org/en/v1/manual/interfaces/) exactly as described above.
+According to [JuliaHub search](https://juliahub.com/ui/CodeSearch?q=register_error_hint&u=all&t=all) right now there is just one package using.
+ColorTypes.jl is [using it to explain some _consensual type-piracy_](https://github.com/JuliaGraphics/ColorTypes.jl/blob/bd31741d162361ebd44ed05ae532266998d9ce9f/src/error_hints.jl), where for some functions on its types you need to load another package.
+
+This is an experimental features, so it's not covered by the SemVer guarantees of the rest of the language.
+Still it's neat, I don't expect it to go away,
+though I also don't expect it to graduate from experimental status until a bunch of people are using it.
+Which they will probably do as people start dropping support for older julia versions.
+
+
 ### A bunch of curried functions
 Julia seems to have ended up with a convention of providing curried methods of functions if that would be useful as the first argument for `filter`.
 e.g. `filter(isequal(2), [1,2,3,2,1])`, is the same is `filter(x->isequal(x, 2), [1,2,3,2,1]`).
@@ -463,7 +531,6 @@ Julia 1.0 had `isequal`, `==` and `in`.
 Since then we have added:
 `isapprox`, `<`,`<=`,`>`, `>=`, `!=`, `startswith`, `endswith`, and `contains`.
 (I added the last 3 😁)
-
 
 Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0 and now has been added back.
 We added it back primarily so we could have the curried form, and to match `startswith` and `endswith`.
