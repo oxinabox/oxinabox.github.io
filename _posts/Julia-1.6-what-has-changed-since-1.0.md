@@ -32,55 +32,7 @@ This post is kind of a follow-up to my [Julia 1.0 release run-down]({{site.url}}
 But it's going to be even longer, as it is covering the last 5 releases since then; and I am not skipping the major new features.
 I am writing this not to break down release by release,
 but to highlight features that had you only used Julia 1.0, you wouldn't have seen.
-Full details can be found in the NEWS.md, and HISTORY.md
-TODO: Insert links to the files in the release-1.6 branch.
-
-
-## NamedTuple/keyword arguments automatic naming
-This feature felt weird when I first read about it, but it has quickly grown on me.
-How often do you write some code that does some processing and calls some other method passing on some of its keyword arguments?
-For example
-```julia
-# Primary method all others redirect to this
-foo(x::Bar; a=1, b=2, c=3) = ...
-
-# Method for if x is given as components
-foo(x1, x2; a=10, b=20, c=30, comb=+) = foo(Bar(comp(x1, x2)); a=a, b=b, c=c)
-```
-This new feature allows one to avoid writing `(...; a=a, b=b, c=c)`, and instead write `(...; a, b, c)`.
-This does come with the requirement to separate keyword arguments from positional arguments by `;`, but I have always done this, and the [BlueStyle guide requires it](https://github.com/invenia/BlueStyle#keyword-arguments).
-It feels like we are fully leveraging the distinction of keyword from positional arguments by allowing this.
-In contrast, the distinction vs e.g. C# and Python that allow any positional argument to be passed by name, is to make the name of positional arguments not part of the public API, thus avoiding changing it being a breaking change.
-
-The same syntax can be used to create `NamedTuple`.
-```julia
-julia> product = ["fries", "burger", "drink"];
-
-julia> price = [2, 4, 1];
-
-julia> (;product, price)
-(product = ["fries", "burger", "drink"], price = [2, 4, 1])
-```
-This is particularly cool for constructing `NamedTuple`s of `Vector`s, which is a valid [Tables.jl Table](https://tables.juliadata.org/stable/#Tables.columntable).
-
-It is interesting to note that for the logging macros introduced in Julia 1.0, this is how they have always worked.
-E.g. `@info "message" foo bar` and `@info "message" foo=foo bar=bar` display the same.
-Which has always felt natural.
-
-## Performance: References to the Heap from the Stack
-This was promised in 2016 as a feature for 1.0 (released 2018).
-But we actually didn't get it til 1.5 with [#33886](https://github.com/JuliaLang/julia/issues/33886).
-Basically, the process of allocating memory from the heap is fairly slow*, where as allocating memory on the stack is basically a non-op.
-Indeed Julia benchmarking tools don't count allocations on the stack as allocations at all.
-One can find extensive write ups of heap vs stack allocations and how it works in general (though some mix the C specific factors with the CPU details.)
-In julia all mutable objects live are allocated on the heap.
-Until recently, immutable objects that contained references to heap allocated objects also had to live on the heap.
-i.e. immutable objects with immutable fields (with immutable fields with...) could live on the stack.
-But with this change now all immutable object can live on the stack, even if some of their fields live on the heap.
-An important consequence of this is that wrapper types, such as the `SubArray` returned from `@view x[1:2]`, now have no overhead to create.
-I find that in practice this often adds up to a 10-30% speed-up in real world code.
-
-(* Its actually really fast, but it is the kind of thing that rapidly adds up; and it is slow vs operations that can happen without touching RAM.)
+Full details can be found in the [NEWS.md](https://github.com/JuliaLang/julia/blob/backports-release-1.6/NEWS.md), and [HISTORY.md](https://github.com/JuliaLang/julia/blob/backports-release-1.6/HISTORY.md)
 
 
 ## Front-end changes
@@ -166,15 +118,82 @@ Event to the extent of [diagnosing faulty RAM](https://julialang.org/blog/2020/0
 `rr` is an impressively cool piece of tech; it boils down to the fact that linux's `fork` is incredibly cheap, because it take advantage of [copy-on-write](https://en.wikipedia.org/wiki/Copy-on-write); so it basically `fork`s before every system call, and serializes what is going on; so you have a full track of everything that happened.
 The `rr` integration is really nice easy to use; I had someone who was part of our architecture and operations (i.e. who writes way more CloudFormation than Julia) team run it to submit a support request; and they had no real troubles.
 
+
+## Syntax
+
+### `import as`
+
+>The syntax import A as B (plus import A: x as y, import A.x as y, and using A: x as y) can now be used to rename imported modules and identifiers ([#1255](https://github.com/JuliaLang/julia/issues/1255)).
+
+This will be familiar to Python folk who love to do: `import numpy as np`.
+I hope we never see it used that ubiquitously in julia.
+I am quite happy with `using Foo` which imports into scope everything the author of `Foo` exported.
+Python people find that super-weird and scary; but it's fine.
+Further, most things you use don't come from the module that defined them anyway, they are overloaded functions e.g. from `Base`.
+The real value of `import FooBar as fb` is not to have a short abbreviation so you can do `fb.quux`.
+That was already possible via `const fb = FooBar`.
+It is to handle cases where the package name itself conflicts with an identifier.
+For example (as has often occured) if one has uses a `Pipe` in the REPL, and then later wants to load [Pipe.jl](https://github.com/oxinabox/Pipe.jl/) via `import Pipe` then one gets a name clash before it can be resolved.
+Now one can do `import Pipe as PipingPipe`
+
+### NamedTuple/keyword arguments automatic naming
+This feature felt weird when I first read about it, but it has quickly grown on me.
+How often do you write some code that does some processing and calls some other method passing on some of its keyword arguments?
+For example
+```julia
+# Primary method all others redirect to this
+foo(x::Bar; a=1, b=2, c=3) = ...
+
+# Method for if x is given as components
+foo(x1, x2; a=10, b=20, c=30, comb=+) = foo(Bar(comp(x1, x2)); a=a, b=b, c=c)
+```
+This new feature allows one to avoid writing `(...; a=a, b=b, c=c)`, and instead write `(...; a, b, c)`.
+This does come with the requirement to separate keyword arguments from positional arguments by `;`, but I have always done this, and the [BlueStyle guide requires it](https://github.com/invenia/BlueStyle#keyword-arguments).
+It feels like we are fully leveraging the distinction of keyword from positional arguments by allowing this.
+In contrast, the distinction vs e.g. C# and Python that allow any positional argument to be passed by name, is to make the name of positional arguments not part of the public API, thus avoiding changing it being a breaking change.
+
+The same syntax can be used to create `NamedTuple`.
+```julia
+julia> product = ["fries", "burger", "drink"];
+
+julia> price = [2, 4, 1];
+
+julia> (;product, price)
+(product = ["fries", "burger", "drink"], price = [2, 4, 1])
+```
+This is particularly cool for constructing `NamedTuple`s of `Vector`s, which is a valid [Tables.jl Table](https://tables.juliadata.org/stable/#Tables.columntable).
+
+It is interesting to note that for the logging macros introduced in Julia 1.0, this is how they have always worked.
+E.g. `@info "message" foo bar` and `@info "message" foo=foo bar=bar` display the same.
+Which has always felt natural.
+
+### Lowering of `'`
+In julia 1.0 `'` was lowered directly into a call to `Base.adjoint`.
+This meant it was impossible to redefine what `'` meant in your current module.
+Now it lowers to a call to `var"'"`, which is something you can overload.
+People often think it is cool to overload this to automatic differentiation so that `f'(x)` gives you the derivative of `f(x)`
+Furthermore, it can now have unicode suffixes added to it, to define a new suffix operator.
+Such as the one in `Base` which makes `A'ᵀ` give `transpose(A)` (rather than the adjoint/hermitian transpose that `A'` gives).
+
+## Performance: References to the Heap from the Stack
+This was promised in 2016 as a feature for 1.0 (released 2018).
+But we actually didn't get it til 1.5 with [#33886](https://github.com/JuliaLang/julia/issues/33886).
+Basically, the process of allocating memory from the heap is fairly slow*, where as allocating memory on the stack is basically a non-op.
+Indeed Julia benchmarking tools don't count allocations on the stack as allocations at all.
+One can find extensive write ups of heap vs stack allocations and how it works in general (though some mix the C specific factors with the CPU details.)
+In julia all mutable objects live are allocated on the heap.
+Until recently, immutable objects that contained references to heap allocated objects also had to live on the heap.
+i.e. immutable objects with immutable fields (with immutable fields with...) could live on the stack.
+But with this change now all immutable object can live on the stack, even if some of their fields live on the heap.
+An important consequence of this is that wrapper types, such as the `SubArray` returned from `@view x[1:2]`, now have no overhead to create.
+I find that in practice this often adds up to a 10-30% speed-up in real world code.
+
+(* Its actually really fast, but it is the kind of thing that rapidly adds up; and it is slow vs operations that can happen without touching RAM.)
+
+
 ## Pkg stdlib and the General Registry
 Writing this section is a bit hard as there is no NEWS.md nor HISTORY.md for the Pkg stdlib; and the general registry is more policy than software.
 However, some of the biggest changes have been in maturing out Pkg3, and its surrounds.
-
-
-TODO: Write bits for these:
-
- - Pkg Server: faster updating of registry and download of packages
- - Scratch, and Preferences
 
 
 ### BinaryBuilder, Artifacts, Yggdasil and jll packages.
@@ -535,7 +554,11 @@ Since then we have added:
 Aside: `contains` is argument flipped `occursin`, it was a thing in julia 0.6 but was removed in 1.0 and now has been added back.
 We added it back primarily so we could have the curried form, and to match `startswith` and `endswith`.
 
-### A ton of other new and improved standard library functions:
+### A ton of other new and improved standard library functions
+
+I am not going to manage to list all of them here.
+But I will list some of my standout favorites.
+
 
 [`@time`])(https://github.com/JuliaLang/julia/pull/37678) now reports how much time was spent on compilation.
 This is going to help prevent people knew the language from including compilation time in their benchmarks.
@@ -555,7 +578,6 @@ Kind of silly we didn't have that, and had been being me at least since 0.6.
 On things that had been bugging me, I had wanted [`eachslice` and it's special cases: `eachrow` & `eachcol`](https://github.com/JuliaLang/julia/issues/29749) since julia 0.3 when I first started using it.
 These are super handy when you want to e.g. iterate through vectors of the rows of a matrix.
 
-
 `redirect_stderr` and `redirect_stdout` now work with `devnull`.
 So one can run some suppressing output easily as follows:
 ```julia
@@ -571,6 +593,14 @@ This is good, almost every time I use `readdir` I used it as:
 It is slightly cleaner (and faster) to be able to do `readdir(x; join=true)`.
 I think for Julia 2.0 we should consider making it the default.
 Also added was a `sort` argument, which I don't see the point of so much, since `sort(readdir(x))` seems cleaner than `readdir(x; sort=true)`; and because I rarely rely on processing files in order.
+
+
+`ccall` is now available as a macro `@ccall` which lets you specify 
+There was a [short juliacon talk about this](https://www.youtube.com/watch?v=wofq1DdXM3s)
+So now one can do `@ccall(sqrt(4.0::Cdouble)::Cdouble)`
+rather than `ccall(:sqrt, Cdouble, (Cdouble,), 4.0,)`
+This is what `ccall` always should have been.
+In julia 1.7, [`invoke` is getting the same treatment.](https://github.com/JuliaLang/julia/pull/38438).
 
 
 ### More "Why didn't it always work that way" than I can count
