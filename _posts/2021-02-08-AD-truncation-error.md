@@ -214,6 +214,7 @@ The key take away here is that _the map is not the territory_.
 Most nontrivial functions on computers are implemented as some function that that approximates (_the map_) the mathematical ideal (_the territory_).
 Automatic differentiation gives back a completely accurate derivative of the that function (_the map_) doing the approximation.
 _Furthermore, the accurate derivative of an approximation to the idea (e.g `d_my_sin`), is less accurate than and approximation to the (ideal) derivative of the ideal (e.g. `my_cos`)._
+There is no truncation error in the work the AD did; but there is a truncation error in the sense that we are now using a more truncated approximation that we would write ourselves.
 
 So what do?
 Well-firstly, do you want to do anything?
@@ -231,7 +232,7 @@ Every real AD system already has a primitive for `sin` built in
 but it won't have one for every novel system you approximate.
 E.g. for things defined in terms of differential equation solutions or other iterative methods.
 
-We can define in our toy AD at the start this custom primative via:
+We can define in our toy AD at the start this custom primitive via:
 ```julia
 function my_sin(x::Dual)
     return Dual(my_sin(primal(x)), partial(x) * my_cos(primal(x)))
