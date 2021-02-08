@@ -250,10 +250,13 @@ julia> abs(derv(my_sin, π/3) - 0.5)
 
 ### Bonus: will symbolic differentiation save me?
 
-Probably, but probably not in an interesting way.
 Most symbolic differentiation systems will have a rule just like the custom primitive for `sin` built in.
+It basically has to do something like this, where-as a forward/reverse AD system could do as we did and fall back to `+` and `*`.
+*But*, it certainly would *not* help you to apply symbolic AD to an approximation, that would give exactly the result we derived for `d_sin` above. 
 
-But potentially one built for a suitably weird language could be using representation of `sin` that is a lazily evaluated polynomial of infinite degree underneath.
+More interestingly, languages where symbolic differentiation is common tend also th have interesting representations of functions in the first place.
+This does open up avenues for interesting solutions.
+A suitably weird language could be using representation of `sin` that is a lazily evaluated polynomial of infinite degree underneath.
 And in that case there is a rule for its derivative, expressed in terms of changes to its coefficient generating function; which would also give back a lazily evaluated polynomial.
 I don't know if anyone does that though; I suspect it doesn't generalized well.
 Further, for a lot of things you want to solving systems via iterative methods, and these work for concrete numbers not lazy terms.
