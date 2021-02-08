@@ -154,6 +154,7 @@ What went wrong?
 
 Now, I did implement an AD from scratch there.
 So maybe you are thinking that I screwed it up.
+Maybe a reverse mode AD would not suffer from this problem; or maybe one that uses source to source?
 Lets try some of Julia's many AD systems then.
 
 ```julia
