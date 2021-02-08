@@ -103,7 +103,7 @@ my_cos(x) = 1 - x^2/factorial(2) + x^4/factorial(4) - x^6/factorial(6) + x^8/fac
 
 Check the accuracy
 we know that  `sin(π/3) == √3/2`, and that `cos(π/3) == 1/2`
-(not that yes, π is an approximation here but it is a very accurate one. And doesn't change the result that follows.)
+(note that yes, `π` and `√3/2` are  approximating here but they are very accurate one. And this doesn't change the result that follows.)
 ```julia
 julia> my_sin(π/3)
 0.8660254034934827
@@ -122,7 +122,7 @@ julia> abs(0.5 - my_cos(π/3))
 ```
 
 This is not terrible.
-`cos` is slightly than `cos` 
+`cos` is slightly more accurate than `sin`. 
 We have a fairly passable implementation of `sin` and `cos`.
 
 ## 3. Now lets do AD.
@@ -186,7 +186,7 @@ Ok, I just tried **7** AD systems based on totally different implementations.
 I mean [Enzyme](https://github.com/wsmoses/Enzyme.jl/) is reverse mode running at the LLVM level.
 Totally different from [ForwardDiff](https://github.com/JuliaDiff/ForwardDiff.jl) which is the more mature version of the forward mode operator overloading AD I coded above.
 Every single one agreed with my result, up to [1 ULP](https://en.wikipedia.org/wiki/Unit_in_the_last_place).
-I think that last digit changing is probably to do with order of addition (IEEE floating point math in funky), but that is another blog-post.
+I think that last digit changing is probably to do with order of addition (IEEE floating point math is funky), but that is another blog-post.
 So I think we can reliably say that this is what an AD system will output when asked for the derivative of `my_sin` at `π/3`.
 
 ## 5. Explanation
