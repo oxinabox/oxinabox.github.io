@@ -29,6 +29,7 @@ They are basically the same content, some questions I got at the end are answere
 Parts of this post (and the talk) are inspired by [Stefan Karpinski's "The Unreasonable Effectiveness of Multiple Dispatch" talk at JuliaCon 2019](https://www.youtube.com/watch?v=kc9HwsxE1OY).
 I recommend that video, it goes into more details on some of the multiple dispatch points, and the subtle (but important) difference between julia's  dispatch and C++'s virtual methods.
 
+<nav id="toc"></nav>
 
 ## What do I mean by composable?
 
