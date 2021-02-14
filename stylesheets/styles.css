@@ -326,7 +326,7 @@ img { /*Some images are not rendering background for some reason */
 
 
 /**********************************************************
-********************** Tabels
+********************** Tables
 **********************************************************/
 
 table {
@@ -380,7 +380,6 @@ footer {
   font-size: 8pt;
 }
 
-
 section {
   padding: 30px 10px 30px 10px;
   margin: 20px;
@@ -424,6 +423,31 @@ section {
     margin-right: auto;
     margin-bottom: 33px;
 }
+
+/********************************************
+****** Table of Contents
+*********************************************/
+
+#toc {
+  padding-right: 2rem;
+  background: dimgray;
+  border-radius: 5px;
+  border: 2px solid #93bd20;
+  width: max-content;
+  margin: 2rem;
+}
+#toc ol {
+  list-style-type:none;
+  padding-left: 2rem;
+  margin: 1px;
+}
+
+#toc:before {
+  content: "Contents:";
+  font-weight: bold;
+  padding: 1rem;
+}
+
 
 
 /******************************************************************
