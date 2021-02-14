@@ -20,6 +20,9 @@ Further it will motivate why we need to often add more custom sensitivity rules 
 Credit to [Mike Innes](https://mikeinnes.github.io/) who pointed this out to me at JuliaCon 2018.
 <!--more-->
 
+<nav id="toc"></nav>
+
+
 ## 1. Implement an AD, for demonstration purposes
 
 We will start by implementing a simple forwards mode AD.
