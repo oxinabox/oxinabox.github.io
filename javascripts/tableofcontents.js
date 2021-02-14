@@ -73,7 +73,13 @@ window.onload = function () {
         // Exit if not present
         return;
     }
-
     var structure = extractStructure()
+
+    //Attach class now, so that if this script isn't run
+    // the dummy element remains unstyled and largely invisible
+    navbarEle.className="toc";
+
     navbarEle.appendChild(navItemList(structure));
+
+
 }; // window.onload

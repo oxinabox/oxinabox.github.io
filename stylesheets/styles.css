@@ -428,7 +428,7 @@ section {
 ****** Table of Contents
 *********************************************/
 
-#toc {
+.toc {
   padding-right: 2rem;
   background: dimgray;
   border-radius: 5px;
@@ -436,13 +436,13 @@ section {
   width: max-content;
   margin: 2rem;
 }
-#toc ol {
+.toc ol {
   list-style-type:none;
   padding-left: 2rem;
   margin: 1px;
 }
 
-#toc:before {
+.toc:before {
   content: "Contents:";
   font-weight: bold;
   padding: 1rem;
