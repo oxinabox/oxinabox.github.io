@@ -26,6 +26,8 @@ Here are some of the smaller changes I am excited about.
 These are excepts from [0.7-alpha NEWS.md](https://github.com/JuliaLang/julia/blob/v0.7.0-alpha/NEWS.md)
 <!--more-->
 
+<nav id="toc"></nav>
+
 
 ### [Function argument De-structuring](https://github.com/JuliaLang/julia/issues/6614)
 
