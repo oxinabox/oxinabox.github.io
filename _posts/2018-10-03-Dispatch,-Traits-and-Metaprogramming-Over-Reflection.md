@@ -19,6 +19,18 @@ The last of which is kinda evil.
 
 <!--more-->
 
+**Update: 11th of July 2021:**
+This post is fairly old now, but still gets frequently referenced.
+I've done a bunch more stuff in this area since then.
+I wrote a newer (and IMO better) blog post on traits for my employeer's blog.
+[The Emergent Features of JuliaLang: Part II - Traits](https://invenia.github.io/blog/2019/11/06/julialang-features-part-2/).
+(I still think a better post still could be written.).
+I have made [Tricks.jl](https://github.com/oxinabox/Tricks.jl/) which actually *does* let you define traits based on if something has a method, and lets you resolve that at *compile time*.
+I added `signature` to [ExprTools.jl](https://github.com/invenia/ExprTools.jl/) which is a much more robust way to do metaprogramming over reflection.
+Which I will be talking about at JuliaCon 2021, [slides are online now](https://raw.githack.com/oxinabox/ExprToolsJuliaCon2021/main/build/index.html).
+
+<nav id="toc"></nav>
+
 
 I think dispatch is very intutitive as a concept.
 In C you learn that a function's signature,
