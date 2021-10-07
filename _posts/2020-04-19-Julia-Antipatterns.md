@@ -27,6 +27,7 @@ _We do, therefore, offer you our practical judgements wherever we can.
 As you gain experience, you will form your own opinion of how reliable our advice is.
 Be assured that it is not perfect!_
 
+<nav id="toc"></nav>
 
 ## NotImplemented Exceptions
 
