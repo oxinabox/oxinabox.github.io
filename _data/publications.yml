@@ -1,3 +1,11 @@
+- title: "AbstractDifferentiation.jl: Backend-Agnostic Differentiable Programming in Julia"
+  author: Frank Schäfer, Mohamed Tarek, Lyndon White, Chris Rackauckas
+  venue: 'NeurIPS Differentiable Programming Workshop'
+  award: Best Poster
+  year: 2021
+  link: "https://arxiv.org/abs/2109.12449"
+
+
 - title: "WEmbSim: A Simple yet Effective Metric for Image Captioning"
   author: Naeha Sharif, Lyndon White, Mohammed Bennamoun, Wei Liu and Syed Afaq Ali Shah
   venue: 'The International Conference on Digital Image Computing: Techniques and Applications (DICTA)'
