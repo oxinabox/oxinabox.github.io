@@ -1,7 +1,7 @@
 - title: "AbstractDifferentiation.jl: Backend-Agnostic Differentiable Programming in Julia"
   author: Frank Schäfer, Mohamed Tarek, Lyndon White, Chris Rackauckas
   venue: 'NeurIPS Differentiable Programming Workshop'
-  award: Best Poster
+  award: Best Poster Award
   year: 2021
   link: "https://arxiv.org/abs/2109.12449"
 
@@ -91,7 +91,7 @@
 - title: Generating Bags of Words from the Sums of their Word Embeddings
   author: Lyndon White, Roberto Togneri, Wei Liu, and Mohammed Bennamoun
   venue: Conference on Intelligent Text Processing and Computational Linguistics (CICLing)
-  award: Best Student Paper
+  award: Best Student Paper Award
   year: 2016
   key: White2016BOWgen
   supl: publications/White2016BOWgen
