@@ -12,7 +12,7 @@ However, I only get blood tests a finite number of times per day -- usually once
 I am not a medical doctor, but I am the kind of doctor who can apply scientific modelling to the task of estimating curves based on limited observations.
 I am honestly surprised no one has done this.
 The intersection of trans folk and scientific computing is non-trivial.
-After all, [_the hardest problem in computer science is gender dysphoria_](https://twitter.com/_nyancrimew/status/1578735642212651008)
+After all, [_the hardest problem in computer science is gender dysphoria_.](https://twitter.com/_nyancrimew/status/1578735642212651008)
 
 To do this we are going to use probabilistic programming, to get a distribution of possible level curves.
 This is a great use-case for probabilistic programming.
