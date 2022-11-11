@@ -17,7 +17,7 @@ After all, [_the hardest problem in computer science is gender dysphoria_.](http
 To do this we are going to use probabilistic programming, to get a distribution of possible level curves.
 This is a great use-case for probabilistic programming.
 We have a ton of domain knowledge, but that domain knowledge has a few parameters we don't know, and we have only a little data.
-And crucially we are perfectly find with getting a distribution of answers out, rather than a single answer.
+And crucially we are perfectly fine with getting a distribution of answers out, rather than a single answer.
 
 <!--more-->
 
@@ -148,9 +148,9 @@ using LsqFit
 
 fit = curve_fit(
     (t,p)->single_dose(p...).(t),
-    [0,1,2,3,4,6,8,10,12,16,24],
-    [0,25,100,132,90,82,60,55,32,15,4],
-    [132, 3.5, 3]
+    [0,1,2,3,4,6,8,10,12,16,24], # t values
+    [0,25,100,132,90,82,60,55,32,15,4], # c(t) values
+    [132, 3.5, 3]  # initial guess at parameters
 )
 
 c_max, halflife, t_max = fit.param
@@ -179,9 +179,8 @@ t_max = 2.7924975536499423
 
 That is indeed a nice close fit.
 
-This least square fit is a maximum likelihood estimate (MLE), it is the curve which maximizes the likelihood of the observations.
-Which is not quiet what we want, we want the maximum a posterior (MAP) estimate -- the curve which is most likely correct for these observations.
-But really we are not after a single curve at all (MLE or MAP).
+This least square fit is a maximum likelihood estimate (MLE), it is the curve which maximizes the likelihood of the parameters.
+But really we are not after a single curve at all.
 We are interested in distributions over possible curves, given the observations.
 These tell use the possible realities that would explain what we are seeing.
 
@@ -196,7 +195,7 @@ To begin with lets think about our priors. These are our beliefs about the value
 
  - `c_max` is somewhere between 0 and 500 pg/mL (ie. 0-1835 pmol/L).
 If your E2 is above that something is very wrong. For now let's not assume anything more and just go with a `Uniform` distribution. Though perhasp we could do something smarter hand select something that tailed off nicely towards the ends. e.g. `500Beta(1.01,1.01)`.
- - `t_max` is somewhere between 1 and 4 hours, we know this because the instruction say don't let anyone touch you for first hour (so its definitely still absorbing then), and common wisdom is to not wash the area for at least 4 hours -- so it must be done but then. If we use a `4Beta(2,2)+1` distribution it has some push towards the center.
+ - `t_max` is somewhere between 1 and 4 hours, we know this because the instruction say don't let anyone touch you for the first hour (so its definitely still absorbing then), and common wisdom is to not wash the area for at least 4 hours -- so it must be done but then. If we use a `4Beta(2,2)+1` distribution it has some push towards the center.
  - `halflife`, we know this has to be positive, since otherwise it would not decay. Being log-normal makes sense since it appears in an exponential. We would like it to have mode of `3.5` since that is what by eye we saw fit the curves all nicely (probably bad Bayesian cheating here) and because that means it is mostly all decayed by 24 hours -- it can't all that much higher usually since otherwise wouldn't need daily doses, nor that much lower since in that case would need multiple doses per day. To set the mode to 3.5 we use `LogNormal(log(3.5)+1, 1)`
 
 <div class="jupyter-input jupyter-cell">
@@ -214,9 +213,10 @@ plot!(LogNormal(log(3.5)+1, 1), title="halflife", xrange=(0,50), subplot=3, line
 
 
 The other component we will want is an error term.
-We want to express our observations of the concentration as being noisy samples from a distribution centered on the actual curve we are estimating.
+We want to express our observations of the concentration as being noisy samples from a normal distribution centered on the actual curve we are estimating.
 So we need an error term which will allow some wiggle room about that curve, without throwing off the inference for the real parameters.
-Our prior on this error term should be possitive with a peak at 0 and rapidly tailing off.
+We will define a variable called `err` which is the standard deviation of this error term.
+Our prior on this error term should be positive with a peak at 0 and rapidly tailing off. 
 `Gamma(1, 1)` meets our requirement.
 
 <div class="jupyter-input jupyter-cell">
@@ -297,13 +297,13 @@ plot!()
 {% endhighlight %}
 </div>
 
-![plot showing distribution of curves({{site.url}}/posts_assets/Estimating_Estrogen_files/4.svg)
+![plot showing distribution of curves]({{site.url}}/posts_assets/Estimating_Estrogen_files/4.svg)
 
 We see this nice kinda clear and fairly small range of values for the parameters: `c_max`, `t_max`, `halflife`.
 The error term, `err`, is quite large
 
-Now that we have shown we can do inference to that find distributions over parameters that fit the curve let's get on to a more realistic task.
-No one gets blood tests every few hours outside of a experiment data gathering exercise.
+Now that we have shown we can do inference to find distributions over parameters that fit the data let's get on to a more realistic task.
+No one gets blood tests every few hours outside of an experimental data gathering exercise.
 The most frequent blood tests I have heard of is every 2 weeks, and most are more like every 3-6 months.
 So what we are really interested in is inferring what could be happening with blood levels from a single observation.
 
@@ -346,7 +346,7 @@ This is really cool.
 
 We can add more observation points and cut-down the number of realities we might be in.
 This realistically is actually a practical thing to do.
-Each point is a blood test -- in London trans folk can get them free in the evenings a few days a week at [56T Dean St](https://www.dean.st/trans-non-binary/) or [ClinQ](https://cliniq.org.uk/cliniq-kings-south-london/).
+Each point is a blood test -- in London trans folk can get them free in the evenings a few days a week at [56T Dean St](https://www.dean.st/trans-non-binary/) or [CliniQ](https://cliniq.org.uk/cliniq-kings-south-london/).
 In theory some NHS GPs will also do them for trans folk, but many (including mine) will not because the NHS is systematically transphobic and doctors think trans folk are too complex for them. So to get a few in one day you would need to pay privately about £50. Which is nice that we know exactly how much each observation costs.
 
 So we can simulate adding another observation.
