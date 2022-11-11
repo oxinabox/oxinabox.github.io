@@ -437,7 +437,7 @@ I imagine I might return to it again in the future.
 Here are some extra things we might like to look at:
 
  - Determining optimal times to test: as discussed 3 readings will not always capture the curve, different times may be more informative than others, especially when we consider the error level vs the signal level.
- - Average levels: the distribution of average level is likely fairly collapsed -- multiple different sets of parameter values can lead to same average level. I suspect average level is relevant to some biological functions.
+ - Average levels: the distribution of average level is likely fairly collapsed -- multiple different sets of parameter values can lead to same average level.
  - Multi-day: Since estrogen doesn't hit zero at 24 hours can model across days. Can also include a term for variation in when it was applied in the day since people are not that consistent. Multiday is crucial for making the model realistic
  - Dose changes: extending beyond multiday, people change there does, and we know higher dose leads to higher levels so we can insert that prior knowledge.
  
