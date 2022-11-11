@@ -210,7 +210,7 @@ plot!(LogNormal(log(3.5)+1, 1), title="halflife", xrange=(0,50), subplot=3, line
 {% endhighlight %}
 </div>
 
-![plot showing distributions of parameters]({{site.url}}/posts_assets/Estimating_Estrogen_files/2b.svg)
+![plot showing distributions of parameters]({{site.url}}/posts_assets/Estimating_Estrogen_files/2b.png)
 
 
 The other component we will want is an error term.
@@ -225,7 +225,7 @@ plot(Gamma(1,1), title="err", legend=false)
 {% endhighlight %}
 </div>
 
-![plot showing distribution of err term]({{site.url}}/posts_assets/Estimating_Estrogen_files/2c.svg)
+![plot showing distribution of err term]({{site.url}}/posts_assets/Estimating_Estrogen_files/2c.png)
 
 <div class="jupyter-input jupyter-cell">
 {% highlight julia %}
