@@ -12,7 +12,7 @@ However, I only get blood tests a finite number of times per day -- usually once
 I am not a medical doctor, but I am the kind of doctor who can apply scientific modelling to the task of estimating curves based on limited observations.
 I am honestly surprised no one has done this.
 The intersection of trans folk and scientific computing is non-trivial.
-After all, [_the hardest problem in computer science is gender dysphoria_](https://twitter.com/_nyancrimew/status/1578735642212651008)
+After all, [_the hardest problem in computer science is gender dysphoria_.](https://twitter.com/_nyancrimew/status/1578735642212651008)
 
 To do this we are going to use probabilistic programming, to get a distribution of possible level curves.
 This is a great use-case for probabilistic programming.
@@ -210,7 +210,7 @@ plot!(LogNormal(log(3.5)+1, 1), title="halflife", xrange=(0,50), subplot=3, line
 {% endhighlight %}
 </div>
 
-![plot showing distributions of parameters]({{site.url}}/posts_assets/Estimating_Estrogen_files/2b.svg)
+![plot showing distributions of parameters]({{site.url}}/posts_assets/Estimating_Estrogen_files/2b.png)
 
 
 The other component we will want is an error term.
@@ -225,7 +225,7 @@ plot(Gamma(1,1), title="err", legend=false)
 {% endhighlight %}
 </div>
 
-![plot showing distribution of err term]({{site.url}}/posts_assets/Estimating_Estrogen_files/2c.svg)
+![plot showing distribution of err term]({{site.url}}/posts_assets/Estimating_Estrogen_files/2c.png)
 
 <div class="jupyter-input jupyter-cell">
 {% highlight julia %}
