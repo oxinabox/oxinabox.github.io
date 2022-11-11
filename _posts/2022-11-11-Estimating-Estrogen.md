@@ -121,7 +121,7 @@ scatter!(
 {% endhighlight %}
 </div>
 
-![plot showing 3 curves]({{site.url}}/posts_assets/Estimating Estrogen_files/1.svg)
+![plot showing 3 curves]({{site.url}}/posts_assets/Estimating_Estrogen_files/1.svg)
 
 
 By looking at these plots, it seems a pretty decent model.
@@ -175,7 +175,7 @@ t_max = 2.7924975536499423
 
 {% endhighlight %}
 </div>
-![plot showing fit curve]({{site.url}}/posts_assets/Estimating Estrogen_files/2.svg)
+![plot showing fit curve]({{site.url}}/posts_assets/Estimating_Estrogen_files/2.svg)
 
 That is indeed a nice close fit.
 
@@ -210,7 +210,7 @@ plot!(LogNormal(log(3.5)+1, 1), title="halflife", xrange=(0,50), subplot=3, line
 {% endhighlight %}
 </div>
 
-![plot showing distributions of parameters]({{site.url}}/posts_assets/Estimating Estrogen_files/2b.svg)
+![plot showing distributions of parameters]({{site.url}}/posts_assets/Estimating_Estrogen_files/2b.svg)
 
 
 The other component we will want is an error term.
@@ -225,7 +225,7 @@ plot(Gamma(1,1), title="err", legend=false)
 {% endhighlight %}
 </div>
 
-![plot showing distribution of err term]({{site.url}}/posts_assets/Estimating Estrogen_files/2c.svg)
+![plot showing distribution of err term]({{site.url}}/posts_assets/Estimating_Estrogen_files/2c.svg)
 
 <div class="jupyter-input jupyter-cell">
 {% highlight julia %}
@@ -271,7 +271,7 @@ plot(chain)
 {% endhighlight %}
 </div>
 
-![plot showing distribution of posterior]({{site.url}}/posts_assets/Estimating Estrogen_files/3.svg)
+![plot showing distribution of posterior]({{site.url}}/posts_assets/Estimating_Estrogen_files/3.svg)
 
 So let's look at the distribution over curves (as represented by samples).
 <div class="jupyter-input jupyter-cell">
@@ -297,7 +297,7 @@ plot!()
 {% endhighlight %}
 </div>
 
-![plot showing distribution of curves({{site.url}}/posts_assets/Estimating Estrogen_files/4.svg)
+![plot showing distribution of curves({{site.url}}/posts_assets/Estimating_Estrogen_files/4.svg)
 
 We see this nice kinda clear and fairly small range of values for the parameters: `c_max`, `t_max`, `halflife`.
 The error term, `err`, is quite large
@@ -336,7 +336,7 @@ plot!()
 </div>
 
 
-![plot showing distribution from one sample]({{site.url}}/posts_assets/Estimating Estrogen_files/5.png)
+![plot showing distribution from one sample]({{site.url}}/posts_assets/Estimating_Estrogen_files/5.png)
 
 So that's actually really informative.
 There are a range of possible explanations.
@@ -375,7 +375,7 @@ plot!()
 {% endhighlight %}
 </div>
 
-![plot showing distribution from two samples]({{site.url}}/posts_assets/Estimating Estrogen_files/6.png)
+![plot showing distribution from two samples]({{site.url}}/posts_assets/Estimating_Estrogen_files/6.png)
 
 
 <div class="jupyter-input jupyter-cell">
@@ -401,7 +401,7 @@ plot!()
 {% endhighlight %}
 </div>
 
-![plot showing distribution from three samples]({{site.url}}/posts_assets/Estimating Estrogen_files/7.png)
+![plot showing distribution from three samples]({{site.url}}/posts_assets/Estimating_Estrogen_files/7.png)
 
 It is worth noting that while these 3 points do lead to a relatively small set of possible worlds, this is not always the case.
 Unlike for fitting a multivariate linear (or a number of other curves) one point per degree of freedom is not enough.
@@ -430,7 +430,7 @@ plot!()
 {% endhighlight %}
 </div>
 
-![plot showing distribution from one sample]({{site.url}}/posts_assets/Estimating Estrogen_files/8.png)
+![plot showing distribution from one sample]({{site.url}}/posts_assets/Estimating_Estrogen_files/8.png)
 
 This is just a first look at this topic.
 I imagine I might return to it again in the future.
