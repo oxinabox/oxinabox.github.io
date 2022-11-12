@@ -297,7 +297,7 @@ plot!()
 {% endhighlight %}
 </div>
 
-![plot showing distribution of curves]({{site.url}}/posts_assets/Estimating_Estrogen_files/4.svg)
+![plot showing distribution of curves]({{site.url}}/posts_assets/Estimating_Estrogen_files/4.png)
 
 We see this nice kinda clear and fairly small range of values for the parameters: `c_max`, `t_max`, `halflife`.
 The error term, `err`, is quite large
