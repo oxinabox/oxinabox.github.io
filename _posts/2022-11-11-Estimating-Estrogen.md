@@ -134,8 +134,8 @@ We expect a fast initial absorption, that should end at some point in few few ho
 Since it is fast and short, it doesn't really matter what we model it with, so linear is fine.
 Then we expect a tail off as it is consumed.
 It makes sense for the rate of absorption to be related to the quantity remaining -- which suggests some exponential.
-We expect this because the more estradiol bumping around the higher the chance of one of them hitting a receptor and being consumed. Then as the estradiol and receptors are consumed the chance of collision deceases.
-This might be nonsense, I am no systems biologist.
+We see this kind of thing very frequently in biological systems.
+This all might be nonsense, I am no systems biologist.
 
 Now I just fit those curves by eye.
 We can find the the most likely parameters via least squares regression.
