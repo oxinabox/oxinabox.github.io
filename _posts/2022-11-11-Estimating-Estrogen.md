@@ -443,3 +443,7 @@ Here are some extra things we might like to look at:
  
 Probabilistic programming is a cool technique for working on pharmacodynamics.
 It lets us handle the fact that we have many unknowns about people's individual biology, while still narrowing down a possible set of worlds they might live in.
+
+**Note:** feedback from probablistic programming folk have told me that this could be much improved to give more  samples that are better representative of the true distribution.
+At some point I will try and integrate them into this post.
+[Until then see this issue](https://github.com/oxinabox/oxinabox.github.io/issues/22).
