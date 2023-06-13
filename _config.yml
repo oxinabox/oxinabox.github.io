@@ -1,6 +1,9 @@
 url: https://www.oxinabox.net
 enforce_ssl: www.oxinabox.net
 
+title: Frames White
+description: The personal website of Frames White. Featuring publications, and blog posts. Machine learning. Julia Programming Language.
+
 highlighter: rouge
 
 markdown_ext: "markdown,mkdown,mkdn,mkd,md,txt"
