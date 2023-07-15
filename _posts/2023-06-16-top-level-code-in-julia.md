@@ -83,7 +83,7 @@ _(This is where some people might guess that I forgot to seed the RNG. But that 
 Lets make a change to our package.
 Let's add a comment about what we have observed.
 Editting `Foo/src/Foo.jl` to say
-{% highlight julia}
+{% highlight julia %}
 module Foo
 
 const x = rand(1:100)  # Tests show this always returns 3
