@@ -182,6 +182,14 @@ julia> Foo.x
 
 And we are all good.
 
+There are some interesting effects of how constants defined at the top level are precompiled.
+The fact that precompilation actually just stores (more or less) the whole state of the julia run time is a whole thing.
+This is why we can do things like using `@eval` to generate lots of different methods, and have all those end up just as performant as if we had written them out by hand.
+This can be used for data driven code.
+It has been suggested using this for [Timezones.jl](https://github.com/JuliaTime/TimeZones.jl) rather than how it currently manually serialized the data, and then loads it in `__init__`.
+I have also seen cases where there are hugely complex global values defined, and which thus blow-up the size of the compile cache to be many gigabytes.
+
+
 I hope this post has been illuminating.
 It's served it's purpose of keeping me awake.
 It's now almost 4am, so I am allowed to get ready for bed.
