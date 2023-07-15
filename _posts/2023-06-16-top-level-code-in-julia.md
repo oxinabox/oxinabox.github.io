@@ -143,7 +143,7 @@ The code in `__init__`, unlike the top-level code of the module, is run whenever
 So let's fix our package.
 Editting `Foo/src/Foo.jl` again:
 
-{% highlight julia-repl%}
+{% highlight julia %}
 module Foo
 
 function __init__()
@@ -158,7 +158,7 @@ We use `@eval` as when run executes things in the global scope.
 Is it great to use `@eval` in this way? I will leave that for a future post (kinda what prompted this post in the first place. I wanted to talk about `@eval` but i needed people to understand precompilation first.).
 It's kinda moot as this particular use case is so weird it doesn't truely matter.
 
-{% highlight julia-repl%}
+{% highlight julia-repl %}
 (@v1.6) pkg> activate .
   Activating environment at `~/Foo/Project.toml`
 
@@ -170,7 +170,7 @@ julia> Foo.x
 {% endhighlight %}
 
 and checking that restarting Julia restarts it:
-{% highlight julia-repl%}
+{% highlight julia%}
 (@v1.6) pkg> activate .
   Activating environment at `~/Foo/Project.toml`
 
