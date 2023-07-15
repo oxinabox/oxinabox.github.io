@@ -184,4 +184,4 @@ And we are all good.
 
 I hope this post has been illuminating.
 It's served it's purpose of keeping me awake.
-It's now after 4am, so I should get ready for bed.
+It's now almost 4am, so I am allowed to get ready for bed.
