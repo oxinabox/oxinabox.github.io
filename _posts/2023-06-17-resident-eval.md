@@ -1,5 +1,5 @@
 ---
-title: Resident Eval: Top level metaprogramming patterns in JuliaLang
+title: Resident Eval, Top level metaprogramming patterns in JuliaLang
 layout: default
 ---
 
