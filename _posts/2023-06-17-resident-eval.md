@@ -1,5 +1,5 @@
 ---
-title: Resident @eval: Top level metaprogramming patterns in JuliaLang
+title: Resident Eval: Top level metaprogramming patterns in JuliaLang
 layout: default
 ---
 
@@ -35,6 +35,10 @@ _`@eval` is allowed at top-level code_
 This is why I wrote [yesterday's blog post](./2023-06-16-top-level-code-in-julia.md), I wanted to make sure people understood what happens to top-level code during precompilation/loading.
 A loop `@eval`ing different expressions is free at loading time, cos it only run at precompilation time.
 Evan the big loop we created as part of the [Nabla.jl](https://github.com/invenia/Nabla.jl) [ChainRules.jl](https://github.com/JuliaDiff/ChainRules.jl/) barely added anything to the load-time and that was defining 5400 methods or so, and used nontrivial logic.
+
+Aside: I have never played a resident evil game. I am a total wuse when it comes to horror and video games are for nerds.
+But I just think its a cool pay on words.
+
 
 
 ## So what kind of things are top level `@eval` useful for?
