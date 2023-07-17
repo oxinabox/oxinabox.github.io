@@ -132,7 +132,9 @@ Maybe you've used [PrecompileTools](https://github.com/JuliaLang/PrecompileTools
 **but these things are actually just a special case of what precompilation actually dones**.
 
 Precompilation just runs everything, and then saves the state of the julia runtime to disk.
-So this does mean that any functions that called get their JIT compiled saved ([PrecompileTools](https://github.com/JuliaLang/PrecompileTools.jl) just provides helpers for a bit more control over this)
+So this does mean that all the parsed and lowered function definitions are stored,
+and it does mean that any functions that called get their JIT compiled code saved ([PrecompileTools](https://github.com/JuliaLang/PrecompileTools.jl) just provides helpers for a bit more control over this), yes.  Because that information is part of the julia runtime state.
+To be a bit more precise, precompilation doesn't store the *whole* runtime state, it stores the subset of it which is owned or extended by *this* module.
 
 Then when ever you load a package, that saved state is loaded up.
 The source code at top level in the package is never run again.
