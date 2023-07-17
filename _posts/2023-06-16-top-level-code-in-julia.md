@@ -172,7 +172,7 @@ julia> Foo.x
 {% endhighlight %}
 
 and checking that restarting Julia restarts it:
-{% highlight julia%}
+{% highlight julia-repl %}
 (@v1.6) pkg> activate .
   Activating environment at `~/Foo/Project.toml`
 
