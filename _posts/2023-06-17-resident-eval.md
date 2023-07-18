@@ -3,7 +3,7 @@ title: Resident Eval, Top level metaprogramming patterns in JuliaLang
 layout: default
 ---
 
-This post brought to you by the same manic "I gotta stay awake to move my body clock to Boston"  as [last night's blog post](./2023-06-16-top-level-code-in-julia.md).
+This post brought to you by the same manic "I gotta stay awake to move my body clock to Boston"  as [last night's blog post](../16/top-level-code-in-julia).
 But it's even more manic, as I am very much jetlagged now. Expect typos.
 And *weird* digressions.
 Anyway, topic this time is metaprogramming patterns.
@@ -32,7 +32,7 @@ Eval is fine as long as you remember 3 things:
 So where does this leave us?
 _`@eval` is allowed at top-level code_
 
-This is why I wrote [yesterday's blog post](./2023-06-16-top-level-code-in-julia.md), I wanted to make sure people understood what happens to top-level code during precompilation/loading.
+This is why I wrote [yesterday's blog post](../16/top-level-code-in-julia), I wanted to make sure people understood what happens to top-level code during precompilation/loading.
 A loop `@eval`ing different expressions is free at loading time, cos it only run at precompilation time.
 Evan the big loop we created as part of the [Nabla.jl](https://github.com/invenia/Nabla.jl) [ChainRules.jl](https://github.com/JuliaDiff/ChainRules.jl/) barely added anything to the load-time and that was defining 5400 methods or so, and used nontrivial logic.
 
