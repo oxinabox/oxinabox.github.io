@@ -28,32 +28,5 @@ layout: default
     <a href="http://staffhome.ecm.uwa.edu.au/~00051693/"> Dr Wei Liu</a> and 
     <a href="http://staffhome.ecm.uwa.edu.au/~00051632/"> W/Prof Mohammed Bennamoun</a>.
     <p>
-    Note that up until 2022, I was publishing under the pen-name Lyndon White.
-    A lot of things are still online under that name.
-    </section>
-
-
-    <section id="publications">
-        <ul>
-        {% for pub in site.data.publications %}
-        <li>{{pub.year}}: {{pub.title}}, {{pub.author}}.<br/> {{pub.venue}} 
-	    {% if pub.award %} <em> {{pub.award}} </em> {% endif %}
-            <br/> <span>
-                [
-                {% if pub.key %}
-                    <a href="{{site.url}}/publications/{{pub.key}}.pdf">pdf</a>,
-                    <a href="{{site.url}}/publications/{{pub.key}}.bib">bib</a>,
-                {% endif %}
-                {% if pub.link %}
-                    <a href="{{pub.link}}">link</a>,
-                {% endif %}
-                {% if pub.supl %}
-                    <a href="{{site.url}}/{{pub.supl}}">site</a>,
-                {% endif %}
-                ]
-             </span>
-        
-        {% endfor %}
-        </ul>
     </section>
 </div>
