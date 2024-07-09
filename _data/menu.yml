@@ -1,5 +1,7 @@
 - text: Home
   url: /
+- text: Publications
+  url: /publications
 - text: Resources
   url: /resources
 - text: Blog
