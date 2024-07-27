@@ -30,7 +30,7 @@ We begin by considering the shape of the curve.
 The way levels change over time is the single largest piece of domain knowledge we have.
 We wish to construct a parameterized curve where the shape can be varied by adjusting to parameters.
 
-In [this blog post on Sublingual versus Oral Estrogen](http://transascity.org/sublingual-versus-oral-estrogen/) they approximated the estradiol function with a linear to the peak then an exponential decay.
+In [this blog post on Sublingual versus Oral Estrogen](https://web.archive.org/web/20230128040153/http://transascity.org/sublingual-versus-oral-estrogen/) they approximated the estradiol function with a linear to the peak then an exponential decay.
 
 > I plotted points from the sublingual estradiol curve, and came up with an estimate of the estradiol function from 1 hr to 24 hours as being `350.54*(HOURS^-0.907)`. From 0 to 1 hours, I estimated the estradiol level linearly, as `451*HOURS`.
 
