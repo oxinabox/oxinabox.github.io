@@ -1,6 +1,8 @@
 ---
 title: Top level code in JuliaLang doesn't do what you think it does
 layout: default
+tags:
+    - julia
 ---
 
 
